@@ -1,0 +1,16 @@
+<Solution>
+  <Folder Name="/Data/">
+    <Project Path="GruersShop.Data.Models/GruersShop.Data.Models.csproj" />
+    <Project Path="GruersShop.Data/GruersShop.Data.csproj" />
+  </Folder>
+  <Folder Name="/Services/">
+    <Project Path="GruersShop.Services.Common/GruersShop.Services.Common.csproj" />
+    <Project Path="GruersShop.Services.Core/GruersShop.Services.Core.csproj" />
+  </Folder>
+  <Folder Name="/Tests/">
+    <Project Path="GruersShop.Tests/GruersShop.Tests.csproj" />
+  </Folder>
+  <Folder Name="/Web/">
+    <Project Path="GruersShop.Web/GruersShop.Web.csproj" />
+  </Folder>
+</Solution>
