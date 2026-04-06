@@ -1,16 +1,25 @@
 <Solution>
+  <Folder Name="/API/">
+    <Project Path="GruersShop.API.Web/GruersShop.API.Web.csproj" Id="6f3fec89-74fc-4de4-b56d-7b38e481600e" />
+  </Folder>
   <Folder Name="/Data/">
+    <Project Path="GruersShop.Data.Common/GruersShop.Data.Common.csproj" Id="a076772e-0355-4bb4-b9c5-c262f39ab3c9" />
     <Project Path="GruersShop.Data.Models/GruersShop.Data.Models.csproj" />
     <Project Path="GruersShop.Data/GruersShop.Data.csproj" />
   </Folder>
   <Folder Name="/Services/">
+    <Project Path="GruersShop.Services.Automapping/GruersShop.Services.Automapping.csproj" Id="a3d170c0-7d55-445c-a211-e6ab308284d5" />
     <Project Path="GruersShop.Services.Common/GruersShop.Services.Common.csproj" />
     <Project Path="GruersShop.Services.Core/GruersShop.Services.Core.csproj" />
   </Folder>
   <Folder Name="/Tests/">
-    <Project Path="GruersShop.Tests/GruersShop.Tests.csproj" />
+    <Project Path="GruersShop.Tests.Integration/GruersShop.Tests.Integration.csproj" Id="06fb5d7f-2368-4007-b980-177a663731f1" />
+    <Project Path="GruersShop.Tests.Web/GruersShop.Tests.Web.csproj" Id="a7561735-89cb-4a5a-99cf-c77bbd0f4268" />
+    <Project Path="GruersShop.Tests/GruersShop.Tests.Services.csproj" />
   </Folder>
   <Folder Name="/Web/">
+    <Project Path="GruersShop.Web.Infrastructure/GruersShop.Web.Infrastructure.csproj" Id="5802efad-c274-4a47-93fb-21b379aa34f4" />
+    <Project Path="GruersShop.Web.ViewModels/GruersShop.Web.ViewModels.csproj" Id="a4a2386f-0867-4956-be49-69eb05948fcf" />
     <Project Path="GruersShop.Web/GruersShop.Web.csproj" />
   </Folder>
 </Solution>
