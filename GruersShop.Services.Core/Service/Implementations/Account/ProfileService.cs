@@ -1,5 +1,6 @@
 ﻿using GruersShop.Data.Models;
 using GruersShop.Data.Repositories.Implementations.Account;
+using GruersShop.Services.Core.Admin.Interfaces.Message;
 using GruersShop.Services.Core.Service.Interfaces.Account;
 using GruersShop.Web.ViewModels.Account.Messages;
 using GruersShop.Web.ViewModels.Account.Profile;
@@ -12,24 +13,24 @@ namespace GruersShop.Services.Core.Service.Implementations.Account;
 
 public class ProfileService : IProfileService
 {
-    private readonly IAppUserRepository _userRepository;
+    private readonly AppUserRepository _userRepository;
     private readonly UserManager<AppUser> _userManager;
-    private readonly IInboxMessageService _inboxMessageService;
+   
     private readonly ISystemInboxMessageService _systemInboxMessageService;
     private readonly IContactMessageClientService _contactMessageClientService;
     private readonly IContactMessageService _contactMessageService;
 
     public ProfileService(
-        IAppUserRepository userRepository,
+        AppUserRepository userRepository,
         UserManager<AppUser> userManager,
-        IInboxMessageService inboxMessageService,
+  
         ISystemInboxMessageService systemInboxMessageService,
         IContactMessageClientService contactMessageClientService,
         IContactMessageService contactMessageService)
     {
         _userRepository = userRepository;
         _userManager = userManager;
-        _inboxMessageService = inboxMessageService;
+     
         _systemInboxMessageService = systemInboxMessageService;
         _contactMessageClientService = contactMessageClientService;
         _contactMessageService = contactMessageService;
@@ -44,7 +45,7 @@ public class ProfileService : IProfileService
         if (user == null)
             return null;
 
-        var inboxMessages = await _inboxMessageService.GetUserMessagesAsync(userId);
+      
         var systemMessages = await _systemInboxMessageService.GetUserMessagesAsync(userId);
 
         var roles = await _userManager.GetRolesAsync(user);
@@ -72,7 +73,7 @@ public class ProfileService : IProfileService
             FirstName = user.FirstName,
             LastName = user.LastName,
             Address = user.Address,
-            Inbox = inboxMessages?.ToList() ?? new List<InboxMessageViewModel>(),
+         
             SystemInbox = systemMessages?.ToList() ?? new List<SystemInboxMessageViewModel>(),
             ContactMessages = contactMessages ?? new List<ContactMessageDetailsViewModel>()
         };

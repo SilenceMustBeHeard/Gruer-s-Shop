@@ -1,5 +1,6 @@
 ﻿using GruersShop.Data.Models;
 using GruersShop.Data.Repositories.Implementations.Base;
+using GruersShop.Data.Repositories.Interfaces.Account;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

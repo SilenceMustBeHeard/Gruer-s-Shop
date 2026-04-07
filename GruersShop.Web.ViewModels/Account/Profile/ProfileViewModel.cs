@@ -16,8 +16,7 @@ public class ProfileViewModel
 
     public string? Address { get; set; }
 
-    public IEnumerable<InboxMessageViewModel> Inbox { get; set; }
-        = new List<InboxMessageViewModel>();
+
     public IEnumerable<SystemInboxMessageViewModel> SystemInbox { get; set; }
         = new List<SystemInboxMessageViewModel>();
 
