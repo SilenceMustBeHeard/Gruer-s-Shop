@@ -5,10 +5,8 @@ using GruersShop.Services.Core.Service.Interfaces.Account;
 using GruersShop.Services.Core.Service.Interfaces.Messages;
 using GruersShop.Web.ViewModels.Account.Messages;
 using GruersShop.Web.ViewModels.Account.Profile;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace GruersShop.Services.Core.Service.Implementations.Account;
 
@@ -40,7 +38,7 @@ public class ProfileService : IProfileService
     public async Task<ProfileViewModel?> GetProfileAsync(string userId)
     {
         var user = await _userRepository
-            .GetAllAttached()
+            .Query()
             .FirstOrDefaultAsync(u => u.Id == userId);
 
         if (user == null)

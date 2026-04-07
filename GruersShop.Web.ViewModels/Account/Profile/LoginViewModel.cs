@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace GruersShop.Web.ViewModels.Account;
+namespace GruersShop.Web.ViewModels.Account.Profile;
 
 public class LoginViewModel
 {

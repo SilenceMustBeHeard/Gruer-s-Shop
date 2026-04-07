@@ -2,6 +2,7 @@
 using GruersShop.Data.Models;
 using GruersShop.Services.Core.Service.Interfaces.Account;
 using GruersShop.Web.ViewModels.Account;
+using GruersShop.Web.ViewModels.Account.Profile;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
