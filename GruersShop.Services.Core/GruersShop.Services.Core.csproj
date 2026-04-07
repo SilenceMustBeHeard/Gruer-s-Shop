@@ -4,13 +4,12 @@
     <ProjectReference Include="..\GruersShop.Data\GruersShop.Data.csproj" />
     <ProjectReference Include="..\GruersShop.Data.Models\GruersShop.Data.Models.csproj" />
     <ProjectReference Include="..\GruersShop.Services.Common\GruersShop.Services.Common.csproj" />
+    <ProjectReference Include="..\GruersShop.Web.ViewModels\GruersShop.Web.ViewModels.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Admin\" />
     <Folder Include="Manager\" />
-    <Folder Include="Service\Implementations\" />
-    <Folder Include="Service\Interfaces\" />
   </ItemGroup>
 
   <ItemGroup>
