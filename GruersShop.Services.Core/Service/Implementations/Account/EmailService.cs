@@ -1,11 +1,9 @@
-﻿using GruersShop.Services.Core.Service.Interfaces.Account;
+﻿using GruersShop.Services.Common.Validators;
+using GruersShop.Services.Core.Service.Interfaces.Account;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using SendGrid;
 using SendGrid.Helpers.Mail;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace GruersShop.Services.Core.Service.Implementations.Account;
 
@@ -90,5 +88,4 @@ public class EmailService : IEmailService
 
         return System.Text.RegularExpressions.Regex.Replace(html, "<.*?>", string.Empty);
     }
-}
 }

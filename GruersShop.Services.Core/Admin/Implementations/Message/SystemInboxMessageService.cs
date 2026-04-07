@@ -1,13 +1,12 @@
 ﻿using GruersShop.Data.Models;
 using GruersShop.Data.Models.Messages;
 using GruersShop.Data.Repositories.Implementations.Account;
-using GruersShop.Data.Repositories.Implementations.Messages;
+using GruersShop.Data.Repositories.Interfaces.Account;
+using GruersShop.Data.Repositories.Interfaces.Messages;
 using GruersShop.Services.Core.Admin.Interfaces.Message;
 using GruersShop.Web.ViewModels.Account.Messages;
 using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Microsoft.EntityFrameworkCore;
 
 namespace GruersShop.Services.Core.Admin.Implementations.Message;
 
@@ -15,13 +14,13 @@ public class SystemInboxMessageService : ISystemInboxMessageService
 
 {
     private readonly ISystemInboxMessageRepository _messageRepository;
-    private readonly AppUserRepository _userRepository;
+    private readonly IAppUserRepository _userRepository;
     private readonly UserManager<AppUser> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;
 
     public SystemInboxMessageService(ISystemInboxMessageRepository messageRepository,
         UserManager<AppUser> userManager,
-            IAppUserRepository userRepository,
+         IAppUserRepository userRepository,
         RoleManager<IdentityRole> roleManager)
     {
         _messageRepository = messageRepository;
@@ -29,6 +28,7 @@ public class SystemInboxMessageService : ISystemInboxMessageService
         _userRepository = userRepository;
         _roleManager = roleManager;
     }
+   
 
     // marks a message as read
     public async Task MarkMessageAsReadAsync(Guid messageId, string userId)
@@ -47,14 +47,13 @@ public class SystemInboxMessageService : ISystemInboxMessageService
     public async Task<int> GetUnreadCountAsync(string userId)
     {
         return await _messageRepository
-            .GetAllAttached()
+            .GetAllAttachedAsync()
             .CountAsync(x => x.ReceiverId == userId && !x.IsRead);
     }
-
     public async Task<SystemInboxMessageViewModel?> GetMessageDetailsAsync(Guid messageId, string userId)
     {
         var message = await _messageRepository
-            .GetAllAttached()
+            .GetAllAttachedAsync()
             .FirstOrDefaultAsync(m => m.Id == messageId && m.ReceiverId == userId);
 
         if (message == null)
@@ -68,7 +67,7 @@ public class SystemInboxMessageService : ISystemInboxMessageService
             Id = messageId,
             Description = message.Description,
             IsRead = message.IsRead,
-            CreatedOn = message.CreatedOn,
+            CreatedOn = message.CreatedAt,
             Type = message.Type,
             SenderId = message.SenderId
         };
@@ -82,15 +81,15 @@ public class SystemInboxMessageService : ISystemInboxMessageService
     public async Task<List<SystemInboxMessageViewModel>> GetUserMessagesAsync(string userId)
     {
         return await _messageRepository
-            .GetAllAttached()
+            .GetAllAttachedAsync()
             .Where(m => m.ReceiverId == userId)
-            .OrderByDescending(m => m.CreatedOn)
+            .OrderByDescending(m => m.CreatedAt)
             .Select(m => new SystemInboxMessageViewModel
             {
                 Id = m.Id,
                 Description = m.Description,
                 IsRead = m.IsRead,
-                CreatedOn = m.CreatedOn,
+                CreatedOn = m.CreatedAt,
                 Type = m.Type,
 
                 SenderId = m.SenderId
@@ -101,16 +100,16 @@ public class SystemInboxMessageService : ISystemInboxMessageService
     public async Task<List<SystemInboxMessageViewModel>> GetAdminMessagesAsync(string adminId)
     {
         return await _messageRepository
-            .GetAllAttached()
+            .GetAllAttachedAsync()
 
             .Where(m => m.ReceiverId == adminId)
-            .OrderByDescending(m => m.CreatedOn)
+            .OrderByDescending(m => m.CreatedAt)
             .Select(m => new SystemInboxMessageViewModel
             {
                 Id = m.Id,
                 Description = m.Description,
                 IsRead = m.IsRead,
-                CreatedOn = m.CreatedOn,
+                CreatedOn = m.CreatedAt,
                 Type = m.Type
             })
             .ToListAsync();

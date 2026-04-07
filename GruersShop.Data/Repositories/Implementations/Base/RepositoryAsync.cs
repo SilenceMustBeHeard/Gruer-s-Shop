@@ -91,5 +91,7 @@ namespace GruersShop.Data.Repositories.Implementations.Base
         // IFindRepository
         public async Task<TEntity?> FindByConditionAsync(Expression<Func<TEntity, bool>> predicate)
             => await _dbSet.FirstOrDefaultAsync(predicate);
+
+   
     }
 }

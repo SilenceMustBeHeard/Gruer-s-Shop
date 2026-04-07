@@ -2,6 +2,7 @@
 using GruersShop.Data.Repositories.Implementations.Account;
 using GruersShop.Services.Core.Admin.Interfaces.Message;
 using GruersShop.Services.Core.Service.Interfaces.Account;
+using GruersShop.Services.Core.Service.Interfaces.Messages;
 using GruersShop.Web.ViewModels.Account.Messages;
 using GruersShop.Web.ViewModels.Account.Profile;
 using Microsoft.AspNetCore.Identity;

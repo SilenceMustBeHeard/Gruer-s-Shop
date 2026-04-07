@@ -6,11 +6,7 @@ using GruersShop.Services.Core.Service.Interfaces.Messages;
 using GruersShop.Web.ViewModels.Account.Messages;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Threading.Tasks;
 
 namespace GruersShop.Services.Core.Service.Implementations.Messages;
 

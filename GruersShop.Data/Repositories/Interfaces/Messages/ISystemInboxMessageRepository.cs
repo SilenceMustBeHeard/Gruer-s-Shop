@@ -8,5 +8,6 @@ namespace GruersShop.Data.Repositories.Interfaces.Messages
 {
     public interface ISystemInboxMessageRepository : IFullRepositoryAsync<SystemInboxMessage, Guid>
     {
+       
     }
 }
