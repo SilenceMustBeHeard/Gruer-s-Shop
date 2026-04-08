@@ -19,6 +19,9 @@ public class RegisterViewModel
     [RegularExpression(@"^[a-zA-Z0-9\s\-]+$", ErrorMessage = "Address can only contain letters, numbers, spaces, and hyphens.")]
     public string? Address { get; set; }     // by choice
 
+    [EmailAddress(ErrorMessage = "Invalid email address.")]
+    public string AlternateEmail { get; set; } = null!;    
+
     [Required]
     [DataType(DataType.Password)]
     [Compare("ConfirmPassword", ErrorMessage = "Passwords do not match.")]

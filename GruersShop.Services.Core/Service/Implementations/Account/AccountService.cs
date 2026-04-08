@@ -47,7 +47,9 @@ public class AccountService : IAccountService
             UserName = model.Email,
             Email = model.Email,
             FirstName = model.FirstName,
-            LastName = model.LastName
+            LastName = model.LastName,
+            Address = model.Address,
+            AlternateEmail = model.AlternateEmail
         };
 
         var result = await _userManager.CreateAsync(user, model.Password);
