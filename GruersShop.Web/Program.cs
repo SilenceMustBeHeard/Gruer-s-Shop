@@ -1,5 +1,4 @@
 
-
 using GruersShop.Data;
 using GruersShop.Data.Models;
 using GruersShop.Data.Repositories.Interfaces.Account;
@@ -146,9 +145,9 @@ app.Use(async (context, next) =>
 });
 
 // Routing
-app.MapControllerRoute(
-    name: "areas",
-    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+//app.MapControllerRoute(
+//    name: "areas",
+//    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
 app.MapControllerRoute(
     name: "default",

@@ -9,11 +9,11 @@ namespace GruersShop.Data.Repositories.Implementations.UnitOfWork
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly DbContext _context;
+        private readonly AppDbContext _context;
         private readonly Dictionary<Type, object> _repositories;
         private bool _disposed;
 
-        public UnitOfWork(DbContext context)
+        public UnitOfWork(AppDbContext context)
         {
             _context = context;
             _repositories = new Dictionary<Type, object>();

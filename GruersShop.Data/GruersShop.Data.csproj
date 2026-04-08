@@ -19,10 +19,6 @@
     <PackageReference Include="SendGrid" Version="9.29.3" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Configuration\" />
-  </ItemGroup>
-
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>

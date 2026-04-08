@@ -1,49 +1,41 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using GruersShop.Services.Common.Exceptions;
-using System;
-using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
 
 namespace GruersShop.Web.Infrastructure.Extensions;
 
 public static class ServiceCollectionExtensions
 {
     private const string ServiceSuffix = "Service";
-    private const string InterfacePreffix = "I";
-    private const string RepoTypeSuffix = "Repository";
-    private const string BaseRepoTypePreffix = "Base";
+    private const string InterfacePrefix = "I";
+    private const string RepositorySuffix = "Repository";
+    private const string BasePrefix = "Base";
 
     public static IServiceCollection RegisterServices(
         this IServiceCollection services,
-        Assembly serviceAssembly)
+        Assembly assembly)
     {
-        Type[] serviceClasses = serviceAssembly
+        var serviceTypes = assembly
             .GetTypes()
             .Where(t =>
                 t.IsClass &&
                 !t.IsAbstract &&
-                t.Name.EndsWith(ServiceSuffix))
-            .ToArray();
+                t.Name.EndsWith(ServiceSuffix) &&
+                !t.IsGenericType)
+            .ToList();
 
-        Type[] serviceInterfaces = serviceAssembly
-            .GetTypes()
-            .Where(t =>
-                t.IsInterface &&
-                t.Name.StartsWith(InterfacePreffix) &&
-                t.Name.EndsWith(ServiceSuffix))
-            .ToArray();
-
-        foreach (Type implementation in serviceClasses)
+        foreach (var implementation in serviceTypes)
         {
-            Type? serviceInterface = implementation.GetInterfaces()
-                .FirstOrDefault(i => i.Name == $"{InterfacePreffix}{implementation.Name}");
+            var expectedInterfaceName = $"{InterfacePrefix}{implementation.Name}";
+
+            var serviceInterface = implementation
+                .GetInterfaces()
+                .FirstOrDefault(i => i.Name == expectedInterfaceName);
 
             if (serviceInterface == null)
             {
-                // ✅ Use ExceptionMessages.RepoInterfaceNotFound
                 throw new InvalidOperationException(
-                    string.Format(ExceptionMessages.RepoInterfaceNotFound, implementation.Name));
+                    $"❌ Service '{implementation.Name}' does not have matching interface '{expectedInterfaceName}'");
             }
 
             services.AddScoped(serviceInterface, implementation);
@@ -53,31 +45,35 @@ public static class ServiceCollectionExtensions
     }
 
     public static IServiceCollection RegisterRepositories(
-        this IServiceCollection serviceCollection,
-        Assembly repositoryAssembly)
+        this IServiceCollection services,
+        Assembly assembly)
     {
-        Type[] repoClasses = repositoryAssembly
+        var repoTypes = assembly
             .GetTypes()
-            .Where(r => r.Name.EndsWith(RepoTypeSuffix)
-                && !r.IsInterface
-                && !r.IsAbstract)
-            .ToArray();
+            .Where(t =>
+                t.IsClass &&
+                !t.IsAbstract &&
+                !t.IsGenericType &&
+                t.Name.EndsWith(RepositorySuffix) &&
+                !t.Name.StartsWith(BasePrefix)).ToList();
 
-        foreach (Type implementation in repoClasses)
+        foreach (var implementation in repoTypes)
         {
-            Type? repoInterface = implementation.GetInterfaces()
-                .FirstOrDefault(i => i.Name == $"{InterfacePreffix}{implementation.Name}");
+            var expectedInterfaceName = $"{InterfacePrefix}{implementation.Name}";
+
+            var repoInterface = implementation
+                .GetInterfaces()
+                .FirstOrDefault(i => i.Name == expectedInterfaceName);
 
             if (repoInterface == null)
             {
-               
                 throw new InvalidOperationException(
-                    string.Format(ExceptionMessages.RepoInterfaceNotFound, implementation.Name));
+                    $"❌ Repository '{implementation.Name}' does not have matching interface '{expectedInterfaceName}'");
             }
 
-            serviceCollection.AddScoped(repoInterface, implementation);
+            services.AddScoped(repoInterface, implementation);
         }
 
-        return serviceCollection;
+        return services;
     }
 }

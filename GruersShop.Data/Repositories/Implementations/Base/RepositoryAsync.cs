@@ -10,10 +10,10 @@ namespace GruersShop.Data.Repositories.Implementations.Base
     public class RepositoryAsync<TEntity, TKey> : IFullRepositoryAsync<TEntity, TKey>
       where TEntity : class
     {
-        protected readonly DbContext _context;
+        protected readonly AppDbContext _context;
         protected readonly DbSet<TEntity> _dbSet;
 
-        public RepositoryAsync(DbContext context)
+        public RepositoryAsync(AppDbContext context)
         {
             _context = context;
             _dbSet = context.Set<TEntity>();

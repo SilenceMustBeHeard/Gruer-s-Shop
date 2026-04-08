@@ -10,7 +10,7 @@ namespace GruersShop.Data.Repositories.Implementations.Messages
 {
     public class ContactMessageRepository : RepositoryAsync<ContactMessage, Guid>, IContactMessageRepository
     {
-        public ContactMessageRepository(DbContext context) : base(context)
+        public ContactMessageRepository(AppDbContext context) : base(context)
         {
         }
 

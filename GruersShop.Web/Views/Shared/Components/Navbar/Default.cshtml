@@ -1,0 +1,97 @@
+﻿@using GruersShop.Web.ViewModels.Account.Profile
+@model NavbarButtonsViewModel
+
+<div class="d-flex align-items-center gap-3 flex-wrap">
+    
+    @* Role mode indicator - Warm pill style *@
+    @if (Model.IsAdmin || Model.IsManager)
+    {
+        <div class="role-pill @(Model.IsAdmin ? "role-admin" : "role-manager")">
+            <i class="bi @(Model.IsAdmin ? "bi-shield-lock-fill" : "bi-person-badge-fill") me-2"></i>
+            <span>@(Model.IsAdmin ? "ADMIN" : "MANAGER") MODE</span>
+            @if (!string.IsNullOrEmpty(Model.CurrentArea))
+            {
+                <span class="role-divider">|</span>
+                <span class="role-area">
+                    <i class="bi bi-diagram-3 me-1"></i>@Model.CurrentArea
+                </span>
+            }
+        </div>
+    }
+
+    @* Admin Buttons *@
+    @if (Model.IsAdmin)
+    {
+        <a class="btn-warm-sm" asp-area="Admin" asp-controller="Home" asp-action="Index">
+            <i class="bi bi-speedometer2 me-1"></i>Admin Panel
+        </a>
+
+        <a class="btn-warm-sm position-relative" asp-area="Admin" asp-controller="OrdersManagement" asp-action="Manage">
+            <i class="bi bi-clipboard-data me-1"></i>Orders
+            @if (Model.PendingOrdersCount > 0)
+            {
+                <span class="honey-badge ms-1">@Model.PendingOrdersCount</span>
+            }
+        </a>
+
+        <a class="btn-warm-sm position-relative" asp-area="Admin" asp-controller="AdminProfile" asp-action="AdminInbox">
+            <i class="bi bi-envelope-paper me-1"></i>Messages
+            @if (Model.UnreadMessagesCount > 0)
+            {
+                <span class="honey-badge ms-1">@Model.UnreadMessagesCount</span>
+            }
+        </a>
+
+        <a class="btn-glow-sm" asp-area="Admin" asp-controller="CatalogManagement" asp-action="AdminIndex">
+            <i class="bi bi-grid-3x3-gap-fill me-1"></i>Catalogue
+        </a>
+    }
+    
+    @* Manager Buttons *@
+    else if (Model.IsManager)
+    {
+        <a class="btn-glow-sm" asp-area="Manager" asp-controller="Catalog" asp-action="CatalogIndex">
+            <i class="bi bi-grid-3x3-gap-fill me-1"></i>Catalogue
+        </a>
+
+        <a class="btn-warm-sm position-relative" asp-area="Manager" asp-controller="OrdersManagement" asp-action="Manage">
+            <i class="bi bi-clipboard-data me-1"></i>Orders
+            @if (Model.PendingOrdersCount > 0)
+            {
+                <span class="honey-badge ms-1">@Model.PendingOrdersCount</span>
+            }
+        </a>
+
+        <a class="btn-warm-sm position-relative" asp-area="Manager" asp-controller="ManagerProfile" asp-action="Index">
+            <i class="bi bi-envelope-paper me-1"></i>Messages
+            @if (Model.UnreadMessagesCount > 0)
+            {
+                <span class="honey-badge ms-1">@Model.UnreadMessagesCount</span>
+            }
+        </a>
+    }
+    
+    @* Regular User Buttons *@
+    else if (Model.IsUser)
+    {
+        <a class="btn-warm-sm" asp-controller="ContactMessage" asp-action="Index">
+            <i class="bi bi-chat-heart me-1"></i>Contact
+        </a>
+
+        <a class="btn-glow-sm" asp-controller="Catalog" asp-action="CatalogIndex">
+            <i class="bi bi-shop me-1"></i>Bakery
+        </a>
+
+        <a class="btn-warm-sm" asp-controller="Orders" asp-action="Create">
+            <i class="bi bi-plus-circle me-1"></i>New Order
+        </a>
+
+        <a class="btn-warm-sm position-relative" asp-controller="Profile" asp-action="Index">
+            <i class="bi bi-person-badge me-1"></i>Profile
+            @if (Model.UnreadMessagesCount > 0)
+            {
+                <span class="honey-badge ms-1">@Model.UnreadMessagesCount</span>
+            }
+        </a>
+    }
+</div>

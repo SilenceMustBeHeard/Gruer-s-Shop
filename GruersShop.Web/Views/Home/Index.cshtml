@@ -1,0 +1,144 @@
+﻿@{
+    ViewData["Title"] = "Gruer's Artisanal Bakery";
+}
+
+<!-- Hero Section -->
+<div class="hero-oven text-center text-white mb-5">
+    <div class="container">
+        <i class="bi bi-egg-fried display-1 mb-3 d-block"></i>
+        <h1 class="display-3 mb-3">Gruer's Artisanal Bakery</h1>
+        <div class="honey-accent mx-auto"></div>
+        <p class="lead mx-auto mt-4 story-text" style="max-width: 600px; color: #e8d9cc;">
+            "Where every bite tells a story — crafted with warmth, kissed by magic, and baked to perfection."
+        </p>
+        <div class="mt-4">
+            <a asp-controller="Catalog" asp-action="CatalogIndex" class="btn-glow me-2">
+                <i class="bi bi-shop me-1"></i> Visit Bakery
+            </a>
+            <a asp-controller="Home" asp-action="About" class="btn-warm">
+                <i class="bi bi-book-heart me-1"></i> Gruer's Story
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Fresh from the Oven Section -->
+<div class="container my-5">
+    <h2 class="text-center mb-4">Fresh from the Oven</h2>
+    <div class="honey-accent mx-auto mb-5"></div>
+    
+    <div class="row g-4">
+        <!-- Product 1 -->
+        <div class="col-md-4">
+            <div class="product-card">
+                <div class="product-card-image">
+                    <i class="bi bi-cup-hot display-1 text-white-50"></i>
+                </div>
+                <div class="product-card-content">
+                    <h3 class="product-card-title">Signature Sourdough</h3>
+                    <p class="text-muted">Crusted with golden perfection, soft and chewy inside. Made with night planet flour and love.</p>
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                        <span class="text-warm fw-bold fs-5">$8.50</span>
+                        <button class="btn-glow-sm">Order</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Product 2 -->
+        <div class="col-md-4">
+            <div class="product-card">
+                <div class="product-card-image">
+                    <i class="bi bi-egg-fried display-1 text-white-50"></i>
+                </div>
+                <div class="product-card-content">
+                    <h3 class="product-card-title">Firefly Honey Croissant</h3>
+                    <p class="text-muted">Layered with honey that glows with magical sweetness. Butter from Grandhar's finest cream.</p>
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                        <span class="text-warm fw-bold fs-5">$6.25</span>
+                        <button class="btn-glow-sm">Order</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Product 3 -->
+        <div class="col-md-4">
+            <div class="product-card">
+                <div class="product-card-image">
+                    <i class="bi bi-gem display-1 text-white-50"></i>
+                </div>
+                <div class="product-card-content">
+                    <h3 class="product-card-title">Night Planet Tart</h3>
+                    <p class="text-muted">Berries from distant worlds in a buttery crust. Scented with Vulcan cinnamon.</p>
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                        <span class="text-warm fw-bold fs-5">$9.75</span>
+                        <button class="btn-glow-sm">Order</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Gruer's Story Quote -->
+<div class="container my-5">
+    <div class="warm-card text-center">
+        <i class="bi bi-quote display-4 text-warm"></i>
+        <p class="story-text mx-auto" style="max-width: 700px; font-size: 1.2rem; font-style: italic;">
+            "I have dreamed of this shop for decades. A place where ordinary people can taste other worlds.
+            Where every bite tells a story — of warmth, of wonder, of the magic that brought me here."
+        </p>
+        <footer class="blockquote-footer mt-3">— Gruer, Master Baker</footer>
+        <div class="honey-accent mx-auto mt-4"></div>
+    </div>
+</div>
+
+<!-- Featured Categories -->
+<div class="container my-5">
+    <h2 class="text-center mb-4">Our Specialties</h2>
+    <div class="honey-accent mx-auto mb-5"></div>
+    
+    <div class="row g-4 text-center">
+        <div class="col-md-3">
+            <div class="warm-card p-3">
+                <i class="bi bi-bread display-4 text-warm"></i>
+                <h4 class="mt-2">Artisan Breads</h4>
+                <small class="text-muted">Sourdough, Baguettes, Focaccia</small>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="warm-card p-3">
+                <i class="bi bi-cake2 display-4 text-warm"></i>
+                <h4 class="mt-2">Pastries</h4>
+                <small class="text-muted">Croissants, Danishes, Tarts</small>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="warm-card p-3">
+                <i class="bi bi-cup-straw display-4 text-warm"></i>
+                <h4 class="mt-2">Magical Drinks</h4>
+                <small class="text-muted">Glow Coffee, Firefly Tea</small>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="warm-card p-3">
+                <i class="bi bi-gem display-4 text-warm"></i>
+                <h4 class="mt-2">Seasonal Specials</h4>
+                <small class="text-muted">Limited Edition Treats</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Call to Action -->
+<div class="container my-5">
+    <div class="hero-oven text-center text-white py-5">
+        <h2 class="mb-3">Ready to Taste the Magic?</h2>
+        <div class="honey-accent mx-auto"></div>
+        <p class="mb-4 mt-3">Visit us today and experience flavors from across the worlds.</p>
+        <a asp-controller="Catalog" asp-action="CatalogIndex" class="btn-glow btn-lg">
+            <i class="bi bi-shop me-2"></i> Explore Our Bakery
+        </a>
+    </div>
+</div>

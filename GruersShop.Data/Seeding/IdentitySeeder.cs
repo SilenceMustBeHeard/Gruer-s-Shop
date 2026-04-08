@@ -26,6 +26,7 @@ namespace GruersShop.Data.Seeding;
         public static async Task SeedAdminAsync(UserManager<AppUser> userManager)
         {
             const string adminEmail = "admin@gruershop.com";
+            const string adminAlternateEmail = "admin.alt@gruershop.com";
             var admin = await userManager.FindByEmailAsync(adminEmail);
 
             if (admin == null)
@@ -34,6 +35,7 @@ namespace GruersShop.Data.Seeding;
                 {
                     UserName = adminEmail,
                     Email = adminEmail,
+                    AlternateEmail = adminAlternateEmail,
                     EmailConfirmed = true
                 };
                 await userManager.CreateAsync(admin, DefaultPassword);
@@ -47,6 +49,7 @@ namespace GruersShop.Data.Seeding;
         public static async Task SeedManagerAsync(UserManager<AppUser> userManager)
         {
             const string managerEmail = "manager@gruershop.com";
+        const string managerAlternateEmail = "manager.alt@gruershop.com";
             var manager = await userManager.FindByEmailAsync(managerEmail);
 
             if (manager == null)
@@ -55,6 +58,7 @@ namespace GruersShop.Data.Seeding;
                 {
                     UserName = managerEmail,
                     Email = managerEmail,
+                    AlternateEmail = managerAlternateEmail,
                     EmailConfirmed = true
                 };
                 await userManager.CreateAsync(manager, DefaultPassword);

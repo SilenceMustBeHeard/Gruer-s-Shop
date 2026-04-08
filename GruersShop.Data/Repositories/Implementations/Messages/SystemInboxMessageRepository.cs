@@ -10,7 +10,7 @@ namespace GruersShop.Data.Repositories.Implementations.Messages;
 
 public class SystemInboxMessageRepository : RepositoryAsync<SystemInboxMessage, Guid>, ISystemInboxMessageRepository
 {
-    public SystemInboxMessageRepository(DbContext context) : base(context)
+    public SystemInboxMessageRepository(AppDbContext context) : base(context)
     {
     }
 

@@ -8,9 +8,9 @@ using System.Text;
 
 namespace GruersShop.Data.Repositories.Implementations.Account
 {
-    public class AppUserRepository : RepositoryAsync<AppUser, string>
+    public class AppUserRepository : RepositoryAsync<AppUser, string>, IAppUserRepository
     {
-        public AppUserRepository(DbContext context) : base(context)
+        public AppUserRepository(AppDbContext context) : base(context)
         {
         }
 

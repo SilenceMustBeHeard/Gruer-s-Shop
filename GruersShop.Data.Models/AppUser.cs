@@ -1,4 +1,5 @@
 ﻿
+using GruersShop.Data.Models.Messages;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
@@ -17,4 +18,23 @@ public class AppUser : IdentityUser
 
     [EmailAddress(ErrorMessage = "Invalid email address")]
     public string AlternateEmail { get; set; } = null!;
+
+
+
+
+
+    // System messages (SystemInboxMessage)
+    public ICollection<SystemInboxMessage> ReceivedSystemMessages { get; set; }
+        = new HashSet<SystemInboxMessage>();
+
+    public ICollection<SystemInboxMessage> SentSystemMessages { get; set; }
+        = new HashSet<SystemInboxMessage>();
+
+
+    // Contact messages (ContactMessage)
+    public ICollection<ContactMessage> ReceivedContactMessages { get; set; }
+        = new HashSet<ContactMessage>();
+
+    public ICollection<ContactMessage> SentContactMessages { get; set; }
+        = new HashSet<ContactMessage>();
 }

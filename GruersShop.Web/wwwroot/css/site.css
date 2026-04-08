@@ -1,137 +1,236 @@
-/* Gruer's Shop - Warm & Inviting Theme */
-/* Inspired by the vision of warmth, wonder, and otherworldly magic */
+/* Gruer's Shop - Complete Theme (No Imports Needed) */
+:root {
+    --wood-light: #d4a574;
+    --wood-medium: #b87a4a;
+    --wood-dark: #5c3a1e;
+    --wood-very-dark: #2e1a0a;
+    --stone-light: #e8dfd3;
+    --stone-medium: #c4b6a5;
+    --glow-gold: #f5c542;
+    --glow-amber: #e8912e;
+    --warm-light: #fff8ed;
+    --warm-shadow: rgba(44, 26, 10, 0.15);
+    --font-serif: 'Playfair Display', Georgia, serif;
+    --font-sans: 'Inter', sans-serif;
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    --spacing-2xl: 3rem;
+}
 
-/* Base imports */
-@import url('base/variables.css');
-@import url('base/reset.css');
-@import url('base/typography.css');
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-/* Component imports */
-@import url('components/layout.css');
-@import url('components/navigation.css');
-@import url('components/buttons.css');
-@import url('components/cards.css');
-@import url('components/forms.css');
-@import url('components/tables.css');
-@import url('components/badges.css');
-
-/* Page-specific imports */
-@import url('pages/home.css');
-@import url('pages/catalog.css');
-@import url('pages/admin.css');
-@import url('pages/profile.css');
-
-/* Theme imports */
-@import url('themes/light.css');
-@import url('themes/dark.css');
-
-/* Base body styles */
 body {
-    background: var(--warm-light);
+    font-family: var(--font-sans);
+    background: linear-gradient(135deg, #faf5eb 0%, #f0e6d8 100%);
+    color: var(--wood-very-dark);
     min-height: 100vh;
+    line-height: 1.6;
 }
 
-/* Warm glow accents */
-.glow-text {
-    color: var(--glow-amber);
-    text-shadow: 0 0 8px var(--glow-gold);
+[data-bs-theme="dark"] body {
+    background: linear-gradient(135deg, #2e1a0a 0%, #1a0f05 100%);
+    color: #e8d9cc;
 }
 
-/* Inviting container */
-.inviting-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: var(--spacing-xl);
-    background: var(--warm-light);
-    border-radius: 24px;
-    box-shadow: 0 8px 30px var(--warm-shadow);
+/* Navigation */
+.navbar {
+    background: var(--wood-dark);
+    box-shadow: 0 4px 20px var(--warm-shadow);
 }
 
-/* Firefly honey accents */
-.honey-accent {
+.brand-name {
+    font-size: 1.5rem;
+    font-weight: 600;
+    display: block;
+}
+
+.brand-subtitle {
+    font-size: 0.7rem;
+    opacity: 0.8;
+}
+
+/* Theme Toggle */
+.theme-toggle {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    color: var(--wood-medium);
+    transition: all 0.3s ease;
+}
+
+    .theme-toggle:hover {
+        color: var(--glow-amber);
+        transform: rotate(15deg);
+    }
+
+/* Buttons */
+.btn-warm, .btn-warm-sm {
+    background: var(--wood-medium);
+    border: none;
+    color: white;
+    border-radius: 40px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+}
+
+.btn-warm {
+    padding: 0.5rem 1.2rem;
+}
+
+.btn-warm-sm {
+    padding: 0.4rem 1rem;
+    font-size: 0.85rem;
+}
+
+    .btn-warm:hover, .btn-warm-sm:hover {
+        background: var(--wood-dark);
+        transform: translateY(-2px);
+        color: white;
+    }
+
+.btn-glow, .btn-glow-sm {
     background: linear-gradient(135deg, var(--glow-gold), var(--glow-amber));
-    height: 2px;
-    width: 60px;
-    margin: var(--spacing-md) auto;
-    border-radius: 2px;
+    border: none;
+    color: var(--wood-very-dark);
+    border-radius: 40px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
 }
-/* Error Page - Oven Glow Styles */
-.error-container {
-    min-height: 60vh;
+
+.btn-glow {
+    padding: 0.5rem 1.2rem;
+    gap: 0.5rem;
+}
+
+.btn-glow-sm {
+    padding: 0.4rem 1rem;
+    font-size: 0.85rem;
+    gap: 0.25rem;
+}
+
+    .btn-glow:hover, .btn-glow-sm:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 0 16px var(--glow-gold);
+        color: var(--wood-very-dark);
+    }
+
+/* Hero */
+.hero-oven {
+    background: linear-gradient(135deg, var(--wood-dark) 0%, #1a0e05 100%);
+    padding: 4rem 2rem;
+    border-radius: 30px;
+    position: relative;
+    overflow: hidden;
+}
+
+    .hero-oven::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--glow-gold), var(--glow-amber));
+        animation: fireFlicker 2s infinite;
+    }
+
+@keyframes fireFlicker {
+    0%, 100% {
+        opacity: 0.6;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+/* Cards */
+.product-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px var(--warm-shadow);
+}
+
+[data-bs-theme="dark"] .product-card {
+    background: #4a3020;
+}
+
+.product-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 30px var(--warm-shadow);
+}
+
+.product-card-image {
+    height: 200px;
+    background: linear-gradient(135deg, var(--wood-light), var(--wood-medium));
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.oven-glow-card {
-    background: var(--warm-light);
-    border-radius: 24px;
-    padding: var(--spacing-2xl);
-    box-shadow: 0 8px 32px var(--warm-shadow);
-    border: 1px solid var(--stone-light);
+.product-card-content {
+    padding: 1rem;
 }
 
-.oven-icon {
-    position: relative;
-    display: inline-block;
-}
-
-.oven-flames {
-    position: absolute;
-    bottom: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 60px;
-    height: 20px;
-    background: radial-gradient(ellipse, #ff6b35, transparent);
-    border-radius: 50%;
-    animation: flicker 1s infinite;
-}
-
-@keyframes flicker {
-    0%, 100% {
-        opacity: 0.6;
-        transform: translateX(-50%) scale(1);
-    }
-
-    50% {
-        opacity: 1;
-        transform: translateX(-50%) scale(1.1);
-    }
-}
-
-.stone-panel {
-    background: var(--stone-light);
-    border-radius: 12px;
-    padding: var(--spacing-md);
-    border: 1px solid var(--stone-medium);
-}
-
-.story-text {
+.product-card-title {
     font-family: var(--font-serif);
-    font-size: 1.1rem;
-    line-height: 1.6;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+/* Footer */
+.footer-stone {
+    background: var(--stone-light);
+    padding: 1.5rem;
+    margin-top: 3rem;
+}
+
+[data-bs-theme="dark"] .footer-stone {
+    background: #2e1a0a;
+}
+
+/* Dropdown */
+.dropdown-menu {
+    background: var(--warm-light);
+    border: 1px solid var(--stone-medium);
+    border-radius: 12px;
+}
+
+.dropdown-item {
     color: var(--wood-dark);
 }
 
-.action-buttons {
-    display: flex;
-    gap: var(--spacing-md);
-    justify-content: center;
-    flex-wrap: wrap;
-}
+    .dropdown-item:hover {
+        background: linear-gradient(90deg, var(--stone-light), transparent);
+        color: var(--wood-very-dark);
+    }
 
-/* Dark theme overrides */
-[data-bs-theme="dark"] .oven-glow-card {
-    background: var(--wood-dark);
-    border-color: var(--wood-medium);
-}
-
-[data-bs-theme="dark"] .stone-panel {
-    background: var(--wood-very-dark);
-    border-color: var(--wood-dark);
-}
-
-[data-bs-theme="dark"] .story-text {
-    color: var(--warm-light);
+/* Badges */
+.honey-badge {
+    background: linear-gradient(135deg, var(--glow-gold), var(--glow-amber));
+    color: var(--wood-very-dark);
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 0.15rem 0.5rem;
+    border-radius: 20px;
 }

@@ -1,40 +1,37 @@
 ﻿using GruersShop.Data.Models;
 using GruersShop.Data.Repositories.Implementations.Account;
+using GruersShop.Data.Repositories.Interfaces.Account;
 using GruersShop.Services.Core.Admin.Interfaces.Message;
 using GruersShop.Services.Core.Service.Interfaces.Account;
 using GruersShop.Services.Core.Service.Interfaces.Messages;
 using GruersShop.Web.ViewModels.Account.Messages;
 using GruersShop.Web.ViewModels.Account.Profile;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace GruersShop.Services.Core.Service.Implementations.Account;
 
 public class ProfileService : IProfileService
 {
-    private readonly AppUserRepository _userRepository;
+    private readonly IAppUserRepository _userRepository;  
     private readonly UserManager<AppUser> _userManager;
-   
     private readonly ISystemInboxMessageService _systemInboxMessageService;
     private readonly IContactMessageClientService _contactMessageClientService;
     private readonly IContactMessageService _contactMessageService;
 
     public ProfileService(
-        AppUserRepository userRepository,
+        IAppUserRepository userRepository,  
         UserManager<AppUser> userManager,
-  
         ISystemInboxMessageService systemInboxMessageService,
         IContactMessageClientService contactMessageClientService,
         IContactMessageService contactMessageService)
     {
         _userRepository = userRepository;
         _userManager = userManager;
-     
         _systemInboxMessageService = systemInboxMessageService;
         _contactMessageClientService = contactMessageClientService;
         _contactMessageService = contactMessageService;
     }
-
     public async Task<ProfileViewModel?> GetProfileAsync(string userId)
     {
         var user = await _userRepository

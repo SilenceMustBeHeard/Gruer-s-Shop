@@ -18,7 +18,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\GruersShop.Data\GruersShop.Data.csproj" />
     <ProjectReference Include="..\GruersShop.Services.Common\GruersShop.Services.Common.csproj" />
+    <ProjectReference Include="..\GruersShop.Services.Core\GruersShop.Services.Core.csproj" />
   </ItemGroup>
 
 </Project>
