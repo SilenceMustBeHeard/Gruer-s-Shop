@@ -1,0 +1,108 @@
+﻿@using GruersShop.Web.ViewModels.Account.Profile;
+@model LoginViewModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="full-glass-wrapper">
+    <div class="full-glass-bg"></div>
+    
+    <div class="full-glass-content d-flex justify-content-center align-items-center">
+        <div class="glass-card p-4 p-md-5 shadow-lg" style="max-width: 450px; width: 100%;">
+            
+            @* Header with icon *@
+            <div class="text-center mb-4">
+                <div class="glass-icon-circle mx-auto mb-3">
+                    <i class="bi bi-box-arrow-in-right fs-1" style="color: #c09a6c;"></i>
+                </div>
+                <h2 class="fw-bold mb-2" style="background: linear-gradient(135deg, #fff 0%, #c09a6c 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                    Welcome Back
+                </h2>
+                <p class="text-muted small">Sign in to continue</p>
+            </div>
+
+            @* Success/Error Messages *@
+            @if (TempData["Success"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show mb-3" role="alert">
+                    <i class="bi bi-check-circle-fill me-2"></i> @TempData["Success"]
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"></button>
+                </div>
+            }
+            @if (TempData["Error"] != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show mb-3" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i> @TempData["Error"]
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"></button>
+                </div>
+            }
+
+            <form asp-action="Login" method="post">
+                @Html.AntiForgeryToken()
+                
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                @* Email Field *@
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label fw-semibold">
+                        <i class="bi bi-envelope me-1" style="color: #c09a6c;"></i> Email Address
+                    </label>
+                    <div class="input-group">
+                        <span class="input-group-text glass-input-prepend">
+                            <i class="bi bi-envelope"></i>
+                        </span>
+                        <input asp-for="Email" class="form-control glass-input" placeholder="your@email.com" />
+                    </div>
+                    <span asp-validation-for="Email" class="text-danger small"></span>
+                </div>
+
+                @* Password Field *@
+                <div class="mb-3">
+                    <label asp-for="Password" class="form-label fw-semibold">
+                        <i class="bi bi-lock me-1" style="color: #c09a6c;"></i> Password
+                    </label>
+                    <div class="input-group">
+                        <span class="input-group-text glass-input-prepend">
+                            <i class="bi bi-lock"></i>
+                        </span>
+                        <input asp-for="Password" type="password" class="form-control glass-input" placeholder="Enter your password" />
+                    </div>
+                    <span asp-validation-for="Password" class="text-danger small"></span>
+                </div>
+
+                @* Remember Me Checkbox *@
+                <div class="form-check mb-4">
+                    <input asp-for="RememberMe" class="form-check-input" style="border-color: #c09a6c;" />
+                    <label asp-for="RememberMe" class="form-check-label small">Remember Me</label>
+                </div>
+
+                @* Login Button *@
+                <button type="submit" class="btn btn-primary-glass w-100 py-2 mb-3">
+                    <i class="bi bi-box-arrow-in-right me-2"></i> Log In
+                </button>
+
+                @* Divider *@
+                <div class="position-relative text-center my-3">
+                    <hr class="border-light opacity-25">
+                    <span class="position-absolute top-50 start-50 translate-middle bg-transparent px-3 small text-muted">or</span>
+                </div>
+
+                @* Register Link *@
+                <a asp-action="Register" class="btn btn-outline-glass w-100 py-2 mb-2">
+                    <i class="bi bi-person-plus me-2"></i> Create New Account
+                </a>
+
+                @* Forgot Password Link *@
+                <div class="text-center mt-3">
+                    <a asp-action="ForgotPassword" class="text-decoration-none small" style="color: #c09a6c;">
+                        <i class="bi bi-key me-1"></i> Forgot your password?
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

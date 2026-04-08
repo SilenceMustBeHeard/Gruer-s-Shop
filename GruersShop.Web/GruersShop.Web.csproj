@@ -5,6 +5,7 @@
     <ProjectReference Include="..\GruersShop.Data.Models\GruersShop.Data.Models.csproj" />
     <ProjectReference Include="..\GruersShop.Services.Core\GruersShop.Services.Core.csproj" />
     <ProjectReference Include="..\GruersShop.Services.Common\GruersShop.Services.Common.csproj" />
+    <ProjectReference Include="..\GruersShop.Web.Infrastructure\GruersShop.Web.Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,9 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ViewComponent\" />
-    <Folder Include="Views\" />
-    <Folder Include="Controllers\" />
     <Folder Include="Areas\" />
   </ItemGroup>
 

@@ -1,0 +1,51 @@
+﻿@{
+    ViewData["Title"] = "Server Error";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card glassmorphism-card text-center p-5 animate__animated animate__fadeInUp">
+                
+                @* Error image *@
+                <div class="error-image-container mb-4">
+                    <img src="~/images/errors/server-error.png"
+                         alt="Server Error"
+                         class="img-fluid"
+                         style="max-height: 220px;"
+                         onerror="this.onerror=null; this.src='https://via.placeholder.com/300x220/2c3e50/ffffff?text=⚠️+Server+Error'">
+                    </div>
+
+                    <div class="error-badge bg-danger bg-opacity-10 text-danger px-3 py-1 rounded-pill d-inline-block mx-auto mb-3">
+                        <small>🔧 ERROR @(ViewBag.ErrorCode ?? 500)</small>
+                    </div>
+
+                    <h1 class="display-5 fw-bold text-danger mb-3">
+                        <span class="d-block">⚠️ Oops! Something went wrong</span>
+                    </h1>
+
+                    <p class="text-muted mb-2">We're experiencing some technical difficulties.</p>
+                    <p class="text-muted mb-4">Our team has been notified and is working on it.</p>
+
+                    <div class="technical-details bg-light bg-opacity-10 p-3 rounded-3 mb-4">
+                        <small class="text-muted">
+                            <i class="bi bi-info-circle me-1"></i>
+                            Error ID: @Guid.NewGuid().ToString().Substring(0, 8)
+                        </small>
+                    </div>
+
+                    <div class="d-flex justify-content-center gap-3">
+                        <a asp-controller="Home"
+                               asp-action="Index"
+                               class="btn btn-danger btn-lg px-4 hover-scale">
+                            <i class="bi bi-house-door me-2"></i>Back to Home
+                        </a>
+                        <button onclick="location.reload()"
+                                class="btn btn-outline-secondary btn-lg px-4 hover-scale">
+                            <i class="bi bi-arrow-clockwise me-2"></i>Try Again
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

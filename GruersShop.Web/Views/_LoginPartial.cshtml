@@ -1,0 +1,62 @@
+﻿@using GruersShop.Data.Models
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+
+@{
+    string userName = null;
+
+    if (SignInManager.IsSignedIn(User))
+    {
+        var user = await UserManager.GetUserAsync(User);
+        userName = user?.UserName ?? user?.Email;
+    }
+}
+
+<ul class="navbar-nav d-flex align-items-center">
+
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <!-- Greeting -->
+        <li class="nav-item me-3">
+            <span class="nav-link glass-btn disabled"
+                  style="opacity:0.6; cursor:default;">
+                Hello @userName!
+            </span>
+        </li>
+
+        <!-- Logout -->
+        <li class="nav-item">
+            <form asp-controller="Account"
+                  asp-action="Logout"
+                  method="post"
+                  class="d-inline">
+                @Html.AntiForgeryToken()
+                <button type="submit" class="glass-btn">
+                    Logout
+                </button>
+            </form>
+        </li>
+    }
+    else
+    {
+        <!-- Register -->
+        <li class="nav-item me-2">
+            <a class="glass-btn"
+               asp-controller="Account"
+               asp-action="Register">
+                Register
+            </a>
+        </li>
+
+        <!-- Login -->
+        <li class="nav-item">
+            <a class="glass-btn"
+               asp-controller="Account"
+               asp-action="Login">
+                Login
+            </a>
+        </li>
+    }
+
+</ul>

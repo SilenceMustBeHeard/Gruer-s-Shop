@@ -1,0 +1,70 @@
+﻿@using GruersShop.Data.Models
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+
+@{
+    string userName = null;
+    int unread = 0;
+
+    if (SignInManager.IsSignedIn(User))
+    {
+        var user = await UserManager.GetUserAsync(User);
+        userName = user?.UserName ?? user?.Email;
+    }
+}
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <li>
+        <span class="dropdown-item text-muted" style="cursor:default;">
+            Hello @userName!
+        </span>
+    </li>
+
+    <li>
+        <a class="dropdown-item d-flex justify-content-between align-items-center"
+           asp-controller="Profile"
+           asp-action="Index">
+            My Profile
+            @if (unread > 0)
+            {
+                <span class="badge bg-danger">@unread</span>
+            }
+        </a>
+    </li>
+
+    <li><hr class="dropdown-divider" /></li>
+
+    <li>
+        <form asp-controller="Account"
+              asp-action="Logout"
+              method="post"
+              class="px-3">
+            @Html.AntiForgeryToken()
+            <button type="submit"
+                    class="btn btn-auth-glass w-100">
+                Logout
+            </button>
+        </form>
+    </li>
+}
+else
+{
+    <li>
+        <a class="dropdown-item"
+           asp-controller="Account"
+           asp-action="Login">
+            Login
+        </a>
+    </li>
+
+    <li>
+        <a class="dropdown-item"
+           asp-controller="Account"
+           asp-action="Register">
+            Register
+        </a>
+    </li>
+}
+

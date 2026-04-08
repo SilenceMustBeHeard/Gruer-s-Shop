@@ -1,0 +1,173 @@
+﻿@using GruersShop.Web.ViewModels.User
+@model ProfileViewModel
+
+@{
+    ViewData["Title"] = "My Profile";
+}
+
+<div class="container py-5">
+    @*Header*@
+    <div class="mb-4 text-light">
+        <h2 class="fw-bold mb-1">My Profile</h2>
+        <p class="opacity-75 mb-0">
+            Manage your personal information and messages
+        </p>
+    </div>
+
+    @*Main card*@
+    <div class="card glass-card shadow-lg p-4 p-md-5">
+        <div class="row g-4">
+
+            @* User Info *@
+            <div class="col-xl-4 col-lg-5">
+                <div class="h-100 text-light">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="bi bi-person-circle fs-2 me-2"></i>
+                        <h5 class="fw-bold mb-0">Profile Info</h5>
+                    </div>
+
+                    <hr />
+
+                    <p class="mb-3">
+                        <strong>Full Name:</strong><br />
+                        <span class="opacity-75">
+                            @Model.FirstName @Model.LastName
+                        </span>
+                    </p>
+
+                    <p class="mb-3">
+                        <strong>Email:</strong><br />
+                        <span class="opacity-75">
+                            @Model.Email
+                        </span>
+                    </p>
+
+                    <p class="mb-0">
+                        <strong>Address:</strong><br />
+                        <span class="opacity-75">
+                            @Model.Address
+                        </span>
+                    </p>
+                </div>
+            </div>
+
+            @* Divider *@
+            <div class="col-lg-1 d-none d-lg-flex justify-content-center">
+                <div class="vr text-light opacity-25"></div>
+            </div>
+
+            @* Inbox with Tabs *@
+            <div class="col-xl-7 col-lg-6">
+                <div class="h-100 text-light">
+
+                    @* Tab navigation *@
+                    <ul class="nav nav-tabs mb-3 border-bottom-0" id="inboxTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active bg-transparent text-light border-0 border-bottom border-2"
+                                    id="design-tab"
+                                    data-bs-toggle="tab"
+                                    data-bs-target="#design"
+                                    type="button"
+                                    role="tab"
+                                    style="border-bottom-color: #c09a6c !important;">
+                                <i class="bi bi-pencil-square me-2"></i>Design Messages
+                             
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link bg-transparent text-light border-0 border-bottom border-2"
+                                    id="system-tab"
+                                    data-bs-toggle="tab"
+                                    data-bs-target="#system"
+                                    type="button"
+                                    role="tab">
+                                <i class="bi bi-megaphone me-2"></i>System Messages
+                                @{
+                                    var unreadSystemCount = Model.SystemInbox?.Count(x => !x.IsRead) ?? 0;
+                                }
+                                @if (unreadSystemCount > 0)
+                                {
+                                    <span class="badge bg-warning text-dark ms-2">@unreadSystemCount</span>
+                                }
+                            </button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link bg-transparent text-light border-0 border-bottom border-2"
+                                    id="contact-tab"
+                                    data-bs-toggle="tab"
+                                    data-bs-target="#contact"
+                                    type="button"
+                                    role="tab">
+                                <i class="bi bi-chat-dots me-2"></i>Contact Messages
+                                @{
+                                   
+                                    var unreadContactCount = Model.ContactMessages?.Count(x => !x.IsRead) ?? 0;
+                                }
+                                @if (unreadContactCount > 0)
+                                {
+                                    <span class="badge bg-warning text-dark ms-2">@unreadContactCount</span>
+                                }
+                            </button>
+                        </li>
+                    </ul>
+
+                    @* Tab content *@
+                    <div class="tab-content" id="inboxTabsContent">
+
+                 
+                  @* System MEssage *@
+                        <div class="tab-pane fade" id="system" role="tabpanel">
+                            @if (Model.SystemInbox == null || !Model.SystemInbox.Any())
+                            {
+                                <div class="text-center py-5">
+                                    <i class="bi bi-megaphone opacity-50 fs-1"></i>
+                                    <p class="mt-3 mb-0 opacity-75">
+                                        No system messages
+                                    </p>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="d-flex flex-column gap-3" style="max-height: 500px; overflow-y: auto; padding-right: 10px;">
+                                    @foreach (var message in Model.SystemInbox)
+                                    {
+                                        @await Html.PartialAsync("_SystemInboxItem", message)
+                                    }
+                                </div>
+                            }
+                        </div>
+
+                      @* Contact Message *@
+                        <div class="tab-pane fade" id="contact" role="tabpanel">
+                            @if (Model.ContactMessages == null || !Model.ContactMessages.Any())
+                            {
+                                <div class="text-center py-5">
+                                    <i class="bi bi-chat-dots opacity-50 fs-1"></i>
+                                    <p class="mt-3 mb-0 opacity-75">
+                                        No responded messages yet.
+                                    </p>
+                                    <p class="small text-muted mt-2">
+                                        When an admin responds to your inquiry, it will appear here.
+                                    </p>
+                                    <a asp-controller="ContactMessage" asp-action="Index" class="btn btn-outline-glass mt-3">
+                                        <i class="bi bi-envelope me-2"></i>Send a Message
+                                    </a>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="d-flex flex-column gap-3" style="max-height: 500px; overflow-y: auto; padding-right: 10px;">
+                                    @foreach (var message in Model.ContactMessages)
+                                    {
+                                        @await Html.PartialAsync("_ContactSentItem", message)
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

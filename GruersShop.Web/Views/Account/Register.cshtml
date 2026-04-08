@@ -1,0 +1,134 @@
+﻿@model GruersShop.Web.ViewModels.Account.Profile.RegisterViewModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<div class="full-glass-wrapper">
+    <div class="full-glass-bg"></div>
+    
+    <div class="full-glass-content d-flex justify-content-center align-items-center">
+        <div class="glass-card p-4 p-md-5 shadow-lg" style="max-width: 500px; width: 100%;">
+            
+            @* Header with icon *@
+            <div class="text-center mb-4">
+                <div class="glass-icon-circle mx-auto mb-3">
+                    <i class="bi bi-person-plus-fill fs-1" style="color: #c09a6c;"></i>
+                </div>
+                <h2 class="fw-bold mb-2" style="background: linear-gradient(135deg, #fff 0%, #c09a6c 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">
+                    Create Account
+                </h2>
+                <p class="text-muted small">Join Furniture & Garden Design</p>
+            </div>
+
+            <form asp-action="Register" method="post" novalidate>
+                @Html.AntiForgeryToken()
+                
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <div class="row g-3">
+                    @* Email Field *@
+                    <div class="col-12">
+                        <div class="mb-2">
+                            <label asp-for="Email" class="form-label fw-semibold">
+                                <i class="bi bi-envelope me-1" style="color: #c09a6c;"></i> Email Address
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text glass-input-prepend">
+                                    <i class="bi bi-envelope"></i>
+                                </span>
+                                <input asp-for="Email" class="form-control glass-input" placeholder="your@email.com" />
+                            </div>
+                            <span asp-validation-for="Email" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    @* First Name & Last Name - Two columns *@
+                    <div class="col-md-6">
+                        <div class="mb-2">
+                            <label asp-for="FirstName" class="form-label fw-semibold">
+                                <i class="bi bi-person me-1" style="color: #c09a6c;"></i> First Name
+                            </label>
+                            <input asp-for="FirstName" class="form-control glass-input" placeholder="John" />
+                            <span asp-validation-for="FirstName" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="mb-2">
+                            <label asp-for="LastName" class="form-label fw-semibold">
+                                <i class="bi bi-person me-1" style="color: #c09a6c;"></i> Last Name
+                            </label>
+                            <input asp-for="LastName" class="form-control glass-input" placeholder="Doe" />
+                            <span asp-validation-for="LastName" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    @* Address Field *@
+                    <div class="col-12">
+                        <div class="mb-2">
+                            <label asp-for="Address" class="form-label fw-semibold">
+                                <i class="bi bi-house me-1" style="color: #c09a6c;"></i> Address
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text glass-input-prepend">
+                                    <i class="bi bi-geo-alt"></i>
+                                </span>
+                                <input asp-for="Address" class="form-control glass-input" placeholder="Your address (optional)" />
+                            </div>
+                            <span asp-validation-for="Address" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    @* Password Field *@
+                    <div class="col-12">
+                        <div class="mb-2">
+                            <label asp-for="Password" class="form-label fw-semibold">
+                                <i class="bi bi-lock me-1" style="color: #c09a6c;"></i> Password
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text glass-input-prepend">
+                                    <i class="bi bi-lock"></i>
+                                </span>
+                                <input asp-for="Password" type="password" class="form-control glass-input" placeholder="Minimum 6 characters" />
+                            </div>
+                            <span asp-validation-for="Password" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    @* Confirm Password Field *@
+                    <div class="col-12">
+                        <div class="mb-2">
+                            <label asp-for="ConfirmPassword" class="form-label fw-semibold">
+                                <i class="bi bi-lock-fill me-1" style="color: #c09a6c;"></i> Confirm Password
+                            </label>
+                            <div class="input-group">
+                                <span class="input-group-text glass-input-prepend">
+                                    <i class="bi bi-lock-fill"></i>
+                                </span>
+                                <input asp-for="ConfirmPassword" type="password" class="form-control glass-input" placeholder="Confirm your password" />
+                            </div>
+                            <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
+                        </div>
+                    </div>
+                </div>
+
+                @* Register Button *@
+                <button type="submit" class="btn btn-primary-glass w-100 py-2 mt-3">
+                    <i class="bi bi-person-plus me-2"></i> Create Account
+                </button>
+
+                @* Login Link *@
+                <div class="text-center mt-3">
+                    <span class="small text-muted">Already have an account?</span>
+                    <a asp-action="Login" class="text-decoration-none small ms-1" style="color: #c09a6c;">
+                        Sign In
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
