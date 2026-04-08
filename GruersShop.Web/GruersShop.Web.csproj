@@ -22,6 +22,8 @@
 
   <ItemGroup>
     <Folder Include="Areas\" />
+    <Folder Include="Views\NewFolder\" />
+    <Folder Include="Views\Shared\NewFolder\" />
   </ItemGroup>
 
   <PropertyGroup>

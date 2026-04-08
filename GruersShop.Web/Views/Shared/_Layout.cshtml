@@ -1,0 +1,103 @@
+﻿<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Gruer's Shop</title>
+    
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    
+    <!-- Google Fonts for warm typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Theme styles -->
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark py-3">
+            <div class="container">
+                <!-- Logo / Brand -->
+                <a class="navbar-brand" asp-controller="Home" asp-action="Index">
+                    <div class="brand-logo">
+                        <span class="brand-name">Gruer's</span>
+                        <span class="brand-subtitle">Artisanal Bakery</span>
+                    </div>
+                </a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarMain">
+                    <!-- Center Navigation -->
+                    <div class="mx-auto">
+                        @await Component.InvokeAsync("Navbar")
+                    </div>
+
+                    <!-- Right Side -->
+                    <div class="d-flex gap-3 align-items-center">
+                        <!-- Theme Toggle -->
+                        <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">
+                            <i class="bi bi-moon-stars"></i>
+                        </button>
+
+                        <!-- Account Dropdown -->
+                        <div class="dropdown">
+                            <button class="btn-warm dropdown-toggle" data-bs-toggle="dropdown">
+                                <i class="bi bi-person-circle me-1"></i> Account
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                @await Component.InvokeAsync("AccountMenu")
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Oven Glow Alert Messages -->
+        <div class="container mt-3">
+            @if (TempData["Success"] != null)
+            {
+                <div class="alert-oven alert-success" role="alert">
+                    <i class="bi bi-fire me-2"></i> @TempData["Success"]
+                    <button type="button" class="btn-close-oven" data-dismiss="alert"></button>
+                </div>
+            }
+
+            @if (TempData["Error"] != null)
+            {
+                <div class="alert-oven alert-danger" role="alert">
+                    <i class="bi bi-emoji-frown me-2"></i> @TempData["Error"]
+                    <button type="button" class="btn-close-oven" data-dismiss="alert"></button>
+                </div>
+            }
+        </div>
+    </header>
+
+    <!-- Main Content - Warm Hearth -->
+    <main class="hearth-container">
+        <div class="container py-4">
+            @RenderBody()
+        </div>
+    </main>
+
+    <!-- Footer - Warm Stone -->
+    <footer class="footer-stone mt-auto py-4">
+        <div class="container text-center">
+            <p class="mb-0">&copy; @DateTime.Now.Year - Gruer's Artisanal Bakery</p>
+            <small class="text-muted">"Where every bite tells a story"</small>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,10 @@
+/* Light theme - warm spring morning */
+[data-bs-theme="light"] {
+    background-color: #faf5eb;
+    color: var(--wood-very-dark);
+}
+
+    [data-bs-theme="light"] .warm-card {
+        background: #fffdf9;
+        border-color: #e8d9cc;
+    }

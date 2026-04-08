@@ -1,0 +1,101 @@
+/* Warm Navigation Links */
+.nav-link-warm {
+    color: var(--wood-medium);
+    font-weight: 500;
+    text-decoration: none;
+    padding: var(--spacing-sm) var(--spacing-md);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+    .nav-link-warm:hover {
+        color: var(--glow-amber);
+    }
+
+    .nav-link-warm::after {
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 2px;
+        background: var(--glow-gold);
+        transition: width 0.3s ease;
+    }
+
+    .nav-link-warm:hover::after {
+        width: 70%;
+    }
+
+/* Unread Message Badge */
+.unread-badge-warm {
+    position: absolute;
+    top: -8px;
+    right: -12px;
+    background: var(--glow-amber);
+    color: var(--wood-very-dark);
+    font-size: 0.7rem;
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 20px;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 0.7;
+    }
+
+    50% {
+        transform: scale(1.1);
+        opacity: 1;
+    }
+}
+
+/* Oven Glow Alert */
+.alert-oven {
+    background: var(--warm-light);
+    border-left: 4px solid var(--glow-amber);
+    border-radius: 8px;
+    padding: var(--spacing-md) var(--spacing-lg);
+    margin-bottom: var(--spacing-md);
+    box-shadow: 0 2px 8px var(--warm-shadow);
+    position: relative;
+}
+
+    .alert-oven.alert-success {
+        border-left-color: var(--leaf-green);
+    }
+
+    .alert-oven.alert-danger {
+        border-left-color: #dc3545;
+    }
+
+.btn-close-oven {
+    position: absolute;
+    right: var(--spacing-md);
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--stone-dark);
+    cursor: pointer;
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+    background: none;
+    border: none;
+    color: var(--wood-medium);
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: var(--spacing-sm);
+    transition: all 0.3s ease;
+}
+
+    .theme-toggle:hover {
+        color: var(--glow-amber);
+        transform: rotate(15deg);
+    }

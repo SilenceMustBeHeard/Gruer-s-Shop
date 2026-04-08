@@ -1,0 +1,42 @@
+body {
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    color: var(--wood-very-dark);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+}
+
+h1 {
+    font-size: 3.5rem;
+    margin-bottom: var(--spacing-lg);
+}
+
+h2 {
+    font-size: 2.5rem;
+    margin-bottom: var(--spacing-md);
+}
+
+h3 {
+    font-size: 1.75rem;
+}
+
+/* Warm text accents */
+.text-warm {
+    color: var(--wood-medium);
+}
+
+.text-glow {
+    color: var(--glow-amber);
+}
+
+/* Story text - for Gruer's descriptions */
+.story-text {
+    font-family: var(--font-serif);
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--wood-dark);
+}

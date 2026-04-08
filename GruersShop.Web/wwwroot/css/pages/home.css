@@ -1,0 +1,51 @@
+/* Hero section - Gruer's welcome */
+.hero-oven {
+    background: linear-gradient(135deg, var(--wood-dark) 0%, #1a0e05 100%);
+    padding: var(--spacing-2xl) var(--spacing-xl);
+    border-radius: 30px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+    .hero-oven::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--glow-gold), var(--glow-amber), var(--glow-gold));
+        animation: fireFlicker 2s infinite;
+    }
+
+@keyframes fireFlicker {
+    0%, 100% {
+        opacity: 0.6;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+/* Vision text - Gruer's description */
+.vision-text {
+    font-family: var(--font-serif);
+    font-size: 1.2rem;
+    line-height: 1.8;
+    font-style: italic;
+    color: var(--warm-light);
+    max-width: 800px;
+    margin: 0 auto;
+    padding: var(--spacing-xl);
+}
+
+/* Plant accents */
+.plant-accent {
+    background: var(--leaf-green);
+    border-radius: 50%;
+    width: 4px;
+    height: 4px;
+    box-shadow: 0 0 0 2px var(--flower-soft), 0 0 0 6px var(--moss-green);
+}

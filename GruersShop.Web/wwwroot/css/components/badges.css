@@ -1,0 +1,80 @@
+/* Warm dropdown menu */
+.dropdown-menu {
+    background: var(--warm-light);
+    border: 1px solid var(--stone-medium);
+    border-radius: 12px;
+    box-shadow: 0 8px 24px var(--warm-shadow);
+    padding: var(--spacing-sm) 0;
+}
+
+.dropdown-header {
+    background: transparent;
+    color: var(--wood-dark);
+    font-size: 0.85rem;
+}
+
+.dropdown-item {
+    color: var(--wood-dark);
+    padding: var(--spacing-sm) var(--spacing-lg);
+    transition: all 0.2s ease;
+}
+
+    .dropdown-item:hover {
+        background: linear-gradient(90deg, var(--stone-light), transparent);
+        color: var(--wood-very-dark);
+    }
+
+    .dropdown-item i {
+        width: 1.5rem;
+        display: inline-block;
+    }
+
+/* Unread dot indicator */
+.unread-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background: var(--glow-amber);
+    border-radius: 50%;
+    animation: pulse 1.5s infinite;
+}
+
+/* Honey badge for message count */
+.honey-badge {
+    background: linear-gradient(135deg, var(--glow-gold), var(--glow-amber));
+    color: var(--wood-very-dark);
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 2px 10px;
+    border-radius: 20px;
+}
+
+/* Warm text color */
+.text-warm {
+    color: var(--wood-medium);
+}
+
+/* Glow text accent */
+.text-glow {
+    color: var(--glow-amber);
+    font-weight: 600;
+}
+
+/* Animation for unread indicator */
+@keyframes pulse {
+    0%, 100% {
+        opacity: 0.4;
+        transform: scale(0.8);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.2);
+    }
+}
+
+/* Dropdown divider */
+.dropdown-divider {
+    border-top-color: var(--stone-light);
+    margin: var(--spacing-sm) 0;
+}

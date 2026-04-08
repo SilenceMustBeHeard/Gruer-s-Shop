@@ -106,56 +106,56 @@ using (var scope = app.Services.CreateScope())
 
 }
 
-    // Static files with .glb support for 3D models
-    var provider = new FileExtensionContentTypeProvider();
-    provider.Mappings[".glb"] = "model/gltf-binary";
+// Static files with .glb support for 3D models
+var provider = new FileExtensionContentTypeProvider();
+provider.Mappings[".glb"] = "model/gltf-binary";
 
-    // Configure error handling middleware
-    if (!app.Environment.IsDevelopment())
+// Configure error handling middleware
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Error/500");
+    app.UseHsts();
+}
+else
+{
+    app.UseDeveloperExceptionPage();
+}
+
+app.UseStatusCodePagesWithReExecute("/Error/{0}");
+app.UseHttpsRedirection();
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    ContentTypeProvider = provider
+});
+
+app.UseRouting();
+app.UseAuthentication();
+app.UseAuthorization();
+
+// Custom error handling for 404
+app.Use(async (context, next) =>
+{
+    await next();
+    if (context.Response.StatusCode == 404 && !context.Response.HasStarted)
     {
-        app.UseExceptionHandler("/Error/500");
-        app.UseHsts();
-    }
-    else
-    {
-        app.UseDeveloperExceptionPage();
-    }
-
-    app.UseStatusCodePagesWithReExecute("/Error/{0}");
-    app.UseHttpsRedirection();
-
-    app.UseStaticFiles(new StaticFileOptions
-    {
-        ContentTypeProvider = provider
-    });
-
-    app.UseRouting();
-    app.UseAuthentication();
-    app.UseAuthorization();
-
-    // Custom error handling for 404
-    app.Use(async (context, next) =>
-    {
+        context.Items["originalPath"] = context.Request.Path;
+        context.Request.Path = "/Error/404";
         await next();
-        if (context.Response.StatusCode == 404 && !context.Response.HasStarted)
-        {
-            context.Items["originalPath"] = context.Request.Path;
-            context.Request.Path = "/Error/404";
-            await next();
-        }
-    });
+    }
+});
 
-    // Routing
-    app.MapControllerRoute(
-        name: "areas",
-        pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+// Routing
+app.MapControllerRoute(
+    name: "areas",
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
-    app.MapControllerRoute(
-        name: "default",
-        pattern: "{controller=Home}/{action=Index}/{id?}");
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
-    app.MapRazorPages();
+app.MapRazorPages();
 
-    await app.RunAsync();
+await app.RunAsync();
 
 

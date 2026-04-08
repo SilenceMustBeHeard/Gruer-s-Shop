@@ -1,0 +1,48 @@
+/* Primary button - warm and inviting */
+.btn-warm {
+    background: var(--wood-medium);
+    border: none;
+    color: var(--warm-light);
+    padding: 0.75rem 1.5rem;
+    border-radius: 40px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+    .btn-warm:hover {
+        background: var(--wood-dark);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(92, 58, 30, 0.3);
+    }
+
+/* Glowing accent button for magical elements */
+.btn-glow {
+    background: linear-gradient(135deg, var(--glow-gold), var(--glow-amber));
+    border: none;
+    color: var(--wood-very-dark);
+    padding: 0.75rem 1.5rem;
+    border-radius: 40px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+    .btn-glow:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 0 20px var(--glow-gold);
+    }
+
+/* Stone-textured secondary button */
+.btn-stone {
+    background: var(--stone-light);
+    border: 1px solid var(--stone-medium);
+    color: var(--wood-dark);
+    padding: 0.6rem 1.2rem;
+    border-radius: 40px;
+    transition: all 0.3s ease;
+}
+
+    .btn-stone:hover {
+        background: var(--stone-medium);
+        color: var(--warm-light);
+    }

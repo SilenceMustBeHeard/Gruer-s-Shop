@@ -1,31 +1,137 @@
-html {
-  font-size: 14px;
-}
+/* Gruer's Shop - Warm & Inviting Theme */
+/* Inspired by the vision of warmth, wonder, and otherworldly magic */
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
+/* Base imports */
+@import url('base/variables.css');
+@import url('base/reset.css');
+@import url('base/typography.css');
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
+/* Component imports */
+@import url('components/layout.css');
+@import url('components/navigation.css');
+@import url('components/buttons.css');
+@import url('components/cards.css');
+@import url('components/forms.css');
+@import url('components/tables.css');
+@import url('components/badges.css');
 
-html {
-  position: relative;
-  min-height: 100%;
-}
+/* Page-specific imports */
+@import url('pages/home.css');
+@import url('pages/catalog.css');
+@import url('pages/admin.css');
+@import url('pages/profile.css');
 
+/* Theme imports */
+@import url('themes/light.css');
+@import url('themes/dark.css');
+
+/* Base body styles */
 body {
-  margin-bottom: 60px;
+    background: var(--warm-light);
+    min-height: 100vh;
 }
 
-.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+/* Warm glow accents */
+.glow-text {
+    color: var(--glow-amber);
+    text-shadow: 0 0 8px var(--glow-gold);
 }
 
-.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
+/* Inviting container */
+.inviting-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--spacing-xl);
+    background: var(--warm-light);
+    border-radius: 24px;
+    box-shadow: 0 8px 30px var(--warm-shadow);
+}
+
+/* Firefly honey accents */
+.honey-accent {
+    background: linear-gradient(135deg, var(--glow-gold), var(--glow-amber));
+    height: 2px;
+    width: 60px;
+    margin: var(--spacing-md) auto;
+    border-radius: 2px;
+}
+/* Error Page - Oven Glow Styles */
+.error-container {
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.oven-glow-card {
+    background: var(--warm-light);
+    border-radius: 24px;
+    padding: var(--spacing-2xl);
+    box-shadow: 0 8px 32px var(--warm-shadow);
+    border: 1px solid var(--stone-light);
+}
+
+.oven-icon {
+    position: relative;
+    display: inline-block;
+}
+
+.oven-flames {
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 20px;
+    background: radial-gradient(ellipse, #ff6b35, transparent);
+    border-radius: 50%;
+    animation: flicker 1s infinite;
+}
+
+@keyframes flicker {
+    0%, 100% {
+        opacity: 0.6;
+        transform: translateX(-50%) scale(1);
+    }
+
+    50% {
+        opacity: 1;
+        transform: translateX(-50%) scale(1.1);
+    }
+}
+
+.stone-panel {
+    background: var(--stone-light);
+    border-radius: 12px;
+    padding: var(--spacing-md);
+    border: 1px solid var(--stone-medium);
+}
+
+.story-text {
+    font-family: var(--font-serif);
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: var(--wood-dark);
+}
+
+.action-buttons {
+    display: flex;
+    gap: var(--spacing-md);
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* Dark theme overrides */
+[data-bs-theme="dark"] .oven-glow-card {
+    background: var(--wood-dark);
+    border-color: var(--wood-medium);
+}
+
+[data-bs-theme="dark"] .stone-panel {
+    background: var(--wood-very-dark);
+    border-color: var(--wood-dark);
+}
+
+[data-bs-theme="dark"] .story-text {
+    color: var(--warm-light);
 }

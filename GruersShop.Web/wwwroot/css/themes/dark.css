@@ -1,0 +1,15 @@
+/* Dark theme - cozy evening by the oven */
+[data-bs-theme="dark"] {
+    background-color: var(--wood-very-dark);
+    color: var(--warm-light);
+}
+
+    [data-bs-theme="dark"] .warm-card {
+        background: #4a3020;
+        border-color: #6b4a30;
+        color: var(--warm-light);
+    }
+
+    [data-bs-theme="dark"] .product-card-description {
+        color: var(--stone-light);
+    }

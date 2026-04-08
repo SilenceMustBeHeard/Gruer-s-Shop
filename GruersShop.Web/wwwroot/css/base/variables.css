@@ -1,0 +1,32 @@
+:root {
+    /* Warm Wood Colors */
+    --wood-light: #d4a574;
+    --wood-medium: #b87a4a;
+    --wood-dark: #5c3a1e;
+    --wood-very-dark: #2e1a0a;
+    /* Stone Colors */
+    --stone-light: #e8dfd3;
+    --stone-medium: #c4b6a5;
+    --stone-dark: #8a7a6a;
+    /* Magic Glow Colors */
+    --glow-gold: #f5c542;
+    --glow-amber: #e8912e;
+    --glow-soft: #ffe4b5;
+    /* Plant Colors */
+    --leaf-green: #6b8c42;
+    --moss-green: #4a6741;
+    --flower-soft: #e8c4d0;
+    /* Lighting */
+    --warm-light: #fff8ed;
+    --warm-shadow: rgba(44, 26, 10, 0.15);
+    /* Typography */
+    --font-serif: 'Playfair Display', Georgia, serif;
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    /* Spacing */
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    --spacing-2xl: 3rem;
+}

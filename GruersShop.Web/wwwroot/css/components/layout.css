@@ -1,0 +1,56 @@
+/* Main container - warm and inviting */
+.main-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-lg);
+}
+
+/* Wood-textured backgrounds */
+.bg-wood {
+    background: linear-gradient(135deg, var(--wood-light) 0%, var(--wood-medium) 100%);
+}
+
+.bg-wood-dark {
+    background: linear-gradient(135deg, var(--wood-dark) 0%, var(--wood-very-dark) 100%);
+}
+
+/* Stone accents */
+.stone-border {
+    border: 1px solid var(--stone-medium);
+    border-radius: 8px;
+}
+
+/* Warm card - no glass, just warm materials */
+.warm-card {
+    background: var(--warm-light);
+    border: 1px solid var(--stone-light);
+    border-radius: 16px;
+    padding: var(--spacing-lg);
+    box-shadow: 0 4px 20px var(--warm-shadow);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .warm-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 30px var(--warm-shadow);
+    }
+
+/* Inviting counter-style display */
+.counter-display {
+    background: var(--wood-dark);
+    padding: var(--spacing-xl);
+    border-radius: 24px;
+    color: var(--warm-light);
+    position: relative;
+    box-shadow: inset 0 1px 4px rgba(255,255,255,0.1), 0 8px 30px rgba(0,0,0,0.2);
+}
+
+    .counter-display::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, var(--glow-gold), transparent);
+    }
