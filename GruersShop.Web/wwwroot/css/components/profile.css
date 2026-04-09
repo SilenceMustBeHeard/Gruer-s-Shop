@@ -4,6 +4,7 @@
 .active-tab {
     background: var(--wood-medium) !important;
     color: white !important;
+    border-radius: 40px;
 }
 
 .btn-stone-sm {
@@ -116,3 +117,5 @@
 .letter-footer {
     font-family: var(--font-serif);
 }
+
+

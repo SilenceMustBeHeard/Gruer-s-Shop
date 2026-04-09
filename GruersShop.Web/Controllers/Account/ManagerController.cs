@@ -1,4 +1,4 @@
-﻿using GruersShop.Data.Models;
+﻿using GruersShop.Data.Models.Base;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

@@ -1,4 +1,5 @@
 ﻿using GruersShop.Data.Common.Enums;
+using GruersShop.Data.Models.Base;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

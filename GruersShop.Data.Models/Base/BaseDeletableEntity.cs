@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace GruersShop.Data.Models;
+namespace GruersShop.Data.Models.Base;
 
 public abstract class BaseDeletableEntity : BaseEntity
 {

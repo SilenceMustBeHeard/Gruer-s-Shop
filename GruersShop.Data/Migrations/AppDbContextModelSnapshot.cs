@@ -22,7 +22,7 @@ namespace GruersShop.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("GruersShop.Data.Models.AppUser", b =>
+            modelBuilder.Entity("GruersShop.Data.Models.Base.AppUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -34,7 +34,6 @@ namespace GruersShop.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("AlternateEmail")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -98,6 +97,284 @@ namespace GruersShop.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("GruersShop.Data.Models.Catalog.Catalog", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DisplayOrder");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("Catalogs");
+                });
+
+            modelBuilder.Entity("GruersShop.Data.Models.Catalog.Category", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CatalogId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int>("DisplayOrder")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
+
+                    b.Property<string>("IconClass")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CatalogId");
+
+                    b.HasIndex("DisplayOrder");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("GruersShop.Data.Models.Interactions.Favorite", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId", "ProductId")
+                        .IsUnique();
+
+                    b.ToTable("Favorites");
+                });
+
+            modelBuilder.Entity("GruersShop.Data.Models.Interactions.Order", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("OrderDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("PickupDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PickupTime")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SpecialInstructions")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("TotalAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("GruersShop.Data.Models.Interactions.OrderItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("OrderId", "ProductId")
+                        .IsUnique();
+
+                    b.ToTable("OrderItems");
+                });
+
+            modelBuilder.Entity("GruersShop.Data.Models.Interactions.Review", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("UserId", "ProductId")
+                        .IsUnique();
+
+                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("GruersShop.Data.Models.Messages.ContactMessage", b =>
@@ -239,6 +516,164 @@ namespace GruersShop.Data.Migrations
                     b.ToTable("SystemInboxMessages");
                 });
 
+            modelBuilder.Entity("GruersShop.Data.Models.Products.Ingredient", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("AdditionalNutrientsJson")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("BestSeason")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("CaloriesPer100g")
+                        .HasColumnType("float");
+
+                    b.Property<double>("CarbsPer100g")
+                        .HasColumnType("float");
+
+                    b.Property<bool>("ContainsDairy")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("ContainsEggs")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("ContainsGluten")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("ContainsNuts")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("ContainsSesame")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("ContainsSoy")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("FatPer100g")
+                        .HasColumnType("float");
+
+                    b.Property<double>("FiberPer100g")
+                        .HasColumnType("float");
+
+                    b.Property<bool>("IsNonGMO")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsOrganic")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsSustainable")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Origin")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("ProteinPer100g")
+                        .HasColumnType("float");
+
+                    b.Property<double>("SugarPer100g")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Supplier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Ingredients");
+                });
+
+            modelBuilder.Entity("GruersShop.Data.Models.Products.Product", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("DeletedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsAvailable")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("StockQuantity")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("GruersShop.Data.Models.Products.ProductIngredient", b =>
+                {
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("IngredientId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<double>("GramsUsed")
+                        .HasColumnType("float");
+
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("ProductId", "IngredientId");
+
+                    b.HasIndex("IngredientId");
+
+                    b.ToTable("ProductIngredients");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -376,20 +811,99 @@ namespace GruersShop.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("GruersShop.Data.Models.Catalog.Category", b =>
+                {
+                    b.HasOne("GruersShop.Data.Models.Catalog.Catalog", "Catalog")
+                        .WithMany("Categories")
+                        .HasForeignKey("CatalogId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Catalog");
+                });
+
+            modelBuilder.Entity("GruersShop.Data.Models.Interactions.Favorite", b =>
+                {
+                    b.HasOne("GruersShop.Data.Models.Products.Product", "Product")
+                        .WithMany("FavoritedBy")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("GruersShop.Data.Models.Base.AppUser", "User")
+                        .WithMany("Favorites")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("GruersShop.Data.Models.Interactions.Order", b =>
+                {
+                    b.HasOne("GruersShop.Data.Models.Base.AppUser", "User")
+                        .WithMany("Orders")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("GruersShop.Data.Models.Interactions.OrderItem", b =>
+                {
+                    b.HasOne("GruersShop.Data.Models.Interactions.Order", "Order")
+                        .WithMany("OrderItems")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GruersShop.Data.Models.Products.Product", "Product")
+                        .WithMany("OrderItems")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("GruersShop.Data.Models.Interactions.Review", b =>
+                {
+                    b.HasOne("GruersShop.Data.Models.Products.Product", "Product")
+                        .WithMany("Reviews")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("GruersShop.Data.Models.Base.AppUser", "User")
+                        .WithMany("Reviews")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("GruersShop.Data.Models.Messages.ContactMessage", b =>
                 {
-                    b.HasOne("GruersShop.Data.Models.AppUser", "Receiver")
+                    b.HasOne("GruersShop.Data.Models.Base.AppUser", "Receiver")
                         .WithMany("ReceivedContactMessages")
                         .HasForeignKey("ReceiverId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("GruersShop.Data.Models.AppUser", "RespondedBy")
+                    b.HasOne("GruersShop.Data.Models.Base.AppUser", "RespondedBy")
                         .WithMany()
                         .HasForeignKey("RespondedById")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("GruersShop.Data.Models.AppUser", "Sender")
+                    b.HasOne("GruersShop.Data.Models.Base.AppUser", "Sender")
                         .WithMany("SentContactMessages")
                         .HasForeignKey("SenderId")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -403,13 +917,13 @@ namespace GruersShop.Data.Migrations
 
             modelBuilder.Entity("GruersShop.Data.Models.Messages.SystemInboxMessage", b =>
                 {
-                    b.HasOne("GruersShop.Data.Models.AppUser", "Receiver")
+                    b.HasOne("GruersShop.Data.Models.Base.AppUser", "Receiver")
                         .WithMany("ReceivedSystemMessages")
                         .HasForeignKey("ReceiverId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("GruersShop.Data.Models.AppUser", "Sender")
+                    b.HasOne("GruersShop.Data.Models.Base.AppUser", "Sender")
                         .WithMany("SentSystemMessages")
                         .HasForeignKey("SenderId")
                         .OnDelete(DeleteBehavior.Restrict);
@@ -417,6 +931,36 @@ namespace GruersShop.Data.Migrations
                     b.Navigation("Receiver");
 
                     b.Navigation("Sender");
+                });
+
+            modelBuilder.Entity("GruersShop.Data.Models.Products.Product", b =>
+                {
+                    b.HasOne("GruersShop.Data.Models.Catalog.Category", "Category")
+                        .WithMany("Products")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("GruersShop.Data.Models.Products.ProductIngredient", b =>
+                {
+                    b.HasOne("GruersShop.Data.Models.Products.Ingredient", "Ingredient")
+                        .WithMany("ProductIngredients")
+                        .HasForeignKey("IngredientId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("GruersShop.Data.Models.Products.Product", "Product")
+                        .WithMany("ProductIngredients")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Ingredient");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -430,7 +974,7 @@ namespace GruersShop.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("GruersShop.Data.Models.AppUser", null)
+                    b.HasOne("GruersShop.Data.Models.Base.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -439,7 +983,7 @@ namespace GruersShop.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("GruersShop.Data.Models.AppUser", null)
+                    b.HasOne("GruersShop.Data.Models.Base.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -454,7 +998,7 @@ namespace GruersShop.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("GruersShop.Data.Models.AppUser", null)
+                    b.HasOne("GruersShop.Data.Models.Base.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -463,22 +1007,59 @@ namespace GruersShop.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("GruersShop.Data.Models.AppUser", null)
+                    b.HasOne("GruersShop.Data.Models.Base.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("GruersShop.Data.Models.AppUser", b =>
+            modelBuilder.Entity("GruersShop.Data.Models.Base.AppUser", b =>
                 {
+                    b.Navigation("Favorites");
+
+                    b.Navigation("Orders");
+
                     b.Navigation("ReceivedContactMessages");
 
                     b.Navigation("ReceivedSystemMessages");
 
+                    b.Navigation("Reviews");
+
                     b.Navigation("SentContactMessages");
 
                     b.Navigation("SentSystemMessages");
+                });
+
+            modelBuilder.Entity("GruersShop.Data.Models.Catalog.Catalog", b =>
+                {
+                    b.Navigation("Categories");
+                });
+
+            modelBuilder.Entity("GruersShop.Data.Models.Catalog.Category", b =>
+                {
+                    b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("GruersShop.Data.Models.Interactions.Order", b =>
+                {
+                    b.Navigation("OrderItems");
+                });
+
+            modelBuilder.Entity("GruersShop.Data.Models.Products.Ingredient", b =>
+                {
+                    b.Navigation("ProductIngredients");
+                });
+
+            modelBuilder.Entity("GruersShop.Data.Models.Products.Product", b =>
+                {
+                    b.Navigation("FavoritedBy");
+
+                    b.Navigation("OrderItems");
+
+                    b.Navigation("ProductIngredients");
+
+                    b.Navigation("Reviews");
                 });
 #pragma warning restore 612, 618
         }

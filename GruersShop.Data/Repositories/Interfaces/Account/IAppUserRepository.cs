@@ -1,4 +1,4 @@
-﻿using GruersShop.Data.Models;
+﻿using GruersShop.Data.Models.Base;
 using GruersShop.Data.Repositories.Interfaces.CRUD;
 using System;
 using System.Collections.Generic;

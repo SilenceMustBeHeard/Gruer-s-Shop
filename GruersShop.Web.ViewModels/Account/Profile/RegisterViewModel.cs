@@ -20,7 +20,7 @@ public class RegisterViewModel
     public string? Address { get; set; }     // by choice
 
     [EmailAddress(ErrorMessage = "Invalid email address.")]
-    public string AlternateEmail { get; set; } = null!;    
+    public string? AlternateEmail { get; set; }  
 
     [Required]
     [DataType(DataType.Password)]

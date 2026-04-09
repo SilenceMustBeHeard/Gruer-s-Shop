@@ -1,6 +1,6 @@
 
 using GruersShop.Data;
-using GruersShop.Data.Models;
+using GruersShop.Data.Models.Base;
 using GruersShop.Data.Repositories.Interfaces.Account;
 using GruersShop.Data.Repositories.Interfaces.CRUD;
 using GruersShop.Data.Seeding;

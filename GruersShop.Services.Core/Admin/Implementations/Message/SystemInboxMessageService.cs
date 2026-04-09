@@ -1,4 +1,4 @@
-﻿using GruersShop.Data.Models;
+﻿using GruersShop.Data.Models.Base;
 using GruersShop.Data.Models.Messages;
 using GruersShop.Data.Repositories.Implementations.Account;
 using GruersShop.Data.Repositories.Interfaces.Account;

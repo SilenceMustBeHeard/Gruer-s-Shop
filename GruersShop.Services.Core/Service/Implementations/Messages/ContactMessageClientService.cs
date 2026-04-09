@@ -1,5 +1,5 @@
 ﻿using GruersShop.Data.Common.Enums;
-using GruersShop.Data.Models;
+using GruersShop.Data.Models.Base;
 using GruersShop.Data.Models.Messages;
 using GruersShop.Data.Repositories.Interfaces.Messages;
 using GruersShop.Services.Core.Service.Interfaces.Messages;

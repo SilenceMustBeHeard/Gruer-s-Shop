@@ -1,5 +1,4 @@
-﻿
-using GruersShop.Data.Models;
+﻿using GruersShop.Data.Models.Base;
 using GruersShop.Services.Core.Service.Interfaces.Account;
 using GruersShop.Web.ViewModels.Account;
 using GruersShop.Web.ViewModels.Account.Profile;

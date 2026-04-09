@@ -1,4 +1,4 @@
-﻿using GruersShop.Data.Models;
+﻿using GruersShop.Data.Models.Base;
 using GruersShop.Data.Repositories.Implementations.Base;
 using GruersShop.Data.Repositories.Interfaces.Account;
 using Microsoft.EntityFrameworkCore;

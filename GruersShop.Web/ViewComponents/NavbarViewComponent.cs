@@ -1,4 +1,4 @@
-﻿using GruersShop.Data.Models;
+﻿using GruersShop.Data.Models.Base;
 using GruersShop.Services.Common;
 using GruersShop.Services.Core.Service.Interfaces.Account;
 using GruersShop.Services.Core.Service.Interfaces.Messages;

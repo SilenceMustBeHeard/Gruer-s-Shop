@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace GruersShop.Data.Configuration;
+namespace GruersShop.Data.Configuration.Message;
 
 public class SystemInboxMessageConfig : BaseMessageConfig<SystemInboxMessage>
 {
