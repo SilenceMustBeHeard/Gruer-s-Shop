@@ -11,6 +11,10 @@ public class SystemInboxMessageViewModel
     public Guid Id { get; set; }
     public string? SenderId { get; set; }
     public string? ReceiverId { get; set; }
+
+    [Required]
+    [StringLength(30, MinimumLength = 5, ErrorMessage = "Title must be between 5 and 30 characters long.")]
+    public string Title { get; set; } = null!;
     [Required]
     [MinLength(20, ErrorMessage = "Description must be at least 20 characters long.")]
     public string Description { get; set; } = null!;

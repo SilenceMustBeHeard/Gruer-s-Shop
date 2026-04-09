@@ -1,117 +1,88 @@
-﻿@using GruersShop.Web.ViewModels.Account.Messages;
+﻿@using GruersShop.Web.ViewModels.Account.Messages
 @model ContactMessageDetailsViewModel
 
 @{
-    ViewData["Title"] = "Contact Message Details";
+    ViewData["Title"] = "Your Letter to Gruer's";
 }
 
 <div class="container py-5">
-    <div class="card glass-card p-5 text-light shadow-lg border-0 rounded-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <a asp-controller="Profile" asp-action="Index" class="btn-warm-sm mb-4">
+                <i class="bi bi-arrow-left me-1"></i> Back to my corner
+            </a>
 
-        <a asp-controller="Profile"
-           asp-action="Index"
-           class="btn btn-outline-glass mb-4">
-            ← Back to Profile
-        </a>
-
-        @if (TempData["Success"] != null)
-        {
-            <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
-                @TempData["Success"]
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        }
-
-        <div class="row">
-            <div class="col-12">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <div>
-                        <h2 class="fw-bold mb-1">Contact Message</h2>
-                        <div class="d-flex align-items-center gap-2 mt-2">
-                            <span class="badge bg-info">Sent by you</span>
-                            @if (!string.IsNullOrEmpty(Model.Response))
-                            {
-                                if (!Model.IsRead)
-                                {
-                                    <span class="badge bg-warning text-dark pulse-badge">New Response!</span>
-                                }
-                                else
-                                {
-                                    <span class="badge bg-success">Response Read</span>
-                                }
-                            }
-                            else
-                            {
-                                <span class="badge bg-secondary">Awaiting Response</span>
-                            }
-                        </div>
-                    </div>
-                    <small class="text-muted">
-                        @Model.CreatedOn.ToLocalTime().ToString("dd MMM yyyy HH:mm")
-                    </small>
-                </div>
-
-                <hr class="border-light opacity-25" />
-
+            <div class="warm-card">
+                <!-- Your Letter -->
                 <div class="mb-4">
-                    <h6 class="text-warning mb-3">Subject</h6>
-                    <div class="glass-card p-3">
-                        <p class="text-light mb-0">@Model.Subject</p>
+                    <div class="text-center mb-3">
+                        <i class="bi bi-pencil display-3 text-warm"></i>
+                        <h5 class="mt-2">Your Letter</h5>
+                        <div class="honey-accent mx-auto" style="width: 40px;"></div>
+                    </div>
+                    <div class="story-text" style="background: var(--stone-light); padding: 1.5rem; border-radius: 16px;">
+                        <h3 class="fw-bold mb-3">@Model.Subject</h3>
+                        <p class="mb-0" style="white-space: pre-wrap;">@Model.Message</p>
+                        <p class="text-muted small mt-3">
+                            <i class="bi bi-clock me-1"></i> Sent on @Model.CreatedOn.ToLocalTime().ToString("dd MMM yyyy · hh:mm tt")
+                        </p>
                     </div>
                 </div>
 
-                <div class="mb-4">
-                    <h6 class="text-warning mb-3">Your Message</h6>
-                    <div class="glass-card p-3">
-                        <p class="text-light mb-0" style="white-space: pre-wrap;">@Model.Message</p>
-                    </div>
-                </div>
-
+                <!-- Reply from Bakery -->
                 @if (!string.IsNullOrEmpty(Model.Response))
                 {
-                    <div class="mb-4">
-                        <h6 class="text-success mb-3">Admin Response</h6>
-                        <div class="glass-card p-3" style="border-left: 3px solid #28a745;">
-                            <p class="text-light mb-2" style="white-space: pre-wrap;">@Model.Response</p>
-                            <div class="d-flex justify-content-between align-items-center mt-2">
+                    <div class="mb-3">
+                        <div class="text-center mb-3">
+                            <i class="bi bi-reply-all-fill display-3" style="color: var(--leaf-green);"></i>
+                            <h5 class="mt-2">Gruer's Reply</h5>
+                            <div class="honey-accent mx-auto" style="width: 40px;"></div>
+                        </div>
+                        <div class="response-card p-4 rounded-3" style="background: rgba(107, 140, 66, 0.1); border-left: 4px solid var(--leaf-green);">
+                            <p style="white-space: pre-wrap;">@Model.Response</p>
+                            <div class="d-flex justify-content-between align-items-center mt-3 pt-2">
                                 <small class="text-muted">
-                                    <i class="bi bi-reply-all me-1"></i>Responded on @Model.RespondedOnFormatted
+                                    <i class="bi bi-reply me-1"></i> Replied on @Model.RespondedOnFormatted
                                 </small>
                                 @if (!string.IsNullOrEmpty(Model.RespondedByName))
                                 {
                                     <small class="text-muted">
-                                        <i class="bi bi-person me-1"></i>By: @Model.RespondedByName
+                                        <i class="bi bi-person me-1"></i> — @Model.RespondedByName, from Gruer's team
                                     </small>
                                 }
                             </div>
                         </div>
                     </div>
-
-                    @if (!Model.IsRead)
-                    {
-                        <div class="alert alert-info">
-                            <i class="bi bi-info-circle me-2"></i>
-                            This response is marked as read automatically when you view it.
-                        </div>
-                    }
                 }
                 else
                 {
-                    <div class="alert alert-info">
-                        <i class="bi bi-info-circle me-2"></i>
-                        Your message has been sent. An admin will respond shortly.
+                    <div class="text-center py-4">
+                        <i class="bi bi-hourglass-split display-4 text-muted"></i>
+                        <p class="mt-3">Your letter is waiting to be read</p>
+                        <p class="small text-muted">Gruer and the team will reply soon with warmth</p>
                     </div>
                 }
 
-                <div class="d-flex justify-content-end mt-4">
-                    <a asp-controller="Profile"
-                       asp-action="Index"
-                       class="btn btn-primary-glass">
-                        <i class="bi bi-check2-circle me-2"></i>Done
+                <hr class="stone-divider my-4">
+
+                <div class="d-flex justify-content-center gap-2">
+                    <a asp-controller="Profile" asp-action="Index" class="btn-glow">
+                        <i class="bi bi-house-heart me-1"></i> Return to my corner
                     </a>
+                    @if (string.IsNullOrEmpty(Model.Response))
+                    {
+                        <a asp-controller="ContactMessage" asp-action="Index" class="btn-warm">
+                            <i class="bi bi-pencil me-1"></i> Write another letter
+                        </a>
+                    }
                 </div>
             </div>
         </div>
     </div>
 </div>
 
+<style>
+    .response-card {
+        border-radius: 16px;
+    }
+</style>

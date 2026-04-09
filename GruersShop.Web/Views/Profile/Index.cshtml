@@ -1,173 +1,201 @@
-﻿@using GruersShop.Web.ViewModels.User
+﻿@using GruersShop.Web.ViewModels.Account.Profile;
 @model ProfileViewModel
 
 @{
-    ViewData["Title"] = "My Profile";
+    ViewData["Title"] = "My Corner - Gruer's Bakery";
 }
 
 <div class="container py-5">
-    @*Header*@
-    <div class="mb-4 text-light">
-        <h2 class="fw-bold mb-1">My Profile</h2>
-        <p class="opacity-75 mb-0">
-            Manage your personal information and messages
-        </p>
+    <!-- Welcome Banner - Like a warm greeting at the counter -->
+    <div class="hero-oven text-center mb-5">
+        <div class="d-flex align-items-center justify-content-center gap-3 mb-3">
+            <i class="bi bi-cup-hot display-4"></i>
+            <i class="bi bi-heart-fill text-warm"></i>
+            <i class="bi bi-egg-fried display-4"></i>
+        </div>
+        <h1 class="display-4">Welcome back, @Model.FirstName! 🥐</h1>
+        <div class="honey-accent mx-auto"></div>
+        <p class="mt-3">Your corner of warmth and stories</p>
     </div>
 
-    @*Main card*@
-    <div class="card glass-card shadow-lg p-4 p-md-5">
-        <div class="row g-4">
-
-            @* User Info *@
-            <div class="col-xl-4 col-lg-5">
-                <div class="h-100 text-light">
-                    <div class="d-flex align-items-center mb-3">
-                        <i class="bi bi-person-circle fs-2 me-2"></i>
-                        <h5 class="fw-bold mb-0">Profile Info</h5>
+    <div class="row g-4">
+        <!-- Recipe Card - User Info (Like a handwritten recipe card) -->
+        <div class="col-lg-4">
+            <div class="warm-card text-center">
+                <div class="mb-3">
+                    <div style="width: 100px; height: 100px; background: linear-gradient(135deg, var(--wood-light), var(--wood-medium)); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center;">
+                        <i class="bi bi-person display-1 text-white"></i>
                     </div>
-
-                    <hr />
-
-                    <p class="mb-3">
-                        <strong>Full Name:</strong><br />
-                        <span class="opacity-75">
-                            @Model.FirstName @Model.LastName
-                        </span>
-                    </p>
-
-                    <p class="mb-3">
-                        <strong>Email:</strong><br />
-                        <span class="opacity-75">
-                            @Model.Email
-                        </span>
-                    </p>
-
-                    <p class="mb-0">
-                        <strong>Address:</strong><br />
-                        <span class="opacity-75">
-                            @Model.Address
-                        </span>
-                    </p>
                 </div>
+                <h3 class="fw-bold">@Model.FirstName @Model.LastName</h3>
+                <div class="honey-accent mx-auto" style="width: 40px;"></div>
+                
+                <div class="mt-4 text-start">
+                    <div class="mb-2">
+                        <small class="text-muted">Email</small>
+                        <p class="mb-0"><i class="bi bi-envelope me-2 text-warm"></i> @Model.Email</p>
+                    </div>
+                    <div class="mb-2">
+                        <small class="text-muted">Location</small>
+                        <p class="mb-0"><i class="bi bi-geo-alt me-2 text-warm"></i> @(string.IsNullOrEmpty(Model.Address) ? "Not shared yet" : Model.Address)</p>
+                    </div>
+                    <div>
+                        <small class="text-muted">Member since</small>
+                        <p class="mb-0"><i class="bi bi-calendar-heart me-2 text-warm"></i> A loyal member of our family</p>
+                    </div>
+                </div>
+
+                <hr class="stone-divider my-3">
+
+                <a asp-controller="Account" asp-action="Logout" class="btn-warm-sm w-100">
+                    <i class="bi bi-box-arrow-right me-1"></i> Sign out
+                </a>
             </div>
+        </div>
 
-            @* Divider *@
-            <div class="col-lg-1 d-none d-lg-flex justify-content-center">
-                <div class="vr text-light opacity-25"></div>
-            </div>
+        <!-- Letters Section - Like a tray of letters -->
+        <div class="col-lg-8">
+            <div class="warm-card">
+                <div class="d-flex gap-2 border-bottom pb-3 mb-3">
+                    <button class="btn-warm-sm active-tab" id="systemTabBtn">
+                        <i class="bi bi-megaphone me-1"></i> News & Updates
+                        @if (Model.SystemInbox?.Count(x => !x.IsRead) > 0)
+                        {
+                            <span class="honey-badge ms-1">@Model.SystemInbox.Count(x => !x.IsRead)</span>
+                        }
+                    </button>
+                    <button class="btn-stone-sm" id="contactTabBtn">
+                        <i class="bi bi-chat-heart me-1"></i> Your Letters
+                        @if (Model.ContactMessages?.Count(x => !x.IsRead) > 0)
+                        {
+                            <span class="honey-badge ms-1">@Model.ContactMessages.Count(x => !x.IsRead)</span>
+                        }
+                    </button>
+                </div>
 
-            @* Inbox with Tabs *@
-            <div class="col-xl-7 col-lg-6">
-                <div class="h-100 text-light">
-
-                    @* Tab navigation *@
-                    <ul class="nav nav-tabs mb-3 border-bottom-0" id="inboxTabs" role="tablist">
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link active bg-transparent text-light border-0 border-bottom border-2"
-                                    id="design-tab"
-                                    data-bs-toggle="tab"
-                                    data-bs-target="#design"
-                                    type="button"
-                                    role="tab"
-                                    style="border-bottom-color: #c09a6c !important;">
-                                <i class="bi bi-pencil-square me-2"></i>Design Messages
-                             
-                            </button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link bg-transparent text-light border-0 border-bottom border-2"
-                                    id="system-tab"
-                                    data-bs-toggle="tab"
-                                    data-bs-target="#system"
-                                    type="button"
-                                    role="tab">
-                                <i class="bi bi-megaphone me-2"></i>System Messages
-                                @{
-                                    var unreadSystemCount = Model.SystemInbox?.Count(x => !x.IsRead) ?? 0;
-                                }
-                                @if (unreadSystemCount > 0)
-                                {
-                                    <span class="badge bg-warning text-dark ms-2">@unreadSystemCount</span>
-                                }
-                            </button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link bg-transparent text-light border-0 border-bottom border-2"
-                                    id="contact-tab"
-                                    data-bs-toggle="tab"
-                                    data-bs-target="#contact"
-                                    type="button"
-                                    role="tab">
-                                <i class="bi bi-chat-dots me-2"></i>Contact Messages
-                                @{
-                                   
-                                    var unreadContactCount = Model.ContactMessages?.Count(x => !x.IsRead) ?? 0;
-                                }
-                                @if (unreadContactCount > 0)
-                                {
-                                    <span class="badge bg-warning text-dark ms-2">@unreadContactCount</span>
-                                }
-                            </button>
-                        </li>
-                    </ul>
-
-                    @* Tab content *@
-                    <div class="tab-content" id="inboxTabsContent">
-
-                 
-                  @* System MEssage *@
-                        <div class="tab-pane fade" id="system" role="tabpanel">
-                            @if (Model.SystemInbox == null || !Model.SystemInbox.Any())
-                            {
-                                <div class="text-center py-5">
-                                    <i class="bi bi-megaphone opacity-50 fs-1"></i>
-                                    <p class="mt-3 mb-0 opacity-75">
-                                        No system messages
-                                    </p>
-                                </div>
-                            }
-                            else
-                            {
-                                <div class="d-flex flex-column gap-3" style="max-height: 500px; overflow-y: auto; padding-right: 10px;">
-                                    @foreach (var message in Model.SystemInbox)
-                                    {
-                                        @await Html.PartialAsync("_SystemInboxItem", message)
-                                    }
-                                </div>
-                            }
+                <!-- System Messages - Like community announcements -->
+                <div id="systemMessagesPanel">
+                    @if (Model.SystemInbox == null || !Model.SystemInbox.Any())
+                    {
+                        <div class="text-center py-5">
+                            <i class="bi bi-envelope-open display-4 text-muted"></i>
+                            <p class="mt-3">No announcements yet</p>
+                            <p class="small text-muted">When Gruer shares news, you'll find them here</p>
                         </div>
-
-                      @* Contact Message *@
-                        <div class="tab-pane fade" id="contact" role="tabpanel">
-                            @if (Model.ContactMessages == null || !Model.ContactMessages.Any())
+                    }
+                    else
+                    {
+                        <div class="letters-stack">
+                            @foreach (var message in Model.SystemInbox.OrderByDescending(x => x.CreatedOn))
                             {
-                                <div class="text-center py-5">
-                                    <i class="bi bi-chat-dots opacity-50 fs-1"></i>
-                                    <p class="mt-3 mb-0 opacity-75">
-                                        No responded messages yet.
-                                    </p>
-                                    <p class="small text-muted mt-2">
-                                        When an admin responds to your inquiry, it will appear here.
-                                    </p>
-                                    <a asp-controller="ContactMessage" asp-action="Index" class="btn btn-outline-glass mt-3">
-                                        <i class="bi bi-envelope me-2"></i>Send a Message
+                                <div class="letter-item mb-3">
+                                    <a asp-controller="Profile" asp-action="SystemMessageDetails" asp-route-id="@message.Id" class="letter-link">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div class="d-flex gap-2 align-items-center">
+                                                <i class="bi bi-megaphone text-warm"></i>
+                                                <div>
+                                                    <h6 class="fw-bold mb-0">@message.Title</h6>
+                                                    <small class="text-muted">@message.CreatedOn.ToLocalTime().ToString("dd MMM yyyy")</small>
+                                                </div>
+                                            </div>
+                                            @if (!message.IsRead)
+                                            {
+                                                <span class="honey-badge">Fresh</span>
+                                            }
+                                        </div>
+                                        <p class="mt-2 mb-0 small text-muted">@(message.Description.Length > 100 ? message.Description.Substring(0, 100) + "..." : message.Description)</p>
+                                        <div class="mt-2">
+                                            <span class="read-more-link">Read letter <i class="bi bi-arrow-right"></i></span>
+                                        </div>
                                     </a>
                                 </div>
                             }
-                            else
+                        </div>
+                    }
+                </div>
+
+                <!-- Contact Messages - Like letters from customers -->
+                <div id="contactMessagesPanel" style="display: none;">
+                    @if (Model.ContactMessages == null || !Model.ContactMessages.Any())
+                    {
+                        <div class="text-center py-5">
+                            <i class="bi bi-envelope-paper display-4 text-muted"></i>
+                            <p class="mt-3">No letters yet</p>
+                            <p class="small text-muted">Write to Gruer and his team</p>
+                            <a asp-controller="ContactMessage" asp-action="Index" class="btn-glow-sm mt-2">
+                                <i class="bi bi-pencil me-1"></i> Write a letter
+                            </a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="letters-stack">
+                            @foreach (var message in Model.ContactMessages.OrderByDescending(x => x.CreatedOn))
                             {
-                                <div class="d-flex flex-column gap-3" style="max-height: 500px; overflow-y: auto; padding-right: 10px;">
-                                    @foreach (var message in Model.ContactMessages)
-                                    {
-                                        @await Html.PartialAsync("_ContactSentItem", message)
-                                    }
+                                <div class="letter-item mb-3">
+                                    <a asp-controller="Profile" asp-action="ContactMessageDetails" asp-route-id="@message.Id" class="letter-link">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div class="d-flex gap-2 align-items-center">
+                                                <i class="bi bi-chat-heart text-warm"></i>
+                                                <div>
+                                                    <h6 class="fw-bold mb-0">@message.Subject</h6>
+                                                    <small class="text-muted">@message.CreatedOn.ToLocalTime().ToString("dd MMM yyyy")</small>
+                                                </div>
+                                            </div>
+                                            @if (!string.IsNullOrEmpty(message.Response))
+                                            {
+                                                <span class="stone-badge">Replied</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="honey-badge">Waiting</span>
+                                            }
+                                        </div>
+                                        <p class="mt-2 mb-0 small text-muted">@(message.Message.Length > 100 ? message.Message.Substring(0, 100) + "..." : message.Message)</p>
+                                        <div class="mt-2">
+                                            <span class="read-more-link">Read letter <i class="bi bi-arrow-right"></i></span>
+                                        </div>
+                                    </a>
                                 </div>
                             }
                         </div>
-                    </div>
+                    }
                 </div>
             </div>
         </div>
     </div>
 </div>
 
+
+
+<script>
+    // Wait for page to load
+    document.addEventListener('DOMContentLoaded', function() {
+        const systemTab = document.getElementById('systemTabBtn');
+        const contactTab = document.getElementById('contactTabBtn');
+        const systemPanel = document.getElementById('systemMessagesPanel');
+        const contactPanel = document.getElementById('contactMessagesPanel');
+        
+        // System tab click handler
+        systemTab.onclick = function() {
+            systemTab.className = 'btn-warm-sm active-tab';
+            contactTab.className = 'btn-stone-sm';
+            systemPanel.style.display = 'block';
+            contactPanel.style.display = 'none';
+        };
+        
+        // Contact tab click handler
+        contactTab.onclick = function() {
+            contactTab.className = 'btn-warm-sm active-tab';
+            systemTab.className = 'btn-stone-sm';
+            systemPanel.style.display = 'none';
+            contactPanel.style.display = 'block';
+        };
+        
+        // Set initial state
+        systemTab.className = 'btn-warm-sm active-tab';
+        contactTab.className = 'btn-stone-sm';
+        systemPanel.style.display = 'block';
+        contactPanel.style.display = 'none';
+    });
+</script>

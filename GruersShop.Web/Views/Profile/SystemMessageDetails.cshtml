@@ -1,128 +1,59 @@
 ﻿@using GruersShop.Data.Common.Enums
+@using GruersShop.Web.ViewModels.Account.Messages
+@model SystemInboxMessageViewModel
 
-    ViewData["Title"] = "System Message";
+@{
+    ViewData["Title"] = "A Letter from Gruer's";
 }
 
 <div class="container py-5">
-    <div class="card glass-card p-5 text-light shadow-lg border-0 rounded-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <a asp-controller="Profile" asp-action="Index" class="btn-warm-sm mb-4">
+                <i class="bi bi-arrow-left me-1"></i> Back to my corner
+            </a>
 
-        <a asp-controller="Profile"
-           asp-action="Index"
-           class="btn btn-outline-glass mb-4">
-            ← Back to Profile
-        </a>
-
-        @* Success Message *@
-        @if (TempData["Success"] != null)
-        {
-            <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
-                @TempData["Success"]
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        }
-
-        <div class="row">
-            @* Main content - full width since system messages don't have images *@
-            <div class="col-12">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <div>
-                        <h2 class="fw-bold mb-1 display-6">System Message</h2>
-                        <div class="d-flex align-items-center gap-2 mt-2">
-                            @if (!Model.IsRead)
-                            {
-                                <span class="badge bg-warning text-dark">New</span>
-                            }
-                            
-                            @* Message Type Badge - Using your actual enum values *@
-                            @if (Model.Type == InboxMessageType.AdminToUser)
-                            {
-                                <span class="badge bg-info">System Message</span>
-                            }
-                            else if (Model.Type == InboxMessageType.AdminToUser)
-                            {
-                                <span class="badge bg-primary">Admin to User</span>
-                            }
-                            else if (Model.Type == InboxMessageType.Notification)
-                            {
-                                <span class="badge bg-success">Notification</span>
-                            }
-                            else if (Model.Type == InboxMessageType.System)
-                            {
-                                <span class="badge bg-danger">System</span>
-                            }
-                            else if (Model.Type == InboxMessageType.UserToAdmin)
-                            {
-                                <span class="badge bg-warning text-dark">Changes Requested</span>
-                            }
-                            else
-                            {
-                                <span class="badge bg-secondary">@Model.TypeDisplayName</span>
-                            }
-                        </div>
-                    </div>
-                    
-                    <small class="text-muted">
-                        <i class="bi bi-clock me-1"></i>
-                        @Model.CreatedOn.ToLocalTime().ToString("dd MMM yyyy HH:mm")
-                    </small>
-                </div>
-
-                <hr class="border-light opacity-25" />
-
-                @* Message Content *@
-                <div class="mt-4 system-message-content">
-                    @if (!string.IsNullOrEmpty(Model.SenderName))
-                    {
-                        <div class="mb-3">
-                            <small class="text-secondary">From</small><br />
-                            <span class="fw-semibold">
-                                <i class="bi bi-person-circle me-1"></i>
-                                @Model.SenderName
-                            </span>
-                        </div>
-                    }
-
-                    <div class="mb-4">
-                        <small class="text-secondary">Message</small><br />
-                        <div class="glass-text-muted p-4 rounded-3" style="background: rgba(255,255,255,0.05); white-space: pre-wrap; word-break: break-word;">
-                            @Model.Description
-                        </div>
+            <div class="warm-card" style="background: url('data:image/svg+xml;utf8,<svg xmlns=\" http: //www.w3.org/2000/svg\" viewBox=\"0 0 24 24\" fill=\"%23c4b6a510\">
+                <path d=\"M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z\" /></svg>') repeat;">
+                <div class="text-center mb-4">
+                    <i class="bi bi-megaphone display-3 text-warm"></i>
+                    <div class="honey-accent mx-auto"></div>
+                    <div class="mt-2">
+                        @if (!Model.IsRead)
+                        {
+                            <span class="honey-badge">Fresh from the oven</span>
+                        }
                     </div>
                 </div>
 
-                <hr class="border-light opacity-25" />
+                <div class="letter-header text-center mb-4">
+                    <h1 class="display-5 fw-bold">@Model.Title</h1>
+                    <p class="text-muted">
+                        <i class="bi bi-calendar-heart me-1"></i>
+                        @Model.CreatedOn.ToLocalTime().ToString("dddd, dd MMMM yyyy")
+                    </p>
+                </div>
 
-                @* Action buttons *@
-                <div class="d-flex gap-2 justify-content-end mt-4">
+                <div class="story-text" style="font-size: 1.05rem; line-height: 1.8;">
+                    <p>@Model.Description</p>
+                </div>
 
-                @*     <button type="button" 
-                            class="btn btn-outline-glass" 
-                            onclick="window.print()">
-                        <i class="bi bi-printer me-2"></i>Print
-                    </button> *@
-                    
-                    <a asp-controller="Profile" 
-                       asp-action="Index" 
-                       class="btn btn-primary-glass">
-                        <i class="bi bi-check2-circle me-2"></i>Done
+                <div class="letter-footer text-center mt-5 pt-3">
+                    <div class="honey-accent mx-auto"></div>
+                    <p class="small text-muted mt-3">
+                        <i class="bi bi-suit-heart-fill text-warm"></i>
+                        With warmth from Gruer's Bakery
+                    </p>
+                </div>
+
+                <hr class="stone-divider my-4">
+
+                <div class="d-flex justify-content-center">
+                    <a asp-controller="Profile" asp-action="Index" class="btn-glow">
+                        <i class="bi bi-envelope-open me-1"></i> Keep reading
                     </a>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-
-@section Scripts {
-    <script>
-        // Auto-hide temp data messages
-        setTimeout(() => {
-            const alerts = document.querySelectorAll('.alert:not(.alert-permanent)');
-            alerts.forEach(alert => {
-                alert.style.transition = 'opacity 0.5s';
-                alert.style.opacity = '0';
-                setTimeout(() => alert.remove(), 500);
-            });
-        }, 3500);
-    </script>
-}

@@ -1,0 +1,118 @@
+/* Profile Page - Family Bakery Styles */
+
+/* Tab Styles */
+.active-tab {
+    background: var(--wood-medium) !important;
+    color: white !important;
+}
+
+.btn-stone-sm {
+    background: var(--stone-light);
+    border: 1px solid var(--stone-medium);
+    color: var(--wood-dark);
+    padding: 0.4rem 1rem;
+    border-radius: 40px;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.btn-stone-sm:hover {
+    background: var(--stone-medium);
+}
+
+/* Letters Stack Container */
+.letters-stack {
+    max-height: 500px;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+}
+
+.letters-stack::-webkit-scrollbar {
+    width: 6px;
+}
+
+.letters-stack::-webkit-scrollbar-track {
+    background: var(--stone-light);
+    border-radius: 10px;
+}
+
+.letters-stack::-webkit-scrollbar-thumb {
+    background: var(--wood-medium);
+    border-radius: 10px;
+}
+
+/* Individual Letter Items */
+.letter-item {
+    background: var(--warm-light);
+    border-radius: 16px;
+    padding: 1rem;
+    transition: all 0.3s ease;
+    border: 1px solid var(--stone-light);
+}
+
+[data-bs-theme="dark"] .letter-item {
+    background: #4a3020;
+    border-color: #6b4a30;
+}
+
+.letter-item:hover {
+    transform: translateX(4px);
+    border-color: var(--glow-amber);
+}
+
+.letter-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+/* Read More Link */
+.read-more-link {
+    font-size: 0.75rem;
+    color: var(--wood-medium);
+    transition: all 0.3s ease;
+}
+
+.read-more-link:hover {
+    color: var(--glow-amber);
+}
+
+/* Stone Badge */
+.stone-badge {
+    background: var(--stone-medium);
+    color: var(--wood-very-dark);
+    font-size: 0.65rem;
+    padding: 0.15rem 0.6rem;
+    border-radius: 20px;
+    display: inline-block;
+}
+
+/* Response Card for Contact Messages */
+.response-card {
+    border-radius: 16px;
+    background: var(--warm-light);
+    border: 1px solid var(--stone-light);
+    padding: 1rem;
+    transition: all 0.3s ease;
+}
+
+[data-bs-theme="dark"] .response-card {
+    background: #4a3020;
+    border-color: #6b4a30;
+}
+
+/* Message Content Area */
+.message-content {
+    white-space: pre-wrap;
+    line-height: 1.8;
+}
+
+/* Letter Header & Footer */
+.letter-header h1 {
+    font-family: var(--font-serif);
+}
+
+.letter-footer {
+    font-family: var(--font-serif);
+}
