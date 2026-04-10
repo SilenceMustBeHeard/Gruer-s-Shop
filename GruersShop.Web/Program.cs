@@ -1,6 +1,7 @@
 
 using GruersShop.Data;
 using GruersShop.Data.Models.Base;
+using GruersShop.Data.Repositories.Implementations.UnitOfWork;
 using GruersShop.Data.Repositories.Interfaces.Account;
 using GruersShop.Data.Repositories.Interfaces.CRUD;
 using GruersShop.Data.Seeding;
@@ -53,6 +54,7 @@ builder.Services.AddAuthorization(options =>
 builder.Services.RegisterRepositories(typeof(IAppUserRepository).Assembly);
 builder.Services.RegisterServices(typeof(IAccountService).Assembly);
 builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 // Add MVC with custom error handling
 builder.Services.AddControllersWithViews();

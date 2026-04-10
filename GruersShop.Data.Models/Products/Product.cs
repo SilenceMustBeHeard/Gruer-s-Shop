@@ -24,6 +24,7 @@ public class Product : BaseDeletableEntity
 
     public bool IsAvailable { get; set; } = true;
     public int StockQuantity { get; set; } = 0;
+    public double AverageRating { get; set; } = 0;
 
     // Foreign keys
     public Guid CategoryId { get; set; }

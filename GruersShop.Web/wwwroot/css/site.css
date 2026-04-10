@@ -235,3 +235,17 @@ body {
     border-radius: 20px;
 }
 @import url('components/profile.css');
+
+
+.badge.bg-warm {
+    background: var(--wood-medium);
+    color: white;
+}
+
+.text-warm {
+    color: var(--wood-medium);
+}
+
+[data-bs-theme="dark"] .text-warm {
+    color: var(--glow-amber);
+}

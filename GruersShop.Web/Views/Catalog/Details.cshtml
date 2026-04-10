@@ -1,0 +1,341 @@
+﻿@using GruersShop.Web.ViewModels.Products
+@model ProductDetailsViewModel
+
+@{
+    ViewData["Title"] = Model.Product.Name;
+}
+
+<div class="container py-5">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-action="Index" class="text-warm">Bakery</a></li>
+            <li class="breadcrumb-item"><a asp-action="Index" asp-route-categoryId="@Model.Product.CategoryId" class="text-warm">@Model.Product.CategoryName</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@Model.Product.Name</li>
+        </ol>
+    </nav>
+
+    <div class="row g-5">
+        <!-- Product Image -->
+        <div class="col-lg-6">
+            <div class="product-detail-image">
+                <img src="@Model.Product.ImageUrl" alt="@Model.Product.Name" class="img-fluid rounded-3">
+            </div>
+        </div>
+
+        <!-- Product Info -->
+        <div class="col-lg-6">
+            <div class="product-detail-info">
+                <h1 class="display-5 fw-bold mb-2">@Model.Product.Name</h1>
+                
+                <!-- Rating -->
+                <div class="d-flex align-items-center gap-3 mb-3">
+                    <div class="rating-stars-large">
+                        @for (int i = 1; i <= 5; i++)
+                        {
+                            if (i <= Math.Floor(Model.Product.AverageRating))
+                            {
+                                <i class="bi bi-star-fill text-warm"></i>
+                            }
+                            else if (i <= Model.Product.AverageRating)
+                            {
+                                <i class="bi bi-star-half text-warm"></i>
+                            }
+                            else
+                            {
+                                <i class="bi bi-star text-muted"></i>
+                            }
+                        }
+                    </div>
+                    <span class="text-muted">@Model.Product.ReviewCount reviews</span>
+                </div>
+
+                <div class="honey-accent my-3"></div>
+
+                <!-- Price -->
+                <div class="mb-4">
+                    <span class="product-price-large">@Model.Product.FormattedPrice</span>
+                    @if (!Model.Product.IsInStock)
+                    {
+                        <span class="badge bg-danger ms-2">Out of Stock</span>
+                    }
+                </div>
+
+                <!-- Description -->
+                <div class="mb-4">
+                    <h5>Description</h5>
+                    <p class="story-text">@Model.Product.Description</p>
+                </div>
+
+                <!-- Stock Info -->
+                <div class="mb-4">
+                    @if (Model.Product.IsInStock)
+                    {
+                        <div class="stock-info">
+                            <i class="bi bi-check-circle-fill" style="color: var(--leaf-green);"></i>
+                            <span>In Stock - Ready for pickup</span>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="stock-info text-danger">
+                            <i class="bi bi-x-circle-fill"></i>
+                            <span>Out of Stock - Check back soon</span>
+                        </div>
+                    }
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="d-flex gap-3 mb-4">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <form asp-action="AddToFavorites" method="post" class="d-inline">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@Model.Product.Id" />
+                            <button type="submit" class="btn-warm">
+                                @if (Model.Product.IsFavorited)
+                                {
+                                    <i class="bi bi-heart-fill me-1"></i>
+                                    <span>Favorited</span>
+                                }
+                                else
+                                {
+                                    <i class="bi bi-heart me-1"></i>
+                                    <span>Add to Favorites</span>
+                                }
+                            </button>
+                        </form>
+                    }
+                    
+                    <button class="btn-glow" onclick="alert('Order functionality coming soon!')">
+                        <i class="bi bi-cart-plus me-1"></i> Order Now
+                    </button>
+                </div>
+
+                <!-- Category Info -->
+                <div class="category-tag">
+                    <i class="bi bi-tag me-1"></i>
+                    Category: <a asp-action="Index" asp-route-categoryId="@Model.Product.CategoryId" class="text-warm">@Model.Product.CategoryName</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reviews Section -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="warm-card">
+                <h3 class="mb-4">
+                    <i class="bi bi-chat-dots me-2"></i>
+                    Customer Reviews
+                    <span class="badge bg-warm ms-2">@Model.Product.ReviewCount</span>
+                </h3>
+
+                <!-- Add Review Form -->
+                @if (User.Identity.IsAuthenticated && !Model.UserHasReviewed)
+                {
+                    <div class="add-review-section mb-4 p-4" style="background: var(--stone-light); border-radius: 16px;">
+                        <h5>Write a Review</h5>
+                        <form asp-action="AddReview" method="post">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@Model.Product.Id" />
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Rating</label>
+                                <div class="rating-input">
+                                    @for (int i = 1; i <= 5; i++)
+                                    {
+                                        <i class="bi bi-star rating-star" data-rating="@i"></i>
+                                    }
+                                </div>
+                                <input type="hidden" name="rating" id="selectedRating" value="5" />
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label asp-for="NewComment" class="form-label">Your Review</label>
+                                <textarea name="comment" class="form-control warm-input" rows="3" placeholder="Share your experience..."></textarea>
+                            </div>
+                            
+                            <button type="submit" class="btn-glow-sm">Submit Review</button>
+                        </form>
+                    </div>
+                }
+                else if (User.Identity.IsAuthenticated && Model.UserHasReviewed)
+                {
+                    <div class="alert-oven alert-success mb-4">
+                        <i class="bi bi-check-circle-fill me-2"></i>
+                        Thank you for your review!
+                    </div>
+                }
+
+                <!-- Reviews List -->
+                @if (Model.Product.Reviews.Any())
+                {
+                    <div class="reviews-list">
+                        @foreach (var review in Model.Product.Reviews)
+                        {
+                            <div class="review-item mb-3">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <div class="rating-stars-small mb-1">
+                                            @for (int i = 1; i <= 5; i++)
+                                            {
+                                                if (i <= review.Rating)
+                                                {
+                                                    <i class="bi bi-star-fill text-warm"></i>
+                                                }
+                                                else
+                                                {
+                                                    <i class="bi bi-star text-muted"></i>
+                                                }
+                                            }
+                                        </div>
+                                        <strong>@review.UserName</strong>
+                                        <small class="text-muted ms-2">@review.FormattedDate</small>
+                                        @if (!string.IsNullOrEmpty(review.Comment))
+                                        {
+                                            <p class="mt-2 mb-0">@review.Comment</p>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center py-4">
+                        <i class="bi bi-chat display-4 text-muted"></i>
+                        <p class="mt-2">No reviews yet. Be the first to review!</p>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Related Products -->
+    @if (Model.RelatedProducts.Any())
+    {
+        <div class="row mt-5">
+            <div class="col-12">
+                <h3 class="mb-4 text-center">You May Also Like</h3>
+                <div class="row g-4">
+                    @foreach (var product in Model.RelatedProducts)
+                    {
+                        <div class="col-md-6 col-lg-3">
+                            @await Html.PartialAsync("_ProductCard", product)
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<style>
+    .breadcrumb {
+        background: transparent;
+        padding: 0;
+    }
+    
+    .breadcrumb-item a {
+        text-decoration: none;
+    }
+    
+    .product-detail-image {
+        background: var(--stone-light);
+        border-radius: 24px;
+        overflow: hidden;
+        padding: 1rem;
+    }
+    
+        .product-detail-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 16px;
+        }
+    
+    .product-price-large {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--wood-medium);
+    }
+    
+    .rating-stars-large {
+        font-size: 1.2rem;
+    }
+    
+    .rating-stars-small {
+        font-size: 0.8rem;
+    }
+    
+    .stock-info {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        background: rgba(107, 140, 66, 0.1);
+        border-radius: 40px;
+    }
+    
+    .category-tag {
+        padding-top: 1rem;
+        border-top: 1px solid var(--stone-medium);
+        color: var(--stone-dark);
+    }
+    
+    .review-item {
+        background: var(--warm-light);
+        border-radius: 12px;
+        padding: 1rem;
+        border: 1px solid var(--stone-light);
+    }
+    
+    [data-bs-theme="dark"] .review-item {
+        background: #4a3020;
+        border-color: #6b4a30;
+    }
+    
+    .rating-input {
+        display: flex;
+        gap: 0.5rem;
+        cursor: pointer;
+    }
+    
+    .rating-star {
+        font-size: 1.5rem;
+        color: var(--stone-medium);
+        transition: all 0.2s ease;
+    }
+    
+        .rating-star:hover,
+        .rating-star.active {
+            color: var(--glow-gold);
+        }
+    
+    .add-review-section {
+        background: var(--stone-light);
+    }
+    
+    [data-bs-theme="dark"] .add-review-section {
+        background: #3a2c24;
+    }
+</style>
+
+<script>
+    // Star rating functionality
+    document.querySelectorAll('.rating-star').forEach(star => {
+        star.addEventListener('click', function() {
+            const rating = this.dataset.rating;
+            document.getElementById('selectedRating').value = rating;
+            
+            document.querySelectorAll('.rating-star').forEach(s => {
+                if (s.dataset.rating <= rating) {
+                    s.classList.add('active');
+                } else {
+                    s.classList.remove('active');
+                }
+            });
+        });
+    });
+</script>
