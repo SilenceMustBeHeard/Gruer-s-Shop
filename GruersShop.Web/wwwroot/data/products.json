@@ -1,0 +1,110 @@
+[
+  {
+    "name": "Classic Sourdough Boule",
+    "description": "Crusted with golden perfection, soft and chewy inside. Made with our 10-year-old starter.",
+    "price": 8.50,
+    "imageUrl": "https://cdn.leonardo.ai/users/f7d0bb19-ebd1-4f0d-bc0f-558c40417912/generations/1f1349e0-43d9-6d60-8c92-ccc52d336cbf/lucid-origin_A_beautifully_crafted_round_sourdough_bread_boule_on_a_rustic_wooden_table_golde-0.jpg",
+    "categoryId": "11111111-1111-1111-1111-111111111111",
+    "isAvailable": true,
+    "stockQuantity": 20
+  },
+  {
+    "name": "Rustic Baguette",
+    "description": "Traditional French baguette with crispy crust and airy crumb. Perfect with butter or cheese.",
+    "price": 4.50,
+    "imageUrl": "https://cdn.leonardo.ai/users/f7d0bb19-ebd1-4f0d-bc0f-558c40417912/generations/1f1349e4-1155-6430-9c48-837aee42bebc/lucid-origin_Three_traditional_French_baguettes_arranged_diagonally_on_a_wooden_cutting_board-0.jpg",
+    "categoryId": "11111111-1111-1111-1111-111111111111",
+    "isAvailable": true,
+    "stockQuantity": 30
+  },
+  {
+    "name": "Rosemary & Sea Salt Focaccia",
+    "description": "Italian flatbread topped with fresh rosemary, sea salt, and extra virgin olive oil.",
+    "price": 6.75,
+    "imageUrl": "https://cdn.leonardo.ai/users/f7d0bb19-ebd1-4f0d-bc0f-558c40417912/generations/1f1349e6-fef3-61e0-8ed9-352194d0c64c/lucid-origin_A_rectangular_Italian_focaccia_bread_topped_with_fresh_rosemary_sprigs_coarse_se-0.jpg",
+    "categoryId": "11111111-1111-1111-1111-111111111111",
+    "isAvailable": true,
+    "stockQuantity": 15
+  },
+  {
+    "name": "Butter Croissant",
+    "description": "Layers of buttery, flaky perfection. Made with 100% European butter.",
+    "price": 3.75,
+    "imageUrl": "https://cdn.leonardo.ai/users/f7d0bb19-ebd1-4f0d-bc0f-558c40417912/generations/1f1349e9-694f-6e60-abb8-f45dcbf1ddcf/lucid-origin_A_perfectly_baked_butter_croissant_on_a_rustic_plate_golden-brown_flaky_layers_d-0.jpg",
+    "categoryId": "22222222-2222-2222-2222-222222222222",
+    "isAvailable": true,
+    "stockQuantity": 50
+  },
+  {
+    "name": "Pain au Chocolat",
+    "description": "Buttery pastry wrapped around two sticks of rich dark chocolate.",
+    "price": 4.25,
+    "imageUrl": "https://cdn.leonardo.ai/users/f7d0bb19-ebd1-4f0d-bc0f-558c40417912/generations/1f1349eb-15f0-6e70-95f5-b8eb487d511c/lucid-origin_Two_chocolate_croissants_pain_au_chocolat_on_a_wooden_board_dark_chocolate_sligh-0.jpg",
+    "categoryId": "22222222-2222-2222-2222-222222222222",
+    "isAvailable": true,
+    "stockQuantity": 40
+  },
+  {
+    "name": "Almond Croissant",
+    "description": "Butter croissant filled with almond cream, topped with sliced almonds and powdered sugar.",
+    "price": 4.95,
+    "imageUrl": "https://cdn.leonardo.ai/users/f7d0bb19-ebd1-4f0d-bc0f-558c40417912/generations/1f1349ed-161f-6110-9a64-681c16808a42/lucid-origin_A_generously_filled_almond_croissant_on_a_ceramic_plate_sliced_almonds_scattered-0.jpg",
+    "categoryId": "22222222-2222-2222-2222-222222222222",
+    "isAvailable": true,
+    "stockQuantity": 35
+  },
+  {
+    "name": "Fresh Fruit Tart",
+    "description": "Butter pastry shell filled with vanilla custard and topped with seasonal fresh fruits.",
+    "price": 24.99,
+    "imageUrl": "https://cdn.leonardo.ai/users/f7d0bb19-ebd1-4f0d-bc0f-558c40417912/generations/1f1349ee-b572-64f0-9fbc-caf725aa1df0/lucid-origin_A_stunning_fresh_fruit_tart_on_a_cake_stand_buttery_pastry_crust_glossy_vanilla_-0.jpg",
+    "categoryId": "33333333-3333-3333-3333-333333333333",
+    "isAvailable": true,
+    "stockQuantity": 10
+  },
+  {
+    "name": "Chocolate Ganache Cake",
+    "description": "Rich dark chocolate cake layered with silky chocolate ganache. Serves 8-10.",
+    "price": 32.50,
+    "imageUrl": "https://cdn.leonardo.ai/users/f7d0bb19-ebd1-4f0d-bc0f-558c40417912/generations/1f1349f0-9c6b-6d60-8f71-39c7fd105e9f/lucid-origin_A_rich_chocolate_ganache_cake_slice_on_a_white_plate_smooth_glossy_chocolate_gla-0.jpg",
+    "categoryId": "33333333-3333-3333-3333-333333333333",
+    "isAvailable": true,
+    "stockQuantity": 5
+  },
+  {
+    "name": "Lemon Blueberry Tart",
+    "description": "Tangy lemon curd in a buttery crust, topped with fresh blueberries.",
+    "price": 5.95,
+    "imageUrl": "https://cdn.leonardo.ai/users/f7d0bb19-ebd1-4f0d-bc0f-558c40417912/generations/1f1349f2-8568-6800-a7d5-3b2a1d44d89a/lucid-origin_A_beautiful_lemon_blueberry_tart_on_a_rustic_table_bright_yellow_lemon_curd_fill-0.jpg",
+    "categoryId": "33333333-3333-3333-3333-333333333333",
+    "isAvailable": true,
+    "stockQuantity": 12
+  },
+  {
+    "name": "Chocolate Chip Cookies",
+    "description": "Classic soft-baked cookies loaded with semi-sweet chocolate chunks. Pack of 6.",
+    "price": 7.50,
+    "imageUrl": "https://cdn.leonardo.ai/users/f7d0bb19-ebd1-4f0d-bc0f-558c40417912/generations/1f1349f4-4de2-6690-ad4c-b11f7db36311/lucid-origin_A_stack_of_three_soft-baked_chocolate_chip_cookies_on_a_cooling_rack_golden-brow-0.jpg",
+    "categoryId": "44444444-4444-4444-4444-444444444444",
+    "isAvailable": true,
+    "stockQuantity": 60
+  },
+  {
+    "name": "Almond Biscotti",
+    "description": "Twice-baked Italian cookies packed with toasted almonds. Perfect for dipping in coffee.",
+    "price": 6.95,
+    "imageUrl": "https://cdn.leonardo.ai/users/f7d0bb19-ebd1-4f0d-bc0f-558c40417912/generations/1f1349f5-e351-6ea0-9c94-75fc00cb20d4/lucid-origin_Five_twice-baked_almond_biscotti_cookies_arranged_in_a_fan_pattern_on_a_wooden_b-0.jpg",
+    "categoryId": "44444444-4444-4444-4444-444444444444",
+    "isAvailable": true,
+    "stockQuantity": 45
+  },
+  {
+    "name": "Double Chocolate Cookies",
+    "description": "Rich chocolate cookies with white and dark chocolate chunks. Pack of 6.",
+    "price": 8.50,
+    "imageUrl": "https://cdn.leonardo.ai/users/f7d0bb19-ebd1-4f0d-bc0f-558c40417912/generations/1f1349f7-b2dc-6e80-80db-1426afbcb9eb/lucid-origin_Two_double_chocolate_cookies_on_a_dark_slate_plate_rich_dark_chocolate_color_whi-0.jpg",
+    "categoryId": "44444444-4444-4444-4444-444444444444",
+    "isAvailable": true,
+    "stockQuantity": 40
+  }
+]
