@@ -3,6 +3,7 @@
     "id": "11111111-1111-1111-1111-111111111111",
     "name": "Artisan Breads",
     "description": "Handcrafted sourdoughs and rustic loaves baked fresh daily using traditional methods",
+    "catalogId": "11111111-1111-1111-1111-111111111111",
     "displayOrder": 1,
     "iconClass": "bi bi-bread",
     "isDeleted": false
@@ -11,6 +12,7 @@
     "id": "22222222-2222-2222-2222-222222222222",
     "name": "Butter Pastries",
     "description": "Flaky, buttery croissants and danishes made with European-style butter",
+    "catalogId": "11111111-1111-1111-1111-111111111111",
     "displayOrder": 2,
     "iconClass": "bi bi-cake2",
     "isDeleted": false
@@ -19,6 +21,7 @@
     "id": "33333333-3333-3333-3333-333333333333",
     "name": "Cakes & Tarts",
     "description": "Celebration cakes, fruit tarts, and decadent desserts for every occasion",
+    "catalogId": "11111111-1111-1111-1111-111111111111",
     "displayOrder": 3,
     "iconClass": "bi bi-gem",
     "isDeleted": false
@@ -27,6 +30,7 @@
     "id": "44444444-4444-4444-4444-444444444444",
     "name": "Cookies & Biscotti",
     "description": "Perfectly baked cookies and twice-baked biscotti, ideal with coffee or tea",
+    "catalogId": "11111111-1111-1111-1111-111111111111",
     "displayOrder": 4,
     "iconClass": "bi bi-cookie",
     "isDeleted": false

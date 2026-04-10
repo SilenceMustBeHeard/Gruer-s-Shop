@@ -84,28 +84,28 @@ using (var scope = app.Services.CreateScope())
     await IdentitySeeder.SeedManagerAsync(userManager);
 
     //    // Seed Catalog Data - ONLY if Categories table is empty
-    //    var anyCategories = await context.Categories.AnyAsync();
-    //    if (!anyCategories)
-    //    {
-    //        try
-    //        {
-    //            await DbSeeder.SeedCategoriesAsync(context);
-    //            await DbSeeder.SeedCatalogAsync(context);
-    //            Console.WriteLine("✅ Database seeding completed successfully!");
-    //        }
-    //        catch (Exception ex)
-    //        {
-    //            Console.WriteLine($"❌ Seeding failed: {ex.Message}");
-    //            throw;
-    //        }
-    //    }
-    //    else
-    //    {
-    //        Console.WriteLine("📦 Categories already exist. Skipping catalog data seeding.");
-    //    }
-    //}
-
+    var anyCategories = await context.Categories.AnyAsync();
+    if (!anyCategories)
+    {
+        try
+        {
+           
+            await DbSeeder.SeedAllAsync(context);
+            Console.WriteLine("✅ Database seeding completed successfully!");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"❌ Seeding failed: {ex.Message}");
+            throw;
+        }
+    }
+    else
+    {
+        Console.WriteLine("📦 Categories already exist. Skipping catalog data seeding.");
+    }
 }
+
+
 
 // Static files with .glb support for 3D models
 var provider = new FileExtensionContentTypeProvider();

@@ -9,7 +9,60 @@ public static class DbSeeder
 {
     private static readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
 
-    // Seed Categories from JSON file
+    public static async Task SeedCatalogsAsync(AppDbContext context)
+    {
+        await _semaphore.WaitAsync();
+        try
+        {
+            if (await context.Catalogs.AnyAsync())
+            {
+                Console.WriteLine("Catalogs already exist. Skipping.");
+                return;
+            }
+
+            var jsonPath = Path.Combine(
+                Directory.GetCurrentDirectory(),
+                "wwwroot",
+                "data",
+                "catalogs.json"
+            );
+
+            if (!File.Exists(jsonPath))
+            {
+                throw new FileNotFoundException($"catalogs.json NOT FOUND at: {jsonPath}");
+            }
+
+            var json = await File.ReadAllTextAsync(jsonPath);
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
+
+            var catalogs = JsonSerializer.Deserialize<List<Catalog>>(json, options)
+                ?? throw new Exception("catalogs.json is empty or invalid");
+
+            foreach (var catalog in catalogs)
+            {
+                if (string.IsNullOrWhiteSpace(catalog.Name))
+                    throw new Exception("Catalog Name is NULL or EMPTY");
+
+                if (catalog.Id == Guid.Empty)
+                    catalog.Id = Guid.NewGuid();
+
+                catalog.IsDeleted = false;
+                catalog.IsActive = true;
+            }
+
+            await context.Catalogs.AddRangeAsync(catalogs);
+            await context.SaveChangesAsync();
+            Console.WriteLine($"✅ Seeded {catalogs.Count} catalogs from file.");
+        }
+        finally
+        {
+            _semaphore.Release();
+        }
+    }
+
     public static async Task SeedCategoriesAsync(AppDbContext context)
     {
         await _semaphore.WaitAsync();
@@ -50,6 +103,12 @@ public static class DbSeeder
                 if (category.Id == Guid.Empty)
                     category.Id = Guid.NewGuid();
 
+                var catalogExists = await context.Catalogs.AnyAsync(c => c.Id == category.CatalogId);
+                if (!catalogExists)
+                {
+                    throw new Exception($"CatalogId {category.CatalogId} does not exist for category: {category.Name}");
+                }
+
                 category.IsDeleted = false;
             }
 
@@ -63,7 +122,6 @@ public static class DbSeeder
         }
     }
 
-    // Seed Products from JSON file
     public static async Task SeedProductsAsync(AppDbContext context)
     {
         await _semaphore.WaitAsync();
@@ -96,7 +154,6 @@ public static class DbSeeder
             var products = JsonSerializer.Deserialize<List<Product>>(json, options)
                 ?? throw new Exception("products.json is empty or invalid");
 
-            // Get categories for validation
             var categories = await context.Categories.ToDictionaryAsync(c => c.Id, c => c.Name);
 
             foreach (var product in products)
@@ -113,7 +170,6 @@ public static class DbSeeder
                 if (product.Price <= 0)
                     throw new Exception($"Product Price is INVALID for: {product.Name}");
 
-                // Validate category exists
                 if (!categories.ContainsKey(product.CategoryId))
                     throw new Exception($"CategoryId {product.CategoryId} does not exist for product: {product.Name}");
 
@@ -122,6 +178,7 @@ public static class DbSeeder
 
                 product.IsAvailable = true;
                 product.IsDeleted = false;
+                product.AverageRating = 0;
             }
 
             await context.Products.AddRangeAsync(products);
@@ -134,14 +191,11 @@ public static class DbSeeder
         }
     }
 
-    // Master seed method
     public static async Task SeedAllAsync(AppDbContext context)
     {
         Console.WriteLine("🌱 Starting database seeding from files...");
 
-        await SeedCategoriesAsync(context);
-        await SeedProductsAsync(context);
-
+        await SeedCatalogsAsync(context); await SeedCategoriesAsync(context); await SeedProductsAsync(context);
         Console.WriteLine("✅ Database seeding completed!");
     }
 }
