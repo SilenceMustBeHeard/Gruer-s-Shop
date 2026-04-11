@@ -20,7 +20,8 @@ public class OrderRepository
             .CountAsync(o => o.Status == OrderStatus.Pending);
     }
 
-    // gets an order with its design variants included
+    // retrieves an order along with its associated products
+
     public async Task<Order?> GetOrderWithProductsAsync(Guid orderId)
     {
         return await _dbSet

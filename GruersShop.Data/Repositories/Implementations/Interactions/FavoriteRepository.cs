@@ -17,6 +17,9 @@ public class FavoriteRepository :
     {
     }
 
+
+    // retrieves a favorite by its composite key (userId and productId)
+
     public async Task<Favorite?> GetByCompositeKeyAsync(string userId, Guid productId)
 
 
@@ -27,6 +30,9 @@ public class FavoriteRepository :
                f.ProductId == productId);
 
 
+
+    // checks if a favorite exists for a given user and product
+    // excluding deleted favorites
 
     public async Task<bool> ExistsAsync(string userId, Guid productId)
         => await _dbSet

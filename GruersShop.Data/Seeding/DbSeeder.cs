@@ -50,7 +50,7 @@ public static class DbSeeder
                     catalog.Id = Guid.NewGuid();
 
                 catalog.IsDeleted = false;
-                catalog.IsActive = true;
+              
             }
 
             await context.Catalogs.AddRangeAsync(catalogs);

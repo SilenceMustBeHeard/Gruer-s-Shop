@@ -18,7 +18,7 @@ public class CatalogRepository : RepositoryAsync<Catalog, Guid>, ICatalogReposit
     public async Task<IEnumerable<Catalog>> GetAllActiveAsync()
     {
         return await _dbSet
-            .Where(c => c.IsActive && !c.IsDeleted)
+            .Where(c => !c.IsDeleted)
             .OrderBy(c => c.DisplayOrder)
             .ToListAsync();
     }
@@ -47,7 +47,7 @@ public class CatalogRepository : RepositoryAsync<Catalog, Guid>, ICatalogReposit
 
     public async Task ToggleCatalogStatusAsync(Catalog catalog)
     {
-        catalog.IsActive = !catalog.IsActive;
+        catalog.IsDeleted = !catalog.IsDeleted;
         catalog.UpdatedAt = DateTime.UtcNow;
         _dbSet.Update(catalog);
         await _context.SaveChangesAsync();

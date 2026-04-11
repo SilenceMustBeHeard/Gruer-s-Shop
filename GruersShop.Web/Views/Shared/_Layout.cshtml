@@ -18,13 +18,17 @@
 
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg navbar-dark py-3">
+        <!-- Reshaped Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-dark py-2">
             <div class="container">
-                <!-- Logo / Brand -->
+                <!-- Logo / Brand - Restyled -->
                 <a class="navbar-brand" asp-controller="Home" asp-action="Index">
-                    <div class="brand-logo">
-                        <span class="brand-name">Gruer's</span>
-                        <span class="brand-subtitle">Artisanal Bakery</span>
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="bi bi-egg-fried fs-2 text-warm"></i>
+                        <div>
+                            <span class="brand-name" style="font-family: var(--font-serif); font-size: 1.4rem; font-weight: 600; display: block; line-height: 1.2;">Gruer's</span>
+                            <span class="brand-subtitle" style="font-size: 0.65rem; opacity: 0.8; letter-spacing: 1px;">Artisanal Bakery</span>
+                        </div>
                     </div>
                 </a>
 
@@ -33,24 +37,20 @@
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarMain">
-                    <!-- Center Navigation -->
-                    <div class="mx-auto">
+                    <!-- Center Navigation - Centered properly -->
+                    <div class="mx-auto d-flex justify-content-center">
                         @await Component.InvokeAsync("Navbar")
                     </div>
 
-                    <!-- Right Side -->
-                    <div class="d-flex gap-3 align-items-center">
-                        <!-- Theme Toggle -->
-                        <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">
-                            <i class="bi bi-moon-stars"></i>
-                        </button>
-
+                    <!-- Right Side - Account area -->
+                    <div class="d-flex gap-2 align-items-center">
                         <!-- Account Dropdown -->
                         <div class="dropdown">
-                            <button class="btn-warm dropdown-toggle" data-bs-toggle="dropdown">
-                                <i class="bi bi-person-circle me-1"></i> Account
+                            <button class="btn-warm dropdown-toggle d-flex align-items-center gap-1" data-bs-toggle="dropdown" style="padding: 0.4rem 1rem;">
+                                <i class="bi bi-person-circle"></i>
+                                <span>Account</span>
                             </button>
-                            <ul class="dropdown-menu dropdown-menu-end">
+                            <ul class="dropdown-menu dropdown-menu-end" style="min-width: 220px;">
                                 @await Component.InvokeAsync("AccountMenu")
                             </ul>
                         </div>

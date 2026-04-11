@@ -70,8 +70,8 @@ namespace GruersShop.Data.Repositories.Implementations.Base
 
         public Task<bool> ToggleStatusAsync(TEntity entity)
         {
-            // Assuming entity has IsActive property via interface
-            var property = entity.GetType().GetProperty("IsActive");
+            // Assuming entity has IsDeleted property via interface
+            var property = entity.GetType().GetProperty("IsDeleted");
             if (property != null)
             {
                 property.SetValue(entity, !(bool)property.GetValue(entity));

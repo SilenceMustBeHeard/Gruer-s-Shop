@@ -18,7 +18,7 @@ public class Catalog : BaseDeletableEntity
 
     public string? ImageUrl { get; set; }
 
-    public bool IsActive { get; set; } = true;
+
 
     public int DisplayOrder { get; set; } = 0;
 

@@ -15,6 +15,8 @@ public class ReviewRepository :
         base(context)
     {
     }
+
+    // Check if a user has already reviewed a product
     public async Task<bool> HasUserReviewedAsync(string userId, Guid productId)
     {
         return await _dbSet
@@ -22,7 +24,7 @@ public class ReviewRepository :
     }
 
 
-
+    // Get all reviews for a specific product
     public async Task<IEnumerable<Review>> GetReviewsByProductIdAsync(Guid productId)
     {
 
