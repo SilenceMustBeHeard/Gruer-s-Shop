@@ -152,7 +152,96 @@ public class CatalogClientService : ICatalogClientService
             })
             .ToListAsync();
     }
+    // Get product details with related data for the details page
+    public async Task<ProductDetailsViewModel?> GetProductDetailsViewModelAsync(Guid id, string? userId)
+    {
+        var product = await _uow.Repository<Product, Guid>()
+            .Query()
+            .Where(p => p.Id == id && p.IsAvailable && !p.IsDeleted)
+            .Include(p => p.Category)
+            .Include(p => p.Reviews)
+                .ThenInclude(r => r.User)
+            .Include(p => p.FavoritedBy)
+            .FirstOrDefaultAsync();
 
-    
+        if (product == null)
+            return null;
+
+        // Get related products (same category, exclude current product)
+        var relatedProducts = await _uow.Repository<Product, Guid>()
+            .Query()
+            .Where(p => p.CategoryId == product.CategoryId && p.Id != id && p.IsAvailable && !p.IsDeleted)
+            .Include(p => p.Category)
+            .Include(p => p.Reviews)
+            .Include(p => p.FavoritedBy)
+            .Select(p => new ProductViewModel
+            {
+                Id = p.Id,
+                Name = p.Name,
+                Description = p.Description,
+                ImageUrl = p.ImageUrl,
+                Price = p.Price,
+                CategoryId = p.CategoryId,
+                CategoryName = p.Category.Name,
+                IsFavorited = userId != null && p.FavoritedBy.Any(f => f.UserId == userId && !f.IsDeleted),
+                AverageRating = p.AverageRating,
+                ReviewCount = p.Reviews.Count,
+                StockQuantity = p.StockQuantity
+            })
+            .Take(4)
+            .ToListAsync();
+
+        // Check if user has reviewed
+        bool userHasReviewed = false;
+        ReviewViewModel? userReview = null;
+
+        if (userId != null)
+        {
+            var review = product.Reviews.FirstOrDefault(r => r.UserId == userId);
+            if (review != null)
+            {
+                userHasReviewed = true;
+                userReview = new ReviewViewModel
+                {
+                    Id = review.Id,
+                    UserName = review.User?.FullName ?? "Anonymous",
+                    Rating = review.Rating,
+                    Comment = review.Comment,
+                    CreatedAt = review.CreatedAt
+                };
+            }
+        }
+
+        // Build the details view model
+        return new ProductDetailsViewModel
+        {
+            Product = new ProductViewModel
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Description = product.Description,
+                ImageUrl = product.ImageUrl,
+                Price = product.Price,
+                CategoryId = product.CategoryId,
+                CategoryName = product.Category.Name,
+                IsFavorited = userId != null && product.FavoritedBy.Any(f => f.UserId == userId && !f.IsDeleted),
+                AverageRating = product.Reviews.Any() ? product.Reviews.Average(r => r.Rating) : 0,
+                ReviewCount = product.Reviews.Count,
+                StockQuantity = product.StockQuantity,
+                Reviews = product.Reviews.Select(r => new ReviewViewModel
+                {
+                    Id = r.Id,
+                    UserName = r.User?.FullName ?? "Anonymous",
+                    Rating = r.Rating,
+                    Comment = r.Comment,
+                    CreatedAt = r.CreatedAt
+                }).ToList()
+            },
+            RelatedProducts = relatedProducts,
+            UserHasReviewed = userHasReviewed,
+            UserReview = userReview
+        };
+    }
+
 }
 

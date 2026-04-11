@@ -15,6 +15,7 @@ public interface ICatalogClientService
     Task<IEnumerable<ProductViewModel>> GetProductsByCategoryAsync(Guid categoryId, string? userId);
     Task<int> GetTotalActiveProductsAsync();
     Task<IEnumerable<CategoryNavViewModel>> GetCategoriesForNavAsync();
+    Task<ProductDetailsViewModel?> GetProductDetailsViewModelAsync(Guid id, string? userId);
 
 
 }

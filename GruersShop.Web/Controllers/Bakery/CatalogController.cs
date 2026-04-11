@@ -46,28 +46,27 @@ public class CatalogController : Controller
 
         return View(viewModel);
     }
+    // Details
+    [HttpGet]
+    [AllowAnonymous]
+    public virtual async Task<IActionResult> Details(Guid id)
+    {   // if user is not authenticated
+        // userId will be null, and service will handle it accordingly
 
-    //public async Task<IActionResult> Details(Guid id)
-    //{
-    //    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-    //    var product = await _catalogClientService.GetProductDetailsAsync(id, userId);
 
-    //    if (product == null)
-    //        return NotFound();
+        string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-    //    var relatedProducts = await _catalogClientService.GetProductsByCategoryAsync(product.CategoryId, userId);
-    //    var userReview = await _catalogClientService.GetUserReviewAsync(userId, id);
 
-    //    var viewModel = new ProductDetailsViewModel
-    //    {
-    //        Product = product,
-    //        RelatedProducts = relatedProducts.Take(4).ToList(),
-    //        UserHasReviewed = userReview != null,
-    //        UserReview = userReview
-    //    };
+        var model = await _catalogClientService.GetProductDetailsViewModelAsync(id, userId);
 
-    //    return View(viewModel);
-    //}
+        if (model == null)
+        {
+            TempData["Error"] = "Product not found.";
+            return NotFound();
+        }
+
+        return View(model);
+    }
     // Toggle Favorite
     [HttpPost]
     [Authorize]
