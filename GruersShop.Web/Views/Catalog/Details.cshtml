@@ -89,7 +89,7 @@
                 <div class="d-flex gap-3 mb-4">
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <form asp-action="AddToFavorites" method="post" class="d-inline">
+                        <form asp-action="ToggleFavorite" method="post" class="d-inline">
                             @Html.AntiForgeryToken()
                             <input type="hidden" name="id" value="@Model.Product.Id" />
                             <button type="submit" class="btn-warm">

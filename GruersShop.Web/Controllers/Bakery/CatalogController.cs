@@ -1,4 +1,5 @@
 ﻿using GruersShop.Services.Core.Service.Interfaces.Bakery;
+using GruersShop.Services.Core.Service.Interfaces.Interactions;
 using GruersShop.Web.ViewModels.Bakery;
 using GruersShop.Web.ViewModels.Products;
 using Microsoft.AspNetCore.Authorization;
@@ -10,13 +11,16 @@ namespace GruersShop.Web.Controllers.Bakery;
 public class CatalogController : Controller
 {
 
-        private readonly ICatalogClientService _catalogClientService;
+           private readonly ICatalogClientService _catalogClientService;
             private readonly ICategoryClientService _categoryClientService;
-    
+            private readonly IFavoriteService _favoriteService;
+
     public CatalogController(ICatalogClientService catalogClientService, 
-        ICategoryClientService categoryClientService)
+        ICategoryClientService categoryClientService, IFavoriteService favoriteService)
     {
         _catalogClientService = catalogClientService;
+        _categoryClientService = categoryClientService;
+        _favoriteService = favoriteService;
         _categoryClientService = categoryClientService;
     }
 
@@ -43,48 +47,69 @@ public class CatalogController : Controller
         return View(viewModel);
     }
 
-    public async Task<IActionResult> Details(Guid id)
+    //public async Task<IActionResult> Details(Guid id)
+    //{
+    //    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    //    var product = await _catalogClientService.GetProductDetailsAsync(id, userId);
+
+    //    if (product == null)
+    //        return NotFound();
+
+    //    var relatedProducts = await _catalogClientService.GetProductsByCategoryAsync(product.CategoryId, userId);
+    //    var userReview = await _catalogClientService.GetUserReviewAsync(userId, id);
+
+    //    var viewModel = new ProductDetailsViewModel
+    //    {
+    //        Product = product,
+    //        RelatedProducts = relatedProducts.Take(4).ToList(),
+    //        UserHasReviewed = userReview != null,
+    //        UserReview = userReview
+    //    };
+
+    //    return View(viewModel);
+    //}
+    // Toggle Favorite
+    [HttpPost]
+    [Authorize]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ToggleFavorite(Guid id, string? returnUrl)
     {
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-        var product = await _catalogClientService.GetProductDetailsAsync(id, userId);
-
-        if (product == null)
-            return NotFound();
-
-        var relatedProducts = await _catalogClientService.GetProductsByCategoryAsync(product.CategoryId, userId);
-        var userReview = await _catalogClientService.GetUserReviewAsync(userId, id);
-
-        var viewModel = new ProductDetailsViewModel
+        if (!ModelState.IsValid)
         {
-            Product = product,
-            RelatedProducts = relatedProducts.Take(4).ToList(),
-            UserHasReviewed = userReview != null,
-            UserReview = userReview
-        };
+            TempData["Error"] = "Invalid Action.";
+            return RedirectToAction(nameof(Index));
+        }
 
-        return View(viewModel);
+        string userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+
+        if (userId == null)
+        {
+            TempData["Error"] = "You must be logged in to manage favorites.";
+            return RedirectToAction(nameof(Index));
+
+        }
+
+        bool isNowFavorited = await _favoriteService.ToggleFavoriteAsync(userId, id);
+
+        // Show success message based on the new favorite status
+        TempData["Success"] = isNowFavorited
+            ? "You added this product to favorites!"
+            : "You removed this product from favorites.";
+
+        // if returnUrl is null, redirect to Index
+        return RedirectToAction(nameof(Index));
     }
 
-    [HttpPost]
-    [Authorize]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> AddToFavorites(Guid id)
-    {
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
-        await _catalogClientService.AddToFavoritesAsync(userId, id);
 
-        return RedirectToAction(nameof(Details), new { id });
-    }
+    //[HttpPost]
+    //[Authorize]
+    //[ValidateAntiForgeryToken]
+    //public async Task<IActionResult> AddReview(Guid id, int rating, string? comment)
+    //{
+    //    var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
+    //    await _catalogClientService.AddReviewAsync(userId, id, rating, comment);
 
-    [HttpPost]
-    [Authorize]
-    [ValidateAntiForgeryToken]
-    public async Task<IActionResult> AddReview(Guid id, int rating, string? comment)
-    {
-        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
-        await _catalogClientService.AddReviewAsync(userId, id, rating, comment);
-
-        TempData["Success"] = "Thank you for your review!";
-        return RedirectToAction(nameof(Details), new { id });
-    }
+    //    TempData["Success"] = "Thank you for your review!";
+    //    return RedirectToAction(nameof(Details), new { id });
+    //}
 }
