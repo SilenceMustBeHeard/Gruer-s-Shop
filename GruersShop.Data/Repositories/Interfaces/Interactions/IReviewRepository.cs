@@ -6,7 +6,7 @@ namespace GruersShop.Data.Repositories.Interfaces.Interactions;
 public interface IReviewRepository
       : IFullRepositoryAsync<Review, Guid>
 {
-    Task<bool> HasUserReviewedAsync(string userId, Guid catalogDesignId);
+    Task<bool> HasUserReviewedAsync(string userId, Guid productId);
 
-    Task<IEnumerable<Review>> GetReviewsByDesignIdAsync(Guid catalogDesignId);
+    Task<IEnumerable<Review>> GetReviewsByProductIdAsync(Guid productId);
 }
