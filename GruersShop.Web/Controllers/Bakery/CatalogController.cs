@@ -10,12 +10,11 @@ namespace GruersShop.Web.Controllers.Bakery;
 
 public class CatalogController : Controller
 {
+    private readonly ICatalogClientService _catalogClientService;
+    private readonly ICategoryClientService _categoryClientService;
+    private readonly IFavoriteService _favoriteService;
 
-           private readonly ICatalogClientService _catalogClientService;
-            private readonly ICategoryClientService _categoryClientService;
-            private readonly IFavoriteService _favoriteService;
-
-    public CatalogController(ICatalogClientService catalogClientService, 
+    public CatalogController(ICatalogClientService catalogClientService,
         ICategoryClientService categoryClientService, IFavoriteService favoriteService)
     {
         _catalogClientService = catalogClientService;
@@ -46,16 +45,13 @@ public class CatalogController : Controller
 
         return View(viewModel);
     }
+
     // Details
     [HttpGet]
     [AllowAnonymous]
     public virtual async Task<IActionResult> Details(Guid id)
-    {   // if user is not authenticated
-        // userId will be null, and service will handle it accordingly
-
-
+    {
         string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-
 
         var model = await _catalogClientService.GetProductDetailsViewModelAsync(id, userId);
 
@@ -67,6 +63,7 @@ public class CatalogController : Controller
 
         return View(model);
     }
+
     // Toggle Favorite
     [HttpPost]
     [Authorize]
@@ -85,20 +82,17 @@ public class CatalogController : Controller
         {
             TempData["Error"] = "You must be logged in to manage favorites.";
             return RedirectToAction(nameof(Index));
-
         }
 
         bool isNowFavorited = await _favoriteService.ToggleFavoriteAsync(userId, id);
 
-        // Show success message based on the new favorite status
         TempData["Success"] = isNowFavorited
             ? "You added this product to favorites!"
             : "You removed this product from favorites.";
 
-        // if returnUrl is null, redirect to Index
+        
         return RedirectToAction(nameof(Index));
     }
-
 
     //[HttpPost]
     //[Authorize]
