@@ -1,10 +1,11 @@
 ﻿using GruersShop.Services.Core.Service.Interfaces.Bakery;
-using GruersShop.Web.ViewModels.Admin.Bakery;
+using GruersShop.Web.ViewModels.Admin.Products;
+
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace GruersShop.Services.Core.Service.Admin.Interfaces;
+namespace GruersShop.Services.Core.Service.Admin.Interfaces.Product;
 
 public interface IProductManagementService : ICatalogClientService
 {
@@ -13,6 +14,7 @@ public interface IProductManagementService : ICatalogClientService
     Task AddProductAsync(ProductViewModelCreate model);
 
     Task<ProductViewModelEdit?> GetProductForEditByIdAsync(Guid id);
+
     Task EditProductAsync(Guid id, ProductViewModelEdit model);
 
     Task ToggleProductAsync(Guid id);

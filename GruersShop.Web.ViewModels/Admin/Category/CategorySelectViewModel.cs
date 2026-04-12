@@ -1,4 +1,4 @@
-﻿namespace GruersShop.Web.ViewModels.Products;
+﻿namespace GruersShop.Web.ViewModels.Admin.Category;
 
 public class CategorySelectViewModel
 {

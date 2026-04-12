@@ -1,8 +1,9 @@
 ﻿
 
+using GruersShop.Web.ViewModels.Admin.Category;
 using System.ComponentModel.DataAnnotations;
 
-namespace GruersShop.Web.ViewModels.Products;
+namespace GruersShop.Web.ViewModels.Admin.Products;
 
 public class ProductViewModelCreate
 {
