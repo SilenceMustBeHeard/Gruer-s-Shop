@@ -43,7 +43,8 @@
                     <span class="stock-badge in-stock">In Stock</span>
                 }
             </div>
-            <a asp-action="Details" asp-route-id="@Model.Id" class="btn-glow-sm">
+           
+            <a asp-controller="ProductDetails" asp-action="Index" asp-route-id="@Model.Id" class="btn-glow-sm">
                 View Details <i class="bi bi-arrow-right"></i>
             </a>
         </div>

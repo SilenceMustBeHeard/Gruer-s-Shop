@@ -9,8 +9,8 @@
     <!-- Breadcrumb -->
     <nav aria-label="breadcrumb" class="mb-4">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a asp-action="Index" class="text-warm">Bakery</a></li>
-            <li class="breadcrumb-item"><a asp-action="Index" asp-route-categoryId="@Model.Product.CategoryId" class="text-warm">@Model.Product.CategoryName</a></li>
+            <li class="breadcrumb-item"><a asp-controller="Catalog" asp-action="Index" class="text-warm">Bakery</a></li>
+            <li class="breadcrumb-item"><a asp-controller="Catalog" asp-action="Index" asp-route-categoryId="@Model.Product.CategoryId" class="text-warm">@Model.Product.CategoryName</a></li>
             <li class="breadcrumb-item active" aria-current="page">@Model.Product.Name</li>
         </ol>
     </nav>
@@ -89,9 +89,11 @@
                 <div class="d-flex gap-3 mb-4">
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <form asp-action="ToggleFavorite" method="post" class="d-inline">
+                        <!-- ✅ Updated: Points to Favorites controller -->
+                        <form asp-controller="Favorites" asp-action="Toggle" method="post" class="d-inline">
                             @Html.AntiForgeryToken()
                             <input type="hidden" name="id" value="@Model.Product.Id" />
+                            <input type="hidden" name="returnUrl" value="@Context.Request.Path" />
                             <button type="submit" class="btn-warm">
                                 @if (Model.Product.IsFavorited)
                                 {
@@ -115,7 +117,7 @@
                 <!-- Category Info -->
                 <div class="category-tag">
                     <i class="bi bi-tag me-1"></i>
-                    Category: <a asp-action="Index" asp-route-categoryId="@Model.Product.CategoryId" class="text-warm">@Model.Product.CategoryName</a>
+                    Category: <a asp-controller="Catalog" asp-action="Index" asp-route-categoryId="@Model.Product.CategoryId" class="text-warm">@Model.Product.CategoryName</a>
                 </div>
             </div>
         </div>
@@ -134,9 +136,10 @@
                 <!-- Add Review Form -->
                 @if (User.Identity.IsAuthenticated && !Model.UserHasReviewed)
                 {
+                    <!-- ✅ Updated: Points to Reviews controller -->
                     <div class="add-review-section mb-4 p-4" style="background: var(--stone-light); border-radius: 16px;">
                         <h5>Write a Review</h5>
-                        <form asp-action="AddReview" method="post">
+                        <form asp-controller="Reviews" asp-action="Add" method="post">
                             @Html.AntiForgeryToken()
                             <input type="hidden" name="id" value="@Model.Product.Id" />
                             
@@ -152,7 +155,7 @@
                             </div>
                             
                             <div class="mb-3">
-                                <label asp-for="NewComment" class="form-label">Your Review</label>
+                                <label class="form-label">Your Review</label>
                                 <textarea name="comment" class="form-control warm-input" rows="3" placeholder="Share your experience..."></textarea>
                             </div>
                             
