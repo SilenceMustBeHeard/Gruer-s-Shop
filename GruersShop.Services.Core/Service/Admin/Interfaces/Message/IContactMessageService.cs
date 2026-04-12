@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace GruersShop.Services.Core.Admin.Interfaces.Message;
+namespace GruersShop.Services.Core.Service.Admin.Interfaces.Message;
 
 public interface IContactMessageService
 {

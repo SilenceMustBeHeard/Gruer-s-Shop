@@ -1,9 +1,9 @@
 ﻿using GruersShop.Data.Repositories.Interfaces.Messages;
-using GruersShop.Services.Core.Admin.Interfaces.Message;
+using GruersShop.Services.Core.Service.Admin.Interfaces.Message;
 using GruersShop.Web.ViewModels.Account.Messages;
 using Microsoft.EntityFrameworkCore;
 
-namespace GruersShop.Services.Core.Admin.Implementations.Message;
+namespace GruersShop.Services.Core.Service.Admin.Implementations.Message;
 
 public class ContactMessageService : IContactMessageService
 {

@@ -1,5 +1,5 @@
 ﻿using GruersShop.Data.Models.Base;
-using GruersShop.Services.Core.Admin.Interfaces.Message;
+using GruersShop.Services.Core.Service.Admin.Interfaces.Message;
 using GruersShop.Services.Core.Service.Interfaces.Account;
 using GruersShop.Services.Core.Service.Interfaces.Messages;
 using Microsoft.AspNetCore.Authorization;
