@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
-namespace GruersShop.Web.Controllers.Bakery;
+namespace GruersShop.Web.Controllers.Interactions;
 
 [Authorize]
 public class ReviewsController : Controller

@@ -89,7 +89,7 @@
                 <div class="d-flex gap-3 mb-4">
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <!-- ✅ Updated: Points to Favorites controller -->
+                        <!-- Favorites  -->
                         <form asp-controller="Favorites" asp-action="Toggle" method="post" class="d-inline">
                             @Html.AntiForgeryToken()
                             <input type="hidden" name="id" value="@Model.Product.Id" />
@@ -136,7 +136,7 @@
                 <!-- Add Review Form -->
                 @if (User.Identity.IsAuthenticated && !Model.UserHasReviewed)
                 {
-                    <!-- ✅ Updated: Points to Reviews controller -->
+                    <!-- Reviews  -->
                     <div class="add-review-section mb-4 p-4" style="background: var(--stone-light); border-radius: 16px;">
                         <h5>Write a Review</h5>
                         <form asp-controller="Reviews" asp-action="Add" method="post">

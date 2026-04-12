@@ -7,6 +7,7 @@ using System.Security.Claims;
 namespace GruersShop.Web.Controllers.Bakery;
 
 [AllowAnonymous]
+[Route("bakery/catalog")]
 public class CatalogController : Controller
 {
     private readonly ICatalogClientService _catalogClientService;
