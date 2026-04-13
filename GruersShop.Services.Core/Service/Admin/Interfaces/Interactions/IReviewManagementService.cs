@@ -8,10 +8,10 @@ namespace GruersShop.Services.Core.Service.Admin.Interfaces.Interactions;
 
 public interface IReviewManagementService : IReviewService
 {
- 
+
     // Query operations
-    Task<IEnumerable<AddReviewViewModel>> GetReviewsByDesignIdAsync(Guid catalogDesignId);
-    Task<IEnumerable<ReviewViewModelList>> GetDetailedReviewsByDesignIdAsync(Guid catalogDesignId);
+
+    Task<IEnumerable<ReviewViewModelList>> GetDetailedReviewsByProductIdAsync(Guid productId);
     Task<IEnumerable<ReviewViewModelList>> GetReviewsByUserIdAsync(string userId);
     Task<ReviewViewModelList?> GetByIdAsync(Guid id);
 
