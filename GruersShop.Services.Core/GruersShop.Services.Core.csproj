@@ -8,7 +8,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Manager\" />
+    <Folder Include="Service\Manager\" />
   </ItemGroup>
 
   <ItemGroup>
