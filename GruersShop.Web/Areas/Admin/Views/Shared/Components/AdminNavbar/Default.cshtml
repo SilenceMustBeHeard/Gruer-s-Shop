@@ -1,0 +1,21 @@
+﻿@using GruersShop.Data.Models.Base
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<AppUser> SignInManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <div class="d-flex gap-3">
+        <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="nav-link-warm">
+            <i class="bi bi-speedometer2 me-1"></i> Dashboard
+        </a>
+        <a asp-area="Admin" asp-controller="CategoryManagement" asp-action="EditList" class="nav-link-warm">
+            <i class="bi bi-grid-3x3-gap-fill me-1"></i> Catalog
+        </a>
+        <a asp-area="Admin" asp-controller="AdminProfile" asp-action="AdminInbox" class="nav-link-warm">
+            <i class="bi bi-envelope-paper me-1"></i> Messages
+        </a>
+        <a asp-area="Admin" asp-controller="AdminProfile" asp-action="Index" class="nav-link-warm">
+            <i class="bi bi-person-badge me-1"></i> Profile
+        </a>
+    </div>
+}

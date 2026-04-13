@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace GruersShop.Web.Controllers.Account;
 
 [Authorize]
+
 public class ProfileController : Controller
 {
     private readonly IProfileService _profileService;

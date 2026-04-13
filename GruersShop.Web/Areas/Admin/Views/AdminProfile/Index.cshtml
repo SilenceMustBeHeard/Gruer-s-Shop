@@ -1,4 +1,4 @@
-﻿@using GruersShop.Web.ViewModels.Account.Profile;
+﻿@using GruersShop.Web.ViewModels.Account.Profile
 @model ProfileViewModel
 
 @{
@@ -44,10 +44,10 @@
 
                 <div class="d-flex gap-2 justify-content-center">
                     <a asp-area="Admin" asp-controller="AdminProfile" asp-action="AdminInbox" class="btn-warm-sm">
-                        <i class="bi bi-envelope me-1"></i> Inbox
+                        <i class="bi bi-envelope me-1"></i> Contact Messages
                     </a>
-                    <a asp-controller="Account" asp-action="Logout" asp-area="" class="btn-stone-sm">
-                        <i class="bi bi-box-arrow-right me-1"></i> Logout
+                    <a asp-area="Admin" asp-controller="AdminProfile" asp-action="SystemInbox" class="btn-warm-sm">
+                        <i class="bi bi-megaphone me-1"></i> System Messages
                     </a>
                 </div>
             </div>

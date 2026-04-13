@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GruersShop.Web.ViewComponents;
 
-public class AccountMenuViewComponent : Microsoft.AspNetCore.Mvc.ViewComponent
+public class AccountMenuViewComponent : ViewComponent
 {
     private readonly SignInManager<AppUser> _signInManager;
 

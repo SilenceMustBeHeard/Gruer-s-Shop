@@ -1,5 +1,4 @@
-﻿@using GruersShop.Data.Common.Enums
-@using GruersShop.Web.ViewModels.Account.Messages
+﻿@using GruersShop.Web.ViewModels.Account.Messages
 @model IEnumerable<SystemInboxMessageViewModel>
 
 @{
@@ -28,25 +27,25 @@
                 @foreach (var message in Model.OrderByDescending(m => m.CreatedOn))
                 {
                     <div class="letter-item mb-3">
-                        <a asp-area="Admin" asp-controller="AdminProfile" asp-action="SystemMessageDetails" asp-route-id="@message.Id" class="letter-link">
-                            <div class="d-flex justify-content-between align-items-start">
-                                <div class="d-flex gap-2 align-items-center">
-                                    <i class="bi bi-megaphone text-warm"></i>
-                                    <div>
-                                        <h6 class="fw-bold mb-0">@message.Title</h6>
-                                        <small class="text-muted">@message.CreatedOn.ToLocalTime().ToString("dd MMM yyyy · HH:mm")</small>
-                                    </div>
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div class="d-flex gap-2 align-items-center">
+                                <i class="bi bi-megaphone text-warm"></i>
+                                <div>
+                                    <h6 class="fw-bold mb-0">@message.Title</h6>
+                                    <small class="text-muted">@message.CreatedOn.ToLocalTime().ToString("dd MMM yyyy · HH:mm")</small>
                                 </div>
-                                @if (!message.IsRead)
-                                {
-                                    <span class="honey-badge">New</span>
-                                }
                             </div>
-                            <p class="mt-2 mb-0 small text-muted">@(message.Description.Length > 150 ? message.Description.Substring(0, 150) + "..." : message.Description)</p>
-                            <div class="mt-2">
-                                <span class="read-more-link">Read Message <i class="bi bi-arrow-right"></i></span>
-                            </div>
-                        </a>
+                            @if (!message.IsRead)
+                            {
+                                <span class="honey-badge">New</span>
+                            }
+                        </div>
+                        <p class="mt-2 mb-0 small text-muted">@(message.Description.Length > 150 ? message.Description.Substring(0, 150) + "..." : message.Description)</p>
+                        <div class="mt-2">
+                            <a asp-area="Admin" asp-controller="AdminProfile" asp-action="SystemMessageDetails" asp-route-id="@message.Id" class="read-more-link">
+                                Read Message <i class="bi bi-arrow-right"></i>
+                            </a>
+                        </div>
                     </div>
                 }
             </div>
