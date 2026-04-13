@@ -1,0 +1,41 @@
+﻿@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+
+<div class="container py-5">
+    <div class="hero-oven text-center mb-5">
+        <i class="bi bi-shield-lock display-1"></i>
+        <h1 class="display-3 mt-2">Admin Dashboard</h1>
+        <div class="honey-accent mx-auto"></div>
+        <p class="lead mt-3">Welcome to the administrative control panel</p>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="warm-card text-center">
+                <i class="bi bi-people display-1 text-warm"></i>
+                <h3 class="mt-2">User Management</h3>
+                <p class="text-muted">Manage system users and roles</p>
+                <a href="#" class="btn-warm-sm">Manage Users <i class="bi bi-arrow-right"></i></a>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="warm-card text-center">
+                <i class="bi bi-grid-3x3-gap-fill display-1 text-warm"></i>
+                <h3 class="mt-2">Catalog Management</h3>
+                <p class="text-muted">Manage products and categories</p>
+                <a href="#" class="btn-warm-sm">Manage Catalog <i class="bi bi-arrow-right"></i></a>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="warm-card text-center">
+                <i class="bi bi-envelope-paper display-1 text-warm"></i>
+                <h3 class="mt-2">Messages</h3>
+                <p class="text-muted">View contact messages</p>
+                <a asp-area="Admin" asp-controller="AdminProfile" asp-action="AdminInbox" class="btn-warm-sm">
+                    View Inbox <i class="bi bi-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

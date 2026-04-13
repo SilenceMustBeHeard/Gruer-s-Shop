@@ -1,0 +1,74 @@
+﻿@model GruersShop.Web.ViewModels.Account.Profile.LoginViewModel
+@{
+    ViewData["Title"] = "Admin Login";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="warm-card p-4 p-md-5">
+                <div class="text-center mb-4">
+                    <i class="bi bi-shield-lock display-1 text-warm"></i>
+                    <h1 class="display-5 mt-2">Admin Access</h1>
+                    <div class="honey-accent mx-auto"></div>
+                    <p class="text-muted mt-3">Secure access for administrators only</p>
+                </div>
+
+                @if (TempData["Success"] != null)
+                {
+                    <div class="alert-oven alert-success mb-3">
+                        <i class="bi bi-fire me-2"></i> @TempData["Success"]
+                    </div>
+                }
+                @if (TempData["Error"] != null)
+                {
+                    <div class="alert-oven alert-danger mb-3">
+                        <i class="bi bi-emoji-frown me-2"></i> @TempData["Error"]
+                    </div>
+                }
+
+                <form asp-action="Login" method="post">
+                    @Html.AntiForgeryToken()
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="Email" class="form-label fw-semibold">Email Address</label>
+                        <div class="input-group">
+                            <span class="input-group-text stone-input-prepend">
+                                <i class="bi bi-envelope"></i>
+                            </span>
+                            <input asp-for="Email" class="form-control warm-input" placeholder="admin@gruers.com" />
+                        </div>
+                        <span asp-validation-for="Email" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Password" class="form-label fw-semibold">Password</label>
+                        <div class="input-group">
+                            <span class="input-group-text stone-input-prepend">
+                                <i class="bi bi-lock"></i>
+                            </span>
+                            <input asp-for="Password" type="password" class="form-control warm-input" placeholder="Enter your password" />
+                        </div>
+                        <span asp-validation-for="Password" class="text-danger small"></span>
+                    </div>
+
+                    <div class="form-check mb-4">
+                        <input asp-for="RememberMe" class="form-check-input warm-checkbox" />
+                        <label asp-for="RememberMe" class="form-check-label">Remember Me</label>
+                    </div>
+
+                    <button type="submit" class="btn-glow w-100 py-2 mb-3">
+                        <i class="bi bi-box-arrow-in-right me-2"></i> Login as Admin
+                    </button>
+
+                    <div class="text-center mt-3">
+                        <a asp-controller="Home" asp-action="Index" asp-area="" class="text-warm text-decoration-none small">
+                            <i class="bi bi-arrow-left me-1"></i> Back to Customer Site
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,78 @@
+﻿@using GruersShop.Data.Common.Enums
+@using GruersShop.Web.ViewModels.Admin
+@model AdminInboxViewModel
+
+@{
+    ViewData["Title"] = "Admin Inbox";
+}
+
+<div class="container py-5">
+    <div class="warm-card p-4">
+        <div class="text-center mb-4">
+            <i class="bi bi-envelope-paper display-1 text-warm"></i>
+            <h1 class="display-4 mt-2">Admin Inbox</h1>
+            <div class="honey-accent mx-auto"></div>
+        </div>
+
+        <!-- Contact Messages Tab -->
+        <div class="messages-section">
+            <h3 class="mb-3">
+                <i class="bi bi-chat-dots me-2 text-warm"></i>
+                Contact Messages
+                @if (Model.ContactMessages.Count(x => !x.IsReadByAdmin) > 0)
+                {
+                    <span class="honey-badge ms-2">@Model.ContactMessages.Count(x => !x.IsReadByAdmin) new</span>
+                }
+            </h3>
+            <div class="honey-accent mb-4" style="width: 40px;"></div>
+
+            @if (!Model.ContactMessages.Any())
+            {
+                <div class="text-center py-5">
+                    <i class="bi bi-envelope-open display-4 text-muted"></i>
+                    <p class="mt-3">No contact messages</p>
+                </div>
+            }
+            else
+            {
+                <div class="letters-stack">
+                    @foreach (var message in Model.ContactMessages.OrderByDescending(m => m.CreatedOn))
+                    {
+                        <div class="letter-item mb-3">
+                            <a asp-area="Admin" asp-controller="ContactMessage" asp-action="Details" asp-route-id="@message.Id" class="letter-link">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div class="d-flex gap-2 align-items-center">
+                                        <i class="bi bi-chat-heart text-warm"></i>
+                                        <div>
+                                            <h6 class="fw-bold mb-0">@message.Subject</h6>
+                                            <small class="text-muted">@message.CreatedOn.ToLocalTime().ToString("dd MMM yyyy · HH:mm")</small>
+                                        </div>
+                                    </div>
+                                    @if (!message.IsReadByAdmin)
+                                    {
+                                        <span class="honey-badge">New</span>
+                                    }
+                                </div>
+                                <p class="mt-2 mb-1 small text-muted">@(message.Message.Length > 120 ? message.Message.Substring(0, 120) + "..." : message.Message)</p>
+                                <div class="d-flex gap-2 mt-2">
+                                    <small class="text-muted">
+                                        <i class="bi bi-person me-1"></i> From: @message.SenderName
+                                    </small>
+                                    @if (!string.IsNullOrEmpty(message.Response))
+                                    {
+                                        <small class="text-success">
+                                            <i class="bi bi-check-circle me-1"></i> Replied
+                                        </small>
+                                    }
+                                </div>
+                                <div class="mt-2">
+                                    <span class="read-more-link">View & Respond <i class="bi bi-arrow-right"></i></span>
+                                </div>
+                            </a>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</div>

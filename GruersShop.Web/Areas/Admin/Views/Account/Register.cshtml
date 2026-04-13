@@ -1,0 +1,95 @@
+﻿@model GruersShop.Web.ViewModels.Account.Profile.RegisterViewModel
+@{
+    ViewData["Title"] = "Admin Registration";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="warm-card p-4 p-md-5">
+                <div class="text-center mb-4">
+                    <i class="bi bi-shield-plus display-1 text-warm"></i>
+                    <h1 class="display-5 mt-2">Create Admin Account</h1>
+                    <div class="honey-accent mx-auto"></div>
+                    <p class="text-muted mt-3">Register a new administrator account</p>
+                </div>
+
+                <form asp-action="Register" method="post">
+                    @Html.AntiForgeryToken()
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="Email" class="form-label fw-semibold">Email Address</label>
+                        <div class="input-group">
+                            <span class="input-group-text stone-input-prepend">
+                                <i class="bi bi-envelope"></i>
+                            </span>
+                            <input asp-for="Email" class="form-control warm-input" placeholder="admin@gruers.com" />
+                        </div>
+                        <span asp-validation-for="Email" class="text-danger small"></span>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label asp-for="FirstName" class="form-label fw-semibold">First Name</label>
+                            <input asp-for="FirstName" class="form-control warm-input" placeholder="John" />
+                            <span asp-validation-for="FirstName" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="LastName" class="form-label fw-semibold">Last Name</label>
+                            <input asp-for="LastName" class="form-control warm-input" placeholder="Doe" />
+                            <span asp-validation-for="LastName" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 mt-3">
+                        <label asp-for="Address" class="form-label fw-semibold">Address (Optional)</label>
+                        <div class="input-group">
+                            <span class="input-group-text stone-input-prepend">
+                                <i class="bi bi-geo-alt"></i>
+                            </span>
+                            <input asp-for="Address" class="form-control warm-input" placeholder="Your address" />
+                        </div>
+                        <span asp-validation-for="Address" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Password" class="form-label fw-semibold">Password</label>
+                        <div class="input-group">
+                            <span class="input-group-text stone-input-prepend">
+                                <i class="bi bi-lock"></i>
+                            </span>
+                            <input asp-for="Password" type="password" class="form-control warm-input" placeholder="Minimum 6 characters" />
+                        </div>
+                        <span asp-validation-for="Password" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="ConfirmPassword" class="form-label fw-semibold">Confirm Password</label>
+                        <div class="input-group">
+                            <span class="input-group-text stone-input-prepend">
+                                <i class="bi bi-lock-fill"></i>
+                            </span>
+                            <input asp-for="ConfirmPassword" type="password" class="form-control warm-input" placeholder="Confirm your password" />
+                        </div>
+                        <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
+                    </div>
+
+                    <button type="submit" class="btn-glow w-100 py-2">
+                        <i class="bi bi-person-plus me-2"></i> Create Admin Account
+                    </button>
+
+                    <div class="text-center mt-3">
+                        <a asp-action="Login" class="text-warm text-decoration-none small">
+                            <i class="bi bi-arrow-left me-1"></i> Back to Login
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
