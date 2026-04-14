@@ -11,7 +11,7 @@ public interface IUserManagementService
     Task<UserManagmentIndexViewModel> FindUserByIdAsync(string userId);
 
 
-    Task<(bool Failed, string ErrorMessage)> DisableUser(string userId);
+    Task<(bool Failed, string ErrorMessage)> DisableUserAsync(string userId);
 
 
     Task<(bool Failed, string ErrorMessage)> ChangeUserRoleAsync(
