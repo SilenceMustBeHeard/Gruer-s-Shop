@@ -16,7 +16,7 @@ public class ProductDetailsController : Controller
         _catalogClientService = catalogClientService;
     }
 
-    [HttpGet("{id}")]
+    [HttpGet]
     public virtual async Task<IActionResult> Index(Guid id)
     {
         string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
