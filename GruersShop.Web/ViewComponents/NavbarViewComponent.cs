@@ -30,24 +30,23 @@ public class NavbarViewComponent : ViewComponent
     {
         var model = new NavbarButtonsViewModel
         {
-            IsLoggedIn = _signInManager.IsSignedIn(HttpContext.User)
+            IsLoggedIn = _signInManager.IsSignedIn(HttpContext.User),
+            CurrentArea = RouteData.Values["area"]?.ToString()
         };
-
         if (model.IsLoggedIn)
         {
-            var user = await _userManager.GetUserAsync(HttpContext.User);
-            var roles = await _userManager.GetRolesAsync(user);
-
-            model.IsAdmin = roles.Contains("Admin");
-            model.IsManager = roles.Contains("Manager");
+            model.IsAdmin = HttpContext.User.IsInRole("Admin");
+            model.IsManager = HttpContext.User.IsInRole("Manager");
             model.IsUser = !model.IsAdmin && !model.IsManager;
 
-            if (user != null && model.IsUser)
+            if (model.IsAdmin || model.IsManager)
             {
-                // Get unread counts for user
-                var favorites = await _favoriteService.GetUserFavoritesAsync(user.Id);
-                var reviews = await _reviewService.GetUserReviewsAsync(user.Id);
-                model.UnreadMessagesCount = 0; // You can implement message count later
+                model.PendingOrdersCount = 0; // TODO
+                model.UnreadMessagesCount = 0; // TODO
+            }
+            else
+            {
+                model.UnreadMessagesCount = 0;
             }
         }
 
