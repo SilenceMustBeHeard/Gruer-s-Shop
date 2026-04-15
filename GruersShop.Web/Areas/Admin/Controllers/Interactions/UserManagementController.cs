@@ -67,7 +67,7 @@ public class UserManagementController : BaseAdminController
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DisableUser(string userId)
     {
-        var result = await _userService.DisableUserAsync(userId);
+        var result = await _userService.DisableUser(userId);
 
         if (result.Failed)
             TempData["ErrorMessage"] = result.ErrorMessage;

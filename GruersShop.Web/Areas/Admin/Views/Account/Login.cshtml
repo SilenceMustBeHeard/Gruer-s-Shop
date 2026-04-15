@@ -1,17 +1,18 @@
-﻿@model GruersShop.Web.ViewModels.Account.Profile.LoginViewModel
+﻿@using GruersShop.Web.ViewModels.Account.Profile;
+@model LoginViewModel
 @{
-    ViewData["Title"] = "Admin Login";
+    ViewData["Title"] = "Welcome Back";
 }
 
 <div class="container py-5">
     <div class="row justify-content-center">
-        <div class="col-md-5">
+        <div class="col-md-6 col-lg-5">
             <div class="warm-card p-4 p-md-5">
                 <div class="text-center mb-4">
-                    <i class="bi bi-shield-lock display-1 text-warm"></i>
-                    <h1 class="display-5 mt-2">Admin Access</h1>
+                    <i class="bi bi-egg-fried display-1 text-warm"></i>
+                    <h1 class="display-5 mt-2">Welcome Back</h1>
                     <div class="honey-accent mx-auto"></div>
-                    <p class="text-muted mt-3">Secure access for administrators only</p>
+                    <p class="text-muted mt-3">Sign in to continue your journey</p>
                 </div>
 
                 @if (TempData["Success"] != null)
@@ -27,7 +28,7 @@
                     </div>
                 }
 
-                <form asp-area="Admin" asp-controller="Account" asp-action="Login" method="post">
+                <form asp-action="Login" method="post">
                     @Html.AntiForgeryToken()
                     <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
@@ -37,7 +38,7 @@
                             <span class="input-group-text stone-input-prepend">
                                 <i class="bi bi-envelope"></i>
                             </span>
-                            <input asp-for="Email" class="form-control warm-input" placeholder="admin@gruers.com" />
+                            <input asp-for="Email" class="form-control warm-input" placeholder="your@email.com" />
                         </div>
                         <span asp-validation-for="Email" class="text-danger small"></span>
                     </div>
@@ -59,12 +60,21 @@
                     </div>
 
                     <button type="submit" class="btn-glow w-100 py-2 mb-3">
-                        <i class="bi bi-box-arrow-in-right me-2"></i> Login as Admin
+                        <i class="bi bi-box-arrow-in-right me-2"></i> Sign In
                     </button>
 
+                    <div class="text-center position-relative my-3">
+                        <hr class="stone-divider">
+                        <span class="px-3 small text-muted bg-transparent">or</span>
+                    </div>
+
+                    <a asp-action="Register" class="btn-warm w-100 py-2 mb-2">
+                        <i class="bi bi-person-plus me-2"></i> Create Account
+                    </a>
+
                     <div class="text-center mt-3">
-                        <a asp-controller="Home" asp-action="Index" asp-area="" class="text-warm text-decoration-none small">
-                            <i class="bi bi-arrow-left me-1"></i> Back to Customer Site
+                        <a asp-action="ForgotPassword" class="text-warm text-decoration-none small">
+                            <i class="bi bi-key me-1"></i> Forgot your password?
                         </a>
                     </div>
                 </form>
