@@ -1,0 +1,50 @@
+﻿@{
+    ViewData["Title"] = "Access Denied";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card glassmorphism-card text-center p-5 animate__animated animate__fadeInUp">
+                
+                @* Error image *@
+                <div class="error-image-container mb-4">
+                    <img src="~/images/errors/access-denied.png"
+                         alt="Access Denied"
+                         class="img-fluid shake-animation"
+                         style="max-height: 220px;"
+                         onerror="this.onerror=null; this.src='https://via.placeholder.com/300x220/2c3e50/ffffff?text=⛔+Access+Denied'">
+                    </div>
+
+                    <div class="error-badge bg-danger bg-opacity-10 text-danger px-3 py-1 rounded-pill d-inline-block mx-auto mb-3">
+                        <small>🔒 ERROR @(ViewBag.ErrorCode ?? 403)</small>
+                    </div>
+
+                    <h1 class="display-5 fw-bold text-danger mb-3">
+                        <span class="d-block">⛔ Access Denied</span>
+                    </h1>
+
+                    <p class="text-muted mb-2">Sorry, you don't have permission to access this area.</p>
+                    <p class="text-muted mb-4">If you believe this is a mistake, please contact your administrator.</p>
+
+                    <div class="alert alert-danger bg-opacity-10 border-0 mb-4" role="alert">
+                        <i class="bi bi-shield-lock me-2"></i>
+                        This area is restricted to authorized personnel only.
+                    </div>
+
+                    <div class="d-flex justify-content-center gap-3">
+                        <a asp-controller="Home"
+                               asp-action="Index"
+                               class="btn btn-danger btn-lg px-4 hover-scale">
+                            <i class="bi bi-house-door me-2"></i>Back to Home
+                        </a>
+                        <a asp-controller="Account"
+                               asp-action="Login"
+                               class="btn btn-outline-primary btn-lg px-4 hover-scale">
+                            <i class="bi bi-box-arrow-in-right me-2"></i>Login
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

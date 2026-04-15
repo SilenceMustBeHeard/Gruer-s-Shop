@@ -2,54 +2,78 @@
 @model ProfileViewModel
 
 @{
-    ViewData["Title"] = "Admin Profile";
+    ViewData["Title"] = "My Profile";
 }
 
 <div class="container py-5">
+
+    <!-- HERO -->
     <div class="hero-oven text-center mb-5">
-        <i class="bi bi-person-badge display-1"></i>
-        <h1 class="display-3 mt-2">Admin Profile</h1>
-        <div class="honey-accent mx-auto"></div>
+        <div class="profile-avatar mx-auto mb-3">
+            <i class="bi bi-shield-lock display-1 text-warm"></i>
+        </div>
+
+        <h1 class="display-4 mt-2">@Model.FirstName @Model.LastName</h1>
+
+        <span class="badge bg-warning text-dark mt-2">
+            ADMIN ROLE
+        </span>
+
+        <div class="honey-accent mx-auto mt-3"></div>
     </div>
 
+    <!-- CARD -->
     <div class="row justify-content-center">
         <div class="col-lg-6">
-            <div class="warm-card text-center p-4">
-                <div class="mb-3">
-                    <div class="profile-avatar mx-auto">
-                        <i class="bi bi-shield-lock display-1 text-warm"></i>
-                    </div>
-                </div>
-                <h2 class="fw-bold">@Model.FirstName @Model.LastName</h2>
-                <div class="honey-accent mx-auto" style="width: 40px;"></div>
-                
-                <div class="mt-4 text-start">
-                    <div class="info-row mb-3">
-                        <i class="bi bi-envelope me-2 text-warm"></i>
-                        <div>
-                            <small class="text-muted d-block">Email</small>
-                            <span>@Model.Email</span>
-                        </div>
-                    </div>
-                    <div class="info-row mb-3">
-                        <i class="bi bi-geo-alt me-2 text-warm"></i>
-                        <div>
-                            <small class="text-muted d-block">Address</small>
-                            <span>@(string.IsNullOrEmpty(Model.Address) ? "Not provided" : Model.Address)</span>
-                        </div>
+
+            <div class="warm-card p-4 position-relative overflow-hidden">
+
+                <!-- subtle glow effect -->
+                <div class="profile-glow"></div>
+
+                <!-- EMAIL -->
+                <div class="d-flex align-items-start gap-3 mb-4">
+                    <i class="bi bi-envelope-fill text-warm fs-5"></i>
+                    <div>
+                        <small class="text-muted d-block">Email</small>
+                        <span class="fw-semibold">@Model.Email</span>
                     </div>
                 </div>
 
-                <hr class="stone-divider my-3">
-
-                <div class="d-flex gap-2 justify-content-center">
-                    <a asp-area="Admin" asp-controller="AdminProfile" asp-action="AdminInbox" class="btn-warm-sm">
-                        <i class="bi bi-envelope me-1"></i> Contact Messages
-                    </a>
-                    <a asp-area="Admin" asp-controller="AdminProfile" asp-action="SystemInbox" class="btn-warm-sm">
-                        <i class="bi bi-megaphone me-1"></i> System Messages
-                    </a>
+                <!-- ADDRESS -->
+                <div class="d-flex align-items-start gap-3 mb-4">
+                    <i class="bi bi-geo-alt-fill text-warm fs-5"></i>
+                    <div>
+                        <small class="text-muted d-block">Address</small>
+                        <span class="fw-semibold">
+                            @(string.IsNullOrEmpty(Model.Address) ? "Not provided" : Model.Address)
+                        </span>
+                    </div>
                 </div>
+
+                <hr class="stone-divider my-4">
+
+                <!-- ACTIONS -->
+                <div class="d-flex flex-column flex-md-row gap-2 justify-content-center">
+
+                    <a asp-area="Admin"
+                           asp-controller="AdminProfile"
+                           asp-action="AdminInbox"
+                           class="btn-warm-sm flex-fill text-center">
+                        <i class="bi bi-envelope me-1"></i>
+                        Messages
+                    </a>
+
+                    <a asp-area="Admin"
+                           asp-controller="AdminProfile"
+                           asp-action="SystemInbox"
+                           class="btn-glow-sm flex-fill text-center">
+                        <i class="bi bi-megaphone me-1"></i>
+                        System
+                    </a>
+
+                </div>
+
             </div>
         </div>
     </div>

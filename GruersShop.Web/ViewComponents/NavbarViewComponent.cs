@@ -3,7 +3,6 @@ using GruersShop.Services.Core.Service.Interfaces.Interactions;
 using GruersShop.Web.ViewModels.Account.Profile;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
 
 namespace GruersShop.Web.ViewComponents;
 
@@ -28,26 +27,29 @@ public class NavbarViewComponent : ViewComponent
 
     public async Task<IViewComponentResult> InvokeAsync()
     {
+        var user = HttpContext.User;
+
         var model = new NavbarButtonsViewModel
         {
-            IsLoggedIn = _signInManager.IsSignedIn(HttpContext.User),
-            CurrentArea = RouteData.Values["area"]?.ToString()
+            IsLoggedIn = _signInManager.IsSignedIn(user),
+            CurrentArea = HttpContext.Request.RouteValues["area"]?.ToString()
         };
-        if (model.IsLoggedIn)
-        {
-            model.IsAdmin = HttpContext.User.IsInRole("Admin");
-            model.IsManager = HttpContext.User.IsInRole("Manager");
-            model.IsUser = !model.IsAdmin && !model.IsManager;
 
-            if (model.IsAdmin || model.IsManager)
-            {
-                model.PendingOrdersCount = 0; // TODO
-                model.UnreadMessagesCount = 0; // TODO
-            }
-            else
-            {
-                model.UnreadMessagesCount = 0;
-            }
+        if (!model.IsLoggedIn)
+            return View(model);
+
+        model.IsAdmin = user.IsInRole("Admin");
+        model.IsManager = user.IsInRole("Manager");
+        model.IsUser = !model.IsAdmin && !model.IsManager;
+
+        if (model.IsAdmin || model.IsManager)
+        {
+            model.PendingOrdersCount = 0;   // TODO
+            model.UnreadMessagesCount = 0;  // TODO
+        }
+        else
+        {
+            model.UnreadMessagesCount = 0;
         }
 
         return View(model);
