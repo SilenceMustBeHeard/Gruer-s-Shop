@@ -1,5 +1,8 @@
 ﻿using GruersShop.Data.Models.Base;
+using GruersShop.Services.Common;
+using GruersShop.Services.Core.Service.Interfaces.Account;
 using GruersShop.Services.Core.Service.Interfaces.Interactions;
+using GruersShop.Services.Core.Service.Interfaces.Messages;
 using GruersShop.Web.ViewModels.Account.Profile;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -10,46 +13,81 @@ public class NavbarViewComponent : ViewComponent
 {
     private readonly SignInManager<AppUser> _signInManager;
     private readonly UserManager<AppUser> _userManager;
-    private readonly IFavoriteService _favoriteService;
-    private readonly IReviewService _reviewService;
+    private readonly IOrderService _orderService;
+    private readonly IContactMessageClientService _contactMessageClientService;
+    private readonly IProfileService _profileService;
+
 
     public NavbarViewComponent(
+            IContactMessageClientService contactMessageClientService,
+
         SignInManager<AppUser> signInManager,
         UserManager<AppUser> userManager,
-        IFavoriteService favoriteService,
-        IReviewService reviewService)
+        //IOrderService orderService,
+        IProfileService profileService)
     {
+        _contactMessageClientService = contactMessageClientService;
+
         _signInManager = signInManager;
         _userManager = userManager;
-        _favoriteService = favoriteService;
-        _reviewService = reviewService;
+        //_orderService = orderService;
+        _profileService = profileService;
     }
 
+
+
+    // It checks if the user is logged in and retrieves their role information to determine which navbar buttons to display.
+
+    // In NavbarViewComponent.cs
     public async Task<IViewComponentResult> InvokeAsync()
     {
-        var user = HttpContext.User;
+        var model = new NavbarButtonsViewModel();
 
-        var model = new NavbarButtonsViewModel
+        try
         {
-            IsLoggedIn = _signInManager.IsSignedIn(user),
-            CurrentArea = HttpContext.Request.RouteValues["area"]?.ToString()
-        };
+            var userPrincipal = HttpContext.User;
 
-        if (!model.IsLoggedIn)
-            return View(model);
+            model.IsLoggedIn = _signInManager.IsSignedIn(userPrincipal);
 
-        model.IsAdmin = user.IsInRole("Admin");
-        model.IsManager = user.IsInRole("Manager");
-        model.IsUser = !model.IsAdmin && !model.IsManager;
+            if (!model.IsLoggedIn)
+                return View(model);
 
-        if (model.IsAdmin || model.IsManager)
-        {
-            model.PendingOrdersCount = 0;   // TODO
-            model.UnreadMessagesCount = 0;  // TODO
+            var user = await _userManager.GetUserAsync(userPrincipal);
+
+            model.IsAdmin = userPrincipal.IsInRole(RoleNames.Admin);
+            model.IsManager = userPrincipal.IsInRole(RoleNames.Manager);
+            model.IsUser = !model.IsAdmin && !model.IsManager;
+
+            if (user == null)
+                return View(model);
+
+            if (model.IsAdmin || model.IsManager)
+            {
+                // safe defaults
+                model.PendingOrdersCount = 0;
+                model.UnreadMessagesCount = 0;
+            }
+            else
+            {
+                try
+                {
+                    model.UnreadMessagesCount =
+                        await _contactMessageClientService
+                            .GetUserUnreadResponsesCountAsync(user.Id);
+                }
+                catch
+                {
+                    model.UnreadMessagesCount = 0; // NEVER crash UI
+                }
+            }
         }
-        else
+        catch
         {
-            model.UnreadMessagesCount = 0;
+            // LAST RESORT SAFETY NET
+            return View(new NavbarButtonsViewModel
+            {
+                IsLoggedIn = false
+            });
         }
 
         return View(model);

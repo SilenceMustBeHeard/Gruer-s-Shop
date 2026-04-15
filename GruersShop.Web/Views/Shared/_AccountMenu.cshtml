@@ -1,0 +1,32 @@
+﻿@if (ViewBag.IsLoggedIn == true)
+{
+    <li>
+        <span class="dropdown-item-text">
+            @ViewBag.Username
+        </span>
+    </li>
+
+    <li><hr class="dropdown-divider" /></li>
+
+    <li>
+        <form asp-area=""
+              asp-controller="Account"
+              asp-action="Logout"
+              method="post">
+            <button class="dropdown-item" type="submit">
+                Logout
+            </button>
+        </form>
+    </li>
+}
+else
+{
+    <li>
+        <a class="dropdown-item"
+               asp-area=""
+               asp-controller="Account"
+               asp-action="Login">
+            Login
+        </a>
+    </li>
+}
