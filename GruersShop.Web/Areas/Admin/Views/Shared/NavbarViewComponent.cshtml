@@ -1,0 +1,44 @@
+﻿@model GruersShop.Web.ViewModels.Account.Profile.NavbarButtonsViewModel
+
+<div class="nav-links d-flex gap-4">
+    <a class="nav-link-warm" asp-controller="Home" asp-action="Index">
+        <i class="bi bi-house-heart me-1"></i> Home
+    </a>
+    
+    @if (Model.IsLoggedIn)
+    {
+        @if (Model.IsAdmin)
+        {
+            <a class="nav-link-warm" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">
+                <i class="bi bi-shield-lock me-1"></i> Admin Panel
+            </a>
+            <a class="nav-link-warm" asp-controller="Product" asp-action="Manage">
+                <i class="bi bi-grid-3x3-gap-fill me-1"></i> Manage Catalog
+            </a>
+        }
+        else if (Model.IsManager)
+        {
+            <a class="nav-link-warm" asp-controller="Orders" asp-action="Manage">
+                <i class="bi bi-clipboard-check me-1"></i> Manage Orders
+            </a>
+        }
+        else
+        {
+            <a class="nav-link-warm position-relative" asp-controller="Messages" asp-action="Inbox">
+                <i class="bi bi-envelope-paper me-1"></i> Messages
+                @if (Model.UnreadMessagesCount > 0)
+                {
+                    <span class="unread-badge-warm">@Model.UnreadMessagesCount</span>
+                }
+            </a>
+        }
+        
+        <a class="nav-link-warm" asp-controller="Catalog" asp-action="Index">
+            <i class="bi bi-shop me-1"></i> Bakery
+        </a>
+    }
+    
+    <a class="nav-link-warm" asp-controller="Home" asp-action="About">
+        <i class="bi bi-info-circle me-1"></i> Gruer's Story
+    </a>
+</div>

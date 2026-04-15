@@ -1,34 +1,52 @@
-﻿@using GruersShop.Web.ViewModels.Error;
+﻿@using GruersShop.Web.ViewModels.Error
 @model ErrorViewModel
 @{
-    ViewData["Title"] = "Error";
+    ViewData["Title"] = "Oops - Something's Wrong";
 }
 
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="warm-card text-center p-5">
-                <i class="bi bi-shield-exclamation display-1 text-danger"></i>
-                <h1 class="display-4 mt-3">Oops!</h1>
-                <div class="honey-accent mx-auto"></div>
-                <p class="lead mt-3">An error occurred while processing your request.</p>
-
-                @if (Model.ShowRequestId)
-                {
-                    <p class="text-muted">
-                        <strong>Request ID:</strong> <code>@Model.RequestId</code>
-                    </p>
-                }
-
-                <div class="alert-oven alert-warning mt-4">
-                    <i class="bi bi-info-circle me-2"></i>
-                    <strong>Development Mode:</strong> Swapping to <strong>Development</strong> environment will display more detailed information.
-                </div>
-
-                <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="btn-glow mt-4">
-                    <i class="bi bi-house-heart me-1"></i> Back to Dashboard
-                </a>
-            </div>
+<div class="error-container text-center py-5">
+    <div class="oven-glow-card mx-auto" style="max-width: 600px;">
+        
+        <!-- Warm illustration -->
+        <div class="oven-icon mb-4">
+            <i class="bi bi-egg-fried display-1"></i>
+            <div class="oven-flames"></div>
         </div>
+        
+        <h1 class="display-4 mb-3">The Ovens Are Cold</h1>
+        
+        <div class="story-text mb-4">
+            <p>Something went wrong in the kitchen, but don't worry - we're tending to the fire.</p>
+        </div>
+        
+        @if (Model.ShowRequestId)
+        {
+            <div class="stone-panel mb-4">
+                <small class="text-muted">Request ID: <code>@Model.RequestId</code></small>
+            </div>
+        }
+        
+        <div class="action-buttons">
+            <a href="javascript:history.back()" class="btn-warm me-2">
+                <i class="bi bi-arrow-left me-1"></i> Go Back
+            </a>
+            <a asp-controller="Home" asp-action="Index" class="btn-glow">
+                <i class="bi bi-house-heart me-1"></i> Return Home
+            </a>
+        </div>
+        
+        @if (!Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")?.Equals("Production") == true)
+        {
+            <div class="stone-panel mt-4">
+                <details>
+                    <summary class="text-warning">Developer Details</summary>
+                    <div class="mt-2 small text-muted">
+                        <p>This is a development environment notice. In production, errors are handled gracefully.</p>
+                    </div>
+                </details>
+            </div>
+        }
+        
     </div>
 </div>
+

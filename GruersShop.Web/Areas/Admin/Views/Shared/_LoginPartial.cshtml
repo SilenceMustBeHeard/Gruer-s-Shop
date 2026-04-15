@@ -1,0 +1,62 @@
+﻿@using GruersShop.Data.Models
+@using GruersShop.Data.Models.Base
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<AppUser> SignInManager
+@inject UserManager<AppUser> UserManager
+
+@{
+    string userName = null;
+    var user = await UserManager.GetUserAsync(User);
+    userName = user?.FirstName ?? user?.UserName ?? user?.Email;
+}
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <!-- Welcome -->
+    <li class="dropdown-header">
+        <div class="d-flex align-items-center gap-2">
+            <i class="bi bi-egg-fried"></i>
+            <span>Welcome, @userName!</span>
+        </div>
+    </li>
+    <li><hr class="dropdown-divider"></li>
+    
+    <!-- Profile Link -->
+    <li>
+        <a class="dropdown-item" asp-controller="Profile" asp-action="Index">
+            <i class="bi bi-person-badge me-2"></i> My Profile
+        </a>
+    </li>
+    
+    <!-- Messages -->
+    <li>
+        <a class="dropdown-item" asp-controller="Messages" asp-action="Inbox">
+            <i class="bi bi-envelope-paper me-2"></i> Messages
+            @await Component.InvokeAsync("UnreadMessageBadge")
+        </a>
+    </li>
+    
+    <!-- Logout -->
+    <li><hr class="dropdown-divider"></li>
+    <li>
+        <form asp-controller="Account" asp-action="Logout" method="post">
+            @Html.AntiForgeryToken()
+            <button type="submit" class="dropdown-item text-danger">
+                <i class="bi bi-box-arrow-right me-2"></i> Logout
+            </button>
+        </form>
+    </li>
+}
+else
+{
+    <li>
+        <a class="dropdown-item" asp-controller="Account" asp-action="Register">
+            <i class="bi bi-person-plus me-2"></i> Register
+        </a>
+    </li>
+    <li>
+        <a class="dropdown-item" asp-controller="Account" asp-action="Login">
+            <i class="bi bi-box-arrow-in-right me-2"></i> Login
+        </a>
+    </li>
+}

@@ -1,0 +1,115 @@
+﻿@using GruersShop.Web.ViewModels.Products
+@model ProductViewModel
+
+<div class="product-card">
+    <div class="product-card-image">
+        <img src="@Model.ImageUrl" alt="@Model.Name" class="product-img"
+             onerror="this.src='/images/placeholder.jpg'">
+    </div>
+    <div class="product-card-content">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+            <h3 class="product-card-title">@Model.Name</h3>
+            <div class="rating-stars">
+                @for (int i = 1; i <= 5; i++)
+                {
+                    if (i <= Math.Floor(Model.AverageRating))
+                    {
+                        <i class="bi bi-star-fill text-warm"></i>
+                    }
+                    else if (i <= Model.AverageRating)
+                    {
+                        <i class="bi bi-star-half text-warm"></i>
+                    }
+                    else
+                    {
+                        <i class="bi bi-star text-muted"></i>
+                    }
+                }
+                <span class="review-count">(@Model.ReviewCount)</span>
+            </div>
+        </div>
+        
+        <p class="product-card-description">@(Model.Description.Length > 100 ? Model.Description.Substring(0, 100) + "..." : Model.Description)</p>
+        
+        <div class="d-flex justify-content-between align-items-center mt-3">
+            <div>
+                <span class="product-price">@Model.FormattedPrice</span>
+                @if (!Model.IsInStock)
+                {
+                    <span class="stock-badge out-of-stock">Out of Stock</span>
+                }
+                else
+                {
+                    <span class="stock-badge in-stock">In Stock</span>
+                }
+            </div>
+           
+            <a asp-controller="ProductDetails" asp-action="Index" asp-route-id="@Model.Id" class="btn-glow-sm">
+                View Details <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .product-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+    
+    .product-card:hover .product-img {
+        transform: scale(1.05);
+    }
+    
+    .product-price {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--wood-medium);
+    }
+    
+    .rating-stars {
+        font-size: 0.8rem;
+        display: flex;
+        align-items: center;
+        gap: 2px;
+    }
+    
+    .review-count {
+        font-size: 0.7rem;
+        margin-left: 4px;
+        color: var(--stone-dark);
+    }
+    
+    .stock-badge {
+        font-size: 0.7rem;
+        padding: 0.2rem 0.5rem;
+        border-radius: 20px;
+        margin-left: 0.5rem;
+    }
+    
+    .in-stock {
+        background: rgba(107, 140, 66, 0.2);
+        color: var(--leaf-green);
+    }
+    
+    .out-of-stock {
+        background: rgba(220, 53, 69, 0.2);
+        color: #dc3545;
+    }
+    
+    .product-card-description {
+        color: var(--stone-dark);
+        font-size: 0.85rem;
+        line-height: 1.4;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    
+    [data-bs-theme="dark"] .product-card-description {
+        color: #b8a99a;
+    }
+</style>
