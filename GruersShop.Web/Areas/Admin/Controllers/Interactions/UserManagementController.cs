@@ -21,17 +21,26 @@ public class UserManagementController : BaseAdminController
         _userService = userService;
     }
 
+
+
+
+    // gets all users with their roles except the  admin
     [HttpGet]
     public async Task<IActionResult> Index()
     {
-        var allUsers = await _userService.GetUserManagmentBoardDataAsync(this.GetUserId());
+        var allUsers = await _userService
+            .GetUserManagmentBoardDataAsync(this.GetUserId());
+
         return View(allUsers);
     }
+
+    // add role to user
 
     [HttpPost]
     public async Task<IActionResult> AssignRole(ChangeUserRoleViewModel model)
     {
-        if (!ModelState.IsValid || string.IsNullOrWhiteSpace(model.NewRole))
+        if (!ModelState.IsValid
+            || string.IsNullOrWhiteSpace(model.NewRole))
         {
             TempData["ErrorMessage"] = "Please select a valid role.";
             return RedirectToAction("Index");
@@ -47,6 +56,13 @@ public class UserManagementController : BaseAdminController
         return RedirectToAction("Index");
     }
 
+
+
+
+
+
+
+    // Ban user (soft delete)
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DisableUser(string userId)
@@ -56,7 +72,7 @@ public class UserManagementController : BaseAdminController
         if (result.Failed)
             TempData["ErrorMessage"] = result.ErrorMessage;
         else
-            TempData["SuccessMessage"] = "User status changed successfully.";
+            TempData["SuccessMessage"] = "User disabled successfully.";
 
         return RedirectToAction(nameof(Index));
     }
