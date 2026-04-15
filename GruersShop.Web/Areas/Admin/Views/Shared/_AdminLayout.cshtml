@@ -3,133 +3,101 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Admin Panel</title>
-
-    <!-- Bootstrap CSS -->
+    <title>@ViewData["Title"] - Gruer's Shop</title>
+    
+    <!-- Bootstrap -->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-
-    <!-- Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-
-    <!-- Fonts -->
+    
+    <!-- Google Fonts for warm typography -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
-
-    <!-- Site -->
+    
+    <!-- Theme styles -->
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 
 <body>
     <header>
+        <!-- Reshaped Navbar -->
         <nav class="navbar navbar-expand-lg navbar-dark py-2">
             <div class="container">
-
-                <!--  BRAND -->
-                <a class="navbar-brand" asp-area="Admin" asp-controller="Home" asp-action="Index">
+                <!-- Logo / Brand - Restyled -->
+                <a class="navbar-brand" asp-area="Admin" asp-controller="AdminDashboard" asp-action="Index">
                     <div class="d-flex align-items-center gap-2">
-                        <i class="bi bi-shield-lock fs-2 text-warm"></i>
+                        <i class="bi bi-egg-fried fs-2 text-warm"></i>
                         <div>
-                            <span class="brand-name"
-                                  style="font-family: var(--font-serif); font-size: 1.4rem; font-weight: 600; display: block; line-height: 1.2;">
-                                Admin Panel
-                            </span>
-                            <span class="brand-subtitle"
-                                  style="font-size: 0.65rem; opacity: 0.8; letter-spacing: 1px;">
-                                Gruer's Bakery
-                            </span>
+                            <span class="brand-baked">Gruer’s</span>
+                            <span class="brand-subtitle">Artisanal Bakery</span>
                         </div>
                     </div>
                 </a>
 
-                <!--  TOGGLER -->
-                <button class="navbar-toggler" type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#navbarMain"
-                        aria-controls="navbarMain"
-                        aria-expanded="false">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <!--  NAVBAR -->
                 <div class="collapse navbar-collapse" id="navbarMain">
-
-                    <!-- CENTER -->
+                    <!-- Center Navigation - Centered properly -->
                     <div class="mx-auto d-flex justify-content-center">
                         @await Component.InvokeAsync("Navbar")
                     </div>
 
-                    <!-- RIGHT SIDE -->
-                    <div class="d-flex flex-column flex-lg-row gap-2 align-items-start align-items-lg-center mt-3 mt-lg-0">
-
-                        <!-- ADMIN BADGE -->
-                        <span class="badge bg-warning text-dark d-none d-lg-inline">
-                            ADMIN
-                        </span>
-
-                        <!-- DROPDOWN -->
+                    <!-- Right Side - Account area -->
+                    <div class="d-flex gap-2 align-items-center">
+                        <!-- Account Dropdown -->
                         <div class="dropdown">
-                            <button class="btn-warm dropdown-toggle d-flex align-items-center gap-1"
-                                    type="button"
-                                    data-bs-toggle="dropdown"
-                                    aria-expanded="false">
+                            <button class="btn-warm dropdown-toggle d-flex align-items-center gap-1" data-bs-toggle="dropdown" style="padding: 0.4rem 1rem;">
                                 <i class="bi bi-person-circle"></i>
-                                <span>@User.Identity?.Name</span>
+                                <span>Account</span>
                             </button>
-
-                            <ul class="dropdown-menu dropdown-menu-end shadow-lg">
+                            <ul class="dropdown-menu dropdown-menu-end" style="min-width: 220px;">
                                 @await Component.InvokeAsync("AccountMenu")
                             </ul>
                         </div>
                     </div>
-
                 </div>
             </div>
         </nav>
 
-        <!--  ALERTS -->
+        <!-- Oven Glow Alert Messages -->
         <div class="container mt-3">
             @if (TempData["Success"] != null)
             {
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <div class="alert-oven alert-success" role="alert">
                     <i class="bi bi-fire me-2"></i> @TempData["Success"]
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    <button type="button" class="btn-close-oven" data-dismiss="alert"></button>
                 </div>
             }
 
             @if (TempData["Error"] != null)
             {
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <div class="alert-oven alert-danger" role="alert">
                     <i class="bi bi-emoji-frown me-2"></i> @TempData["Error"]
-                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    <button type="button" class="btn-close-oven" data-dismiss="alert"></button>
                 </div>
             }
         </div>
     </header>
 
-    <!--  MAIN -->
+    <!-- Main Content - Warm Hearth -->
     <main class="hearth-container">
         <div class="container py-4">
             @RenderBody()
         </div>
     </main>
 
-    <!--  FOOTER -->
+    <!-- Footer - Warm Stone -->
     <footer class="footer-stone mt-auto py-4">
         <div class="container text-center">
-            <p class="mb-0">
-                &copy; @DateTime.Now.Year - Gruer's Artisanal Bakery | Admin Panel
-            </p>
+            <p class="mb-0">&copy; @DateTime.Now.Year - Gruer's Artisanal Bakery</p>
             <small class="text-muted">"Where every bite tells a story"</small>
         </div>
     </footer>
 
-    <!--  SCRIPTS -->
+    <!-- Scripts -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-
-    <!-- Validation -->
-    <partial name="_ValidationScriptsPartial" />
-
     @await RenderSectionAsync("Scripts", required: false)
-
 </body>
 </html>

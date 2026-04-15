@@ -1,0 +1,103 @@
+﻿@{
+    ViewData["Title"] = "Admin Dashboard";
+    var isAdmin = ViewBag.IsAdmin;
+    var isManager = ViewBag.IsManager;
+}
+
+<div class="container py-5">
+    <div class="hero-oven text-center mb-5">
+        <i class="bi bi-shield-lock display-1"></i>
+        <h1 class="display-3 mt-2">Admin Dashboard</h1>
+        <div class="honey-accent mx-auto"></div>
+        <p class="lead mt-3">Manage your bakery platform</p>
+    </div>
+
+    <div class="warm-card p-4">
+        <div class="row g-4">
+            
+            @* MANAGER & ADMIN BOTH SEE *@
+            
+            <!-- Manage Orders (Accept/Reject) -->
+            <div class="col-lg-3 col-md-6">
+                <div class="warm-card h-100 text-center p-3">
+                    <i class="bi bi-receipt display-4 text-warm"></i>
+                    <h5 class="fw-bold mt-2 mb-2">Manage Orders</h5>
+                    <p class="small text-muted">Accept or reject orders</p>
+                    <a asp-area="Admin" asp-controller="OrderManagement" asp-action="Index"
+                           class="btn-warm-sm mt-auto d-inline-block">
+                        Open <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Manage Reviews -->
+            <div class="col-lg-3 col-md-6">
+                <div class="warm-card h-100 text-center p-3">
+                    <i class="bi bi-star display-4 text-warm"></i>
+                    <h5 class="fw-bold mt-2 mb-2">Manage Reviews</h5>
+                    <p class="small text-muted">Moderate customer reviews</p>
+                    <a asp-area="Admin" asp-controller="ReviewManagement" asp-action="EditList"
+                           class="btn-warm-sm mt-auto d-inline-block">
+                        Open <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            @* ADMIN ONLY (GOD MODE) *@
+            @if (isAdmin)
+            {
+                <!-- Manage Users -->
+                <div class="col-lg-3 col-md-6">
+                    <div class="warm-card h-100 text-center p-3">
+                        <i class="bi bi-people display-4 text-warm"></i>
+                        <h5 class="fw-bold mt-2 mb-2">Manage Users</h5>
+                        <p class="small text-muted">Manage users and roles</p>
+                        <a asp-area="Admin" asp-controller="UserManagement" asp-action="Index"
+                               class="btn-warm-sm mt-auto d-inline-block">
+                            Open <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Manage Categories -->
+                <div class="col-lg-3 col-md-6">
+                    <div class="warm-card h-100 text-center p-3">
+                        <i class="bi bi-tags display-4 text-warm"></i>
+                        <h5 class="fw-bold mt-2 mb-2">Manage Categories</h5>
+                        <p class="small text-muted">Manage product categories</p>
+                        <a asp-area="Admin" asp-controller="CategoryManagement" asp-action="EditList"
+                               class="btn-warm-sm mt-auto d-inline-block">
+                            Open <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Manage Products -->
+                <div class="col-lg-3 col-md-6">
+                    <div class="warm-card h-100 text-center p-3">
+                        <i class="bi bi-cake2 display-4 text-warm"></i>
+                        <h5 class="fw-bold mt-2 mb-2">Manage Products</h5>
+                        <p class="small text-muted">Manage bakery products</p>
+                        <a asp-area="Admin" asp-controller="ProductManagement" asp-action="Index"
+                               class="btn-warm-sm mt-auto d-inline-block">
+                            Open <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Message Users -->
+                <div class="col-lg-3 col-md-6">
+                    <div class="warm-card h-100 text-center p-3">
+                        <i class="bi bi-envelope-paper display-4 text-warm"></i>
+                        <h5 class="fw-bold mt-2 mb-2">Message Users</h5>
+                        <p class="small text-muted">Send messages to users</p>
+                        <a asp-area="Admin" asp-controller="SystemMessage" asp-action="Create"
+                               class="btn-warm-sm mt-auto d-inline-block">
+                            Send <i class="bi bi-send"></i>
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

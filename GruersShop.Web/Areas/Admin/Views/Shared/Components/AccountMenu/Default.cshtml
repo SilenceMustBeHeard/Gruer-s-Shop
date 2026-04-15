@@ -1,4 +1,6 @@
-﻿@using GruersShop.Data.Models.Base
+﻿@model bool
+
+@using GruersShop.Data.Models.Base
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<AppUser> SignInManager
 @inject UserManager<AppUser> UserManager
@@ -6,7 +8,7 @@
 @{
     string displayName = null;
 
-    if (SignInManager.IsSignedIn(User))
+    if (Model)
     {
         var user = await UserManager.GetUserAsync(User);
         
@@ -25,34 +27,41 @@
     }
 }
 
-@if (SignInManager.IsSignedIn(User))
+@if (Model)
 {
     <li class="dropdown-header border-bottom mb-2 pb-2">
         <div class="d-flex align-items-center gap-2">
-            <i class="bi bi-shield-lock text-warm"></i>
+            <i class="bi bi-egg-fried text-warm"></i>
             <div>
-                <small class="text-muted d-block">Admin</small>
+                <small class="text-muted d-block">Welcome back,</small>
                 <strong class="text-glow">@displayName</strong>
             </div>
         </div>
     </li>
 
+    <!-- Profile Link -->
     <li>
-        <a class="dropdown-item" asp-area="Admin" asp-controller="AdminProfile" asp-action="Index">
+        <a class="dropdown-item" asp-controller="Profile" asp-action="Index">
             <i class="bi bi-person-badge me-2 text-warm"></i> My Profile
         </a>
     </li>
 
-    <li>
-        <a class="dropdown-item" asp-area="Admin" asp-controller="AdminProfile" asp-action="AdminInbox">
-            <i class="bi bi-envelope-paper me-2 text-warm"></i> Messages
-        </a>
-    </li>
+    <!-- Admin Dashboard Link (only for admins) -->
+    @if (User.IsInRole("Admin"))
+    {
+        <li>
+            <a class="dropdown-item" asp-area="Admin" asp-controller="AdminDashboard" asp-action="Index">
+                <i class="bi bi-shield-lock me-2 text-warm"></i> Admin Dashboard
+            </a>
+        </li>
+    }
 
     <li><hr class="dropdown-divider"></li>
 
+    <!-- Logout -->
     <li class="px-3 py-2">
-        <form asp-area="Admin" asp-controller="Account" asp-action="Logout" method="post">
+        <form asp-area = "Admin"
+            asp-controller="Account" asp-action="Logout" method="post">
             @Html.AntiForgeryToken()
             <button type="submit" class="btn-warm w-100">
                 <i class="bi bi-box-arrow-right me-2"></i> Logout
@@ -64,14 +73,20 @@ else
 {
     <li class="dropdown-header border-bottom mb-2 pb-2">
         <div class="d-flex align-items-center gap-2">
-            <i class="bi bi-shield-lock text-warm"></i>
-            <small class="text-muted">Admin Access</small>
+            <i class="bi bi-cup-hot text-warm"></i>
+            <small class="text-muted">Welcome to Gruer's</small>
         </div>
     </li>
 
     <li>
-        <a class="dropdown-item" asp-area="Admin" asp-controller="Account" asp-action="Login">
+        <a class="dropdown-item" asp-controller="Account" asp-action="Login">
             <i class="bi bi-box-arrow-in-right me-2 text-warm"></i> Login
+        </a>
+    </li>
+
+    <li>
+        <a class="dropdown-item" asp-controller="Account" asp-action="Register">
+            <i class="bi bi-person-plus me-2 text-warm"></i> Register
         </a>
     </li>
 }

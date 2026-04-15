@@ -15,17 +15,7 @@ public class AccountMenuViewComponent : ViewComponent
 
     public IViewComponentResult Invoke()
     {
-        var user = HttpContext.User;
-
-        var isLoggedIn = _signInManager.IsSignedIn(user);
-        var isAdmin = user.IsInRole("Admin");
-        var isManager = user.IsInRole("Manager");
-
-        ViewBag.IsLoggedIn = isLoggedIn;
-        ViewBag.IsAdmin = isAdmin;
-        ViewBag.IsManager = isManager;
-        ViewBag.Username = user.Identity?.Name;
-
-        return View();
+        var isLoggedIn = _signInManager.IsSignedIn(HttpContext.User);
+        return View(isLoggedIn);
     }
 }

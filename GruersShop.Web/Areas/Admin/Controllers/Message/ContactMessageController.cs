@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace GruersShop.Web.Areas.Admin.Message;
+namespace GruersShop.Web.Areas.Admin.Controllers.Message;
 
 [Area("Admin")]
 [Authorize(Roles = "Admin")]
