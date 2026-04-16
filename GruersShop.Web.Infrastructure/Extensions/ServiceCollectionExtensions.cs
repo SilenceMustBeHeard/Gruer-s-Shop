@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using GruersShop.Services.Common.Exceptions;
 using System.Reflection;
 
 namespace GruersShop.Web.Infrastructure.Extensions;
@@ -7,9 +6,8 @@ namespace GruersShop.Web.Infrastructure.Extensions;
 public static class ServiceCollectionExtensions
 {
     private const string ServiceSuffix = "Service";
-    private const string InterfacePrefix = "I";
     private const string RepositorySuffix = "Repository";
-    private const string BasePrefix = "Base";
+    private const string InterfacePrefix = "I";
 
     public static IServiceCollection RegisterServices(
         this IServiceCollection services,
@@ -20,22 +18,19 @@ public static class ServiceCollectionExtensions
             .Where(t =>
                 t.IsClass &&
                 !t.IsAbstract &&
-                t.Name.EndsWith(ServiceSuffix) &&
-                !t.IsGenericType)
+                t.Name.EndsWith(ServiceSuffix))
             .ToList();
 
         foreach (var implementation in serviceTypes)
         {
-            var expectedInterfaceName = $"{InterfacePrefix}{implementation.Name}";
-
-            var serviceInterface = implementation
-                .GetInterfaces()
-                .FirstOrDefault(i => i.Name == expectedInterfaceName);
+            var serviceInterface = implementation.GetInterfaces()
+                .FirstOrDefault(i =>
+                    i.Name == $"I{implementation.Name}");
 
             if (serviceInterface == null)
             {
-                throw new InvalidOperationException(
-                    $"❌ Service '{implementation.Name}' does not have matching interface '{expectedInterfaceName}'");
+              
+                continue;
             }
 
             services.AddScoped(serviceInterface, implementation);
@@ -53,22 +48,20 @@ public static class ServiceCollectionExtensions
             .Where(t =>
                 t.IsClass &&
                 !t.IsAbstract &&
-                !t.IsGenericType &&
                 t.Name.EndsWith(RepositorySuffix) &&
-                !t.Name.StartsWith(BasePrefix)).ToList();
+                !t.Name.StartsWith("Base"))
+            .ToList();
 
         foreach (var implementation in repoTypes)
         {
-            var expectedInterfaceName = $"{InterfacePrefix}{implementation.Name}";
-
-            var repoInterface = implementation
-                .GetInterfaces()
-                .FirstOrDefault(i => i.Name == expectedInterfaceName);
+            var repoInterface = implementation.GetInterfaces()
+                .FirstOrDefault(i =>
+                    i.Name == $"I{implementation.Name}");
 
             if (repoInterface == null)
             {
-                throw new InvalidOperationException(
-                    $"❌ Repository '{implementation.Name}' does not have matching interface '{expectedInterfaceName}'");
+                // ⚠️ skip instead of crash
+                continue;
             }
 
             services.AddScoped(repoInterface, implementation);

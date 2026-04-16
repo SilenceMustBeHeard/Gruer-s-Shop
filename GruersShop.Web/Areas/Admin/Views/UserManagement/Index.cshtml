@@ -9,153 +9,82 @@
 }
 
 <div class="container py-5">
-    <div class="warm-card p-4">
-        <div class="text-center mb-4">
-            <i class="bi bi-people display-1 text-warm"></i>
-            <h1 class="display-4 mt-2">User Management</h1>
-            <div class="honey-accent mx-auto"></div>
-            <p class="text-muted">Manage platform users and their roles</p>
-        </div>
+    <h2 class="text-center mb-4">User Management</h2>
 
-        <div class="mb-4">
-            <a asp-area="Admin" asp-controller="AdminDashboard" asp-action="Index" class="btn-warm-sm">
-                <i class="bi bi-arrow-left me-1"></i> Back to Dashboard
-            </a>
-        </div>
-
-        @if (!Model.Any())
-        {
-            <div class="text-center py-5">
-                <i class="bi bi-people display-4 text-muted"></i>
-                <p class="mt-3">No users available.</p>
-            </div>
-        }
-        else
-        {
-            <div class="row g-4">
-                @foreach (var user in Model)
-                {
-                    var isBanned = user.LockoutEnd != null && user.LockoutEnd > DateTimeOffset.UtcNow;
-
-                    <div class="col-lg-4 col-md-6">
-                        <div class="warm-card h-100 position-relative @(isBanned ? "opacity-75" : "")">
-                            @if (isBanned)
-                            {
-                                <div class="position-absolute top-0 start-0 w-100 text-center py-2 bg-danger text-white fw-bold rounded-top">
-                                    <i class="bi bi-ban me-1"></i> USER BANNED
-                                </div>
-                            }
-
-                            <div class="card-body d-flex flex-column @(isBanned ? "pt-5" : "pt-3")">
-                                <div class="text-center mb-3">
-                                    <div class="profile-avatar-sm mx-auto mb-2">
-                                        <i class="bi bi-person-circle display-4 text-warm"></i>
-                                    </div>
-                                    <h5 class="fw-bold mb-1">@user.Email</h5>
-                                </div>
-
-                                <div class="mb-3 d-flex flex-wrap gap-2 justify-content-center">
-                                    @foreach (var role in user.Roles)
-                                    {
-                                        <span class="stone-badge">@role</span>
-                                    }
-                                </div>
-
-                                @if (!user.Roles.Contains("Admin"))
-                                {
-                                    <div class="mb-3">
-                                        <label class="form-label small text-muted">Change Role</label>
-                                        <select id="roleDropdown-@user.Id"
-                                                class="form-select warm-input"
-                                            @(isBanned ? "disabled" : "")>
-                                            @foreach (var role in RoleManager.Roles)
-                                            {
-                                                <option value="@role.Name"
-                                                        selected="@(user.Roles.Contains(role.Name) ? "selected" : null)">
-                                                    @role.Name
-                                                </option>
-                                            }
-                                        </select>
-                                    </div>
-
-                                    <div class="d-flex flex-wrap gap-2 mt-auto">
-                                        <form method="post"
-                                              asp-action="AssignRole"
-                                              asp-controller="UserManagement"
-                                              asp-area="Admin"
-                                              class="flex-fill">
-                                            <input type="hidden" name="UserId" value="@user.Id" />
-                                            <input type="hidden" name="NewRole" id="assignRoleInput-@user.Id" />
-                                            <button type="submit"
-                                                    class="btn-glow-sm w-100"
-                                                    onclick="setRoleValue('@user.Id', 'assignRoleInput')"
-                                                @(isBanned ? "disabled" : "")>
-                                                <i class="bi bi-person-plus-fill me-1"></i> Assign
-                                            </button>
-                                        </form>
-
-                                        <form asp-area="Admin"
-                                              asp-controller="UserManagement"
-                                              asp-action="DisableUser"
-                                              method="post"
-                                              class="flex-fill">
-                                            @Html.AntiForgeryToken()
-                                            <input type="hidden" name="userId" value="@user.Id" />
-                                            <button class="btn-warm-sm w-100" style="background: #dc3545;"
-                                                @(isBanned ? "disabled" : "")>
-                                                <i class="bi bi-person-x me-1"></i> Ban
-                                            </button>
-                                        </form>
-
-                                        <form asp-area="Admin"
-                                              asp-controller="SystemMessage"
-                                              asp-action="Create"
-                                              method="get"
-                                              class="flex-fill">
-                                            <input type="hidden" name="userId" value="@user.Id" />
-                                            <button type="submit"
-                                                    class="btn-warm-sm w-100"
-                                                @(isBanned ? "disabled" : "")>
-                                                <i class="bi bi-envelope me-1"></i> Message
-                                            </button>
-                                        </form>
-                                    </div>
-                                }
-                                else
-                                {
-                                    <div class="text-center text-muted mt-2">
-                                        <i class="bi bi-shield-lock me-1"></i> Cannot edit Admin
-                                    </div>
-                                }
-                            </div>
-                        </div>
-                    </div>
-                }
-            </div>
-        }
-    </div>
-</div>
-
-<style>
-    .profile-avatar-sm {
-        width: 60px;
-        height: 60px;
-        background: linear-gradient(135deg, var(--wood-light), var(--wood-medium));
-        border-radius: 50%;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
+    @if (!Model.Any())
+    {
+        <p class="text-center">No users available.</p>
     }
-</style>
+    else
+    {
+        <div class="row g-4">
+            @foreach (var user in Model)
+            {
+                var isBanned = user.LockoutEnd != null && user.LockoutEnd > DateTimeOffset.UtcNow;
 
-@section Scripts {
-    <script>
-        function setRoleValue(userId, inputIdPrefix) {
-            const dropdown = document.getElementById(`roleDropdown-${userId}`);
-            const input = document.getElementById(`${inputIdPrefix}-${userId}`);
-            if (dropdown && input) {
-                input.value = dropdown.value;
+                <div class="col-md-4">
+                    <div class="card p-3 @(isBanned ? "bg-light opacity-75" : "")">
+
+                        <h5>@user.Email</h5>
+
+                        <div class="mb-2">
+                            Roles:
+                            @foreach (var role in user.Roles)
+                            {
+                                <span class="badge bg-secondary">@role</span>
+                            }
+                        </div>
+
+                        @if (!user.Roles.Contains("Admin"))
+                        {
+                            <!-- ✅ Assign Role -->
+                            <form method="post"
+                                  asp-action="AssignRole"
+                                  asp-controller="UserManagement"
+                                  asp-area="Admin">
+
+                                <input type="hidden" name="UserId" value="@user.Id" />
+
+                                <select name="NewRole" class="form-select mb-2" @(isBanned ? "disabled" : "")>
+                                    @foreach (var role in RoleManager.Roles)
+                                    {
+                                        <option value="@role.Name"
+                                                selected="@(user.Roles.Contains(role.Name) ? "selected" : null)">
+                                            @role.Name
+                                        </option>
+                                    }
+                                </select>
+
+                                <button type="submit"
+                                        class="btn btn-primary w-100 mb-2"
+                                    @(isBanned ? "disabled" : "")>
+                                    Assign Role
+                                </button>
+                            </form>
+
+                            <!-- ✅ Ban User -->
+                            <form method="post"
+                                  asp-action="DisableUser"
+                                  asp-controller="UserManagement"
+                                  asp-area="Admin">
+
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="userId" value="@user.Id" />
+
+                                <button type="submit"
+                                        class="btn btn-danger w-100"
+                                    @(isBanned ? "disabled" : "")>
+                                    Ban User
+                                </button>
+                            </form>
+                        }
+                        else
+                        {
+                            <p class="text-muted">Cannot edit Admin</p>
+                        }
+                    </div>
+                </div>
             }
-        }
-    </script>
-}
+        </div>
+    }
+</div>

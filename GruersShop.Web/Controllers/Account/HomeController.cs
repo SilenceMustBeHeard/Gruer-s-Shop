@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace GruersShop.Web.Controllers;
+namespace GruersShop.Web.Controllers.Account;
 
 public class HomeController : Controller
 {

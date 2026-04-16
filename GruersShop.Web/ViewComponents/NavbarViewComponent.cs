@@ -27,30 +27,45 @@ public class NavbarViewComponent : ViewComponent
 
     public async Task<IViewComponentResult> InvokeAsync()
     {
+        var isLoggedIn = _signInManager.IsSignedIn(HttpContext.User);
+
         var model = new NavbarButtonsViewModel
         {
-            IsLoggedIn = _signInManager.IsSignedIn(HttpContext.User)
+            IsLoggedIn = isLoggedIn
         };
 
-        if (model.IsLoggedIn)
+        if (!isLoggedIn)
         {
-            var user = await _userManager.GetUserAsync(HttpContext.User);
+            model.IsAdmin = false;
+            model.IsManager = false;
+            model.IsUser = false;
+            model.UnreadMessagesCount = 0;
 
-            model.IsAdmin = HttpContext.User.IsInRole(RoleNames.Admin);
-            model.IsManager = HttpContext.User.IsInRole(RoleNames.Manager);
-            model.IsUser = !model.IsAdmin && !model.IsManager;
+            return View(model);
+        }
 
-            if (user != null && model.IsUser)
+        var user = await _userManager.GetUserAsync(HttpContext.User);
+
+        if (user == null)
+        {
+            // 🔥 CRITICAL SAFETY NET (logout race condition)
+            return View(model);
+        }
+
+        model.IsAdmin = HttpContext.User.IsInRole(RoleNames.Admin);
+        model.IsManager = HttpContext.User.IsInRole(RoleNames.Manager);
+        model.IsUser = !model.IsAdmin && !model.IsManager;
+
+        if (model.IsUser)
+        {
+            try
             {
-                try
-                {
-                    model.UnreadMessagesCount = await _contactMessageClientService
-                        .GetUserUnreadResponsesCountAsync(user.Id);
-                }
-                catch
-                {
-                    model.UnreadMessagesCount = 0;
-                }
+                model.UnreadMessagesCount =
+                    await _contactMessageClientService.GetUserUnreadResponsesCountAsync(user.Id);
+            }
+            catch
+            {
+                model.UnreadMessagesCount = 0;
             }
         }
 

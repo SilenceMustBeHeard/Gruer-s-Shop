@@ -1,12 +1,15 @@
-
 using GruersShop.Data;
 using GruersShop.Data.Models.Base;
 using GruersShop.Data.Repositories.Implementations.UnitOfWork;
 using GruersShop.Data.Repositories.Interfaces.Account;
+using GruersShop.Data.Repositories.Interfaces.Bakery;
 using GruersShop.Data.Repositories.Interfaces.CRUD;
 using GruersShop.Data.Seeding;
-using GruersShop.Services.Core.Service.Implementations.Account;
+using GruersShop.Services.Core.Service.Admin.Interfaces.Catalog;
+using GruersShop.Services.Core.Service.Admin.Interfaces.Interactions;
+using GruersShop.Services.Core.Service.Implementations.Bakery;
 using GruersShop.Services.Core.Service.Interfaces.Account;
+using GruersShop.Services.Core.Service.Interfaces.Bakery;
 using GruersShop.Web.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -15,20 +18,14 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Connection string 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
-    ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+    ?? throw new InvalidOperationException("Missing connection string");
 
-// Add DbContext 
+// DB
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-
-
-// Add HttpClient factory for services that need to make HTTP requests (like IPreviewService)
-builder.Services.AddHttpClient();
-
-// Add Identity 
+// Identity
 builder.Services.AddDefaultIdentity<AppUser>(options =>
 {
     options.SignIn.RequireConfirmedAccount = false;
@@ -40,27 +37,23 @@ builder.Services.AddDefaultIdentity<AppUser>(options =>
 .AddRoles<IdentityRole>()
 .AddEntityFrameworkStores<AppDbContext>();
 
-// Authorization
+// Auth
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("AdminPolicy", policy =>
-        policy.RequireRole("Admin"));
-
-    options.AddPolicy("ManagerPolicy", policy =>
-       policy.RequireRole("Manager"));
+    options.AddPolicy("AdminPolicy", p => p.RequireRole("Admin"));
+    options.AddPolicy("ManagerPolicy", p => p.RequireRole("Manager"));
 });
 
-// Repositories & Services
+// DI
 builder.Services.RegisterRepositories(typeof(IAppUserRepository).Assembly);
 builder.Services.RegisterServices(typeof(IAccountService).Assembly);
-builder.Services.AddScoped<IAccountService, AccountService>();
-builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-// Add MVC with custom error handling
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<ICategoryClientService, CategoryClientService>();
+
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
-// Configure error handling
 builder.Services.Configure<ApiBehaviorOptions>(options =>
 {
     options.SuppressModelStateInvalidFilter = true;
@@ -68,53 +61,31 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 
 var app = builder.Build();
 
-// Seed Roles, Users and Data
+// SEED
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-    // Apply migrations first
     await context.Database.MigrateAsync();
 
-    // Seed Identity (Roles and Users) - idempotent (safe to run multiple times)
     await IdentitySeeder.SeedRolesAsync(roleManager);
     await IdentitySeeder.SeedAdminAsync(userManager);
     await IdentitySeeder.SeedManagerAsync(userManager);
 
-    //    // Seed Catalog Data - ONLY if Categories table is empty
-    var anyCategories = await context.Categories.AnyAsync();
-    if (!anyCategories)
-    {
-        try
-        {
-           
-            await DbSeeder.SeedAllAsync(context);
-            Console.WriteLine("✅ Database seeding completed successfully!");
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"❌ Seeding failed: {ex.Message}");
-            throw;
-        }
-    }
-    else
-    {
-        Console.WriteLine("📦 Categories already exist. Skipping catalog data seeding.");
-    }
+    if (!await context.Categories.AnyAsync())
+        await DbSeeder.SeedAllAsync(context);
 }
 
-
-
-// Static files with .glb support for 3D models
+// STATIC FILES
 var provider = new FileExtensionContentTypeProvider();
 provider.Mappings[".glb"] = "model/gltf-binary";
 
-// Configure error handling middleware
+// ERROR HANDLING (FIXED)
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Error/500");
+    app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
 else
@@ -123,6 +94,7 @@ else
 }
 
 app.UseStatusCodePagesWithReExecute("/Error/{0}");
+
 app.UseHttpsRedirection();
 
 app.UseStaticFiles(new StaticFileOptions
@@ -134,31 +106,21 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Custom error handling for 404
-app.Use(async (context, next) =>
+
+app.MapGet("/", context =>
 {
-    await next();
-    if (context.Response.StatusCode == 404 && !context.Response.HasStarted)
-    {
-        context.Items["originalPath"] = context.Request.Path;
-        context.Request.Path = "/Error/404";
-        await next();
-    }
+    context.Response.Redirect("/Home/Index");
+    return Task.CompletedTask;
 });
 
-// Routing
 app.MapControllerRoute(
     name: "areas",
     pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
-
-
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-//app.MapRazorPages();
+app.MapRazorPages();
 
 await app.RunAsync();
-
-
