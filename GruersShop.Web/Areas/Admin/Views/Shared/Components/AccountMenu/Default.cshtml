@@ -67,7 +67,7 @@
 
     <!-- Logout -->
     <li class="px-3 py-2">
-        <form asp-area = "Admin"
+        <form 
             asp-controller="Account" asp-action="Logout" method="post">
             @Html.AntiForgeryToken()
             <button type="submit" class="btn-warm w-100">
