@@ -85,7 +85,7 @@
                                               asp-controller="UserManagement"
                                               asp-area="Admin"
                                               class="flex-fill">
-                                            @Html.AntiForgeryToken()
+                                    
                                             <input type="hidden" name="UserId" value="@user.Id" />
                                             <input type="hidden" name="NewRole" id="assignRoleInput-@user.Id" />
                                             <button type="submit"

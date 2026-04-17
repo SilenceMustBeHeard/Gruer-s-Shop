@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GruersShop.Web.Areas.Admin.Controllers.Interactions;
 
+
 [Area("Admin")]
 [Authorize(Roles = "Admin")]
 public class UserManagementController : BaseAdminController
@@ -37,7 +38,6 @@ public class UserManagementController : BaseAdminController
     // add role to user
 
     [HttpPost]
-    [ValidateAntiForgeryToken]
 
     public async Task<IActionResult> AssignRole(ChangeUserRoleViewModel model)
     {
@@ -78,4 +78,12 @@ public class UserManagementController : BaseAdminController
 
         return RedirectToAction(nameof(Index));
     }
+
+
+
+
+
+
+
+
 }
