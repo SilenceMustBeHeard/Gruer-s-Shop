@@ -1,4 +1,8 @@
-/* Warm dropdown menu */
+/* ========================================
+   WARM DROPDOWN MENU - RUSTIC STONE THEME
+   ======================================== */
+
+/* Light Mode Dropdown */
 .dropdown-menu {
     background: var(--warm-light);
     border: 1px solid var(--stone-medium);
@@ -29,6 +33,43 @@
         display: inline-block;
     }
 
+/* Dropdown divider */
+.dropdown-divider {
+    border-top-color: var(--stone-light);
+    margin: var(--spacing-sm) 0;
+}
+
+/* ========================================
+   DARK MODE DROPDOWN - WARM & READABLE
+   ======================================== */
+
+[data-bs-theme="dark"] .dropdown-menu {
+    background: #3d2514; /* Rich dark wood */
+    border: 1px solid #6b4423;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+[data-bs-theme="dark"] .dropdown-header {
+    color: #c4b6a5; /* Warm stone */
+}
+
+[data-bs-theme="dark"] .dropdown-item {
+    color: #e8d9cc; /* Warm light cream */
+}
+
+    [data-bs-theme="dark"] .dropdown-item:hover {
+        background: linear-gradient(90deg, #6b4423, transparent);
+        color: var(--glow-gold);
+    }
+
+[data-bs-theme="dark"] .dropdown-divider {
+    border-top-color: #6b4423;
+}
+
+/* ========================================
+   UNREAD INDICATORS & BADGES
+   ======================================== */
+
 /* Unread dot indicator */
 .unread-dot {
     display: inline-block;
@@ -49,6 +90,12 @@
     border-radius: 20px;
 }
 
+/* Dark mode honey badge */
+[data-bs-theme="dark"] .honey-badge {
+    background: linear-gradient(135deg, #f0b84d, #e07a2c);
+    color: #2e1a0a;
+}
+
 /* Warm text color */
 .text-warm {
     color: var(--wood-medium);
@@ -60,7 +107,19 @@
     font-weight: 600;
 }
 
-/* Animation for unread indicator */
+/* Dark mode text colors */
+[data-bs-theme="dark"] .text-warm {
+    color: var(--glow-gold);
+}
+
+[data-bs-theme="dark"] .text-glow {
+    color: #f0b84d;
+}
+
+/* ========================================
+   ANIMATIONS
+   ======================================== */
+
 @keyframes pulse {
     0%, 100% {
         opacity: 0.4;
@@ -71,10 +130,4 @@
         opacity: 1;
         transform: scale(1.2);
     }
-}
-
-/* Dropdown divider */
-.dropdown-divider {
-    border-top-color: var(--stone-light);
-    margin: var(--spacing-sm) 0;
 }

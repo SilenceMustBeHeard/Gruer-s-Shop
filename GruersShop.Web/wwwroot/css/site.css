@@ -1,3 +1,11 @@
+
+@import url('components/badges.css');
+@import url('components/profile.css');
+
+/*@import url('components/layout.css');*/
+@import url('components/navigation.css');
+@import url('components/buttons.css');
+@import url('components/cards.css');
 /* Gruer's Shop - Complete Theme (No Imports Needed) */
 :root {
     --wood-light: #d4a574;
