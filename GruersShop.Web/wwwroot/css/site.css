@@ -1,8 +1,9 @@
 
 @import url('components/badges.css');
 @import url('components/profile.css');
+/*@import url('components/profile.css');*/
 
-/*@import url('components/layout.css');*/
+
 @import url('components/navigation.css');
 @import url('components/buttons.css');
 @import url('components/cards.css');
@@ -335,4 +336,14 @@ body {
     height: 200%;
     background: radial-gradient(circle, rgba(255,193,7,0.08), transparent 60%);
     pointer-events: none;
+}
+
+#sparksCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 9999;
 }
