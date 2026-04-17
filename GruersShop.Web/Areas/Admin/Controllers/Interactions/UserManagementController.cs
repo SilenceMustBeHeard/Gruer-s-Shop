@@ -37,6 +37,8 @@ public class UserManagementController : BaseAdminController
     // add role to user
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
+
     public async Task<IActionResult> AssignRole(ChangeUserRoleViewModel model)
     {
         if (!ModelState.IsValid
