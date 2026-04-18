@@ -1,6 +1,7 @@
 ﻿using GruersShop.Data.Repositories.Interfaces.Messages;
 using GruersShop.Services.Core.Service.Admin.Interfaces.Message;
 using GruersShop.Web.ViewModels.Account.Messages;
+using GruersShop.Web.ViewModels.Admin.Message;
 using Microsoft.EntityFrameworkCore;
 
 namespace GruersShop.Services.Core.Service.Admin.Implementations.Message;
@@ -65,10 +66,9 @@ public class ContactMessageService : IContactMessageService
             .Include(m => m.Sender)
             .Include(m => m.Receiver)
             .Include(m => m.RespondedBy)
-            .FirstOrDefaultAsync(m => m.Id == messageId && m.ReceiverId == adminId);
+            .FirstOrDefaultAsync(m => m.Id == messageId && m.ReceiverId == adminId);  // <- ТРЯБВА ДА Е ReceiverId
 
         if (message == null) return null;
-
 
         if (!message.IsReadByAdmin)
         {
@@ -81,10 +81,10 @@ public class ContactMessageService : IContactMessageService
             Id = message.Id,
             Subject = message.Subject,
             Message = message.Message,
-            SenderName = message.Sender!.FullName ?? "Unknown",
-            SenderEmail = message.Sender!.Email ?? string.Empty,
-            ReceiverName = message.Receiver!.FullName ?? "Admin",
-            ReceiverEmail = message.Receiver!.Email ?? string.Empty,
+            SenderName = message.Sender?.FullName ?? "Unknown",
+            SenderEmail = message.Sender?.Email ?? string.Empty,
+            ReceiverName = message.Receiver?.FullName ?? "Admin",
+            ReceiverEmail = message.Receiver?.Email ?? string.Empty,
             IsRead = message.IsRead,
             IsReadByAdmin = message.IsReadByAdmin,
             CreatedOn = message.CreatedAt,

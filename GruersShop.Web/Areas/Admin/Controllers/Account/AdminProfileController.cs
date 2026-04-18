@@ -72,6 +72,8 @@ public class AdminProfileController : Controller
         return View(messages);
     }
 
+   
+
     [HttpGet]
     public async Task<IActionResult> SystemMessageDetails(Guid id)
     {

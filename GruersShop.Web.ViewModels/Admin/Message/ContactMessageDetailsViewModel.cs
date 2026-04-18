@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace GruersShop.Web.ViewModels.Account.Messages;
+namespace GruersShop.Web.ViewModels.Admin.Message;
 
 public class ContactMessageDetailsViewModel
 {

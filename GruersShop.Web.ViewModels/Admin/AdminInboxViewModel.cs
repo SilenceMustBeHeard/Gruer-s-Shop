@@ -1,4 +1,5 @@
 ﻿using GruersShop.Web.ViewModels.Account.Messages;
+using GruersShop.Web.ViewModels.Admin.Message;
 using System.Collections.Generic;
 
 namespace GruersShop.Web.ViewModels.Admin

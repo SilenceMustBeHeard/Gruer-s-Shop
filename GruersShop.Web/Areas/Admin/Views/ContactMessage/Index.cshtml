@@ -1,8 +1,8 @@
-﻿@using GruersShop.Web.ViewModels.Admin
-@model AdminInboxViewModel
+﻿@using GruersShop.Web.ViewModels.Admin.Message
+@model IEnumerable<ContactMessageDetailsViewModel>
 
 @{
-    ViewData["Title"] = "Admin Inbox";
+    ViewData["Title"] = "Contact Messages";
 }
 
 <div class="container py-5">
@@ -11,15 +11,16 @@
             <i class="bi bi-envelope-paper display-1 text-warm"></i>
             <h1 class="display-4 mt-2">Contact Messages</h1>
             <div class="honey-accent mx-auto"></div>
+            <p class="text-muted">Messages from customers</p>
         </div>
 
         <div class="mb-4">
-            <a asp-area="Admin" asp-controller="AdminDashboard" asp-action="Index" class="btn-warm-sm">
+            <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="btn-warm-sm">
                 <i class="bi bi-arrow-left me-1"></i> Back to Dashboard
             </a>
         </div>
 
-        @if (!Model.ContactMessages.Any())
+        @if (!Model.Any())
         {
             <div class="text-center py-5">
                 <i class="bi bi-envelope-open display-4 text-muted"></i>
@@ -29,15 +30,10 @@
         else
         {
             <div class="letters-stack">
-                @foreach (var message in Model.ContactMessages.OrderByDescending(m => m.CreatedOn))
+                @foreach (var message in Model.OrderByDescending(m => m.CreatedOn))
                 {
-                    <!-- ОБВИВАЩ ЛИНК КЪМ DETAILS -->
-                    <a asp-area="Admin"
-                           asp-controller="ContactMessage"
-                           asp-action="Details"
-                           asp-route-id="@message.Id"
-                           class="letter-link">
-                        <div class="letter-item mb-3">
+                    <div class="letter-item mb-3">
+                        <a asp-area="Admin" asp-controller="ContactMessage" asp-action="Details" asp-route-id="@message.Id" class="letter-link">
                             <div class="d-flex justify-content-between align-items-start">
                                 <div class="d-flex gap-2 align-items-center">
                                     <i class="bi bi-chat-heart text-warm"></i>
@@ -66,8 +62,8 @@
                             <div class="mt-2">
                                 <span class="read-more-link">View & Respond <i class="bi bi-arrow-right"></i></span>
                             </div>
-                        </div>
-                    </a>
+                        </a>
+                    </div>
                 }
             </div>
         }

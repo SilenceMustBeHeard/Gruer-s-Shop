@@ -6,51 +6,187 @@
 }
 
 <div class="container py-5">
+
+
+    <!-- Welcome Banner -->
     <div class="hero-oven text-center mb-5">
-        <i class="bi bi-person-badge display-1"></i>
-        <h1 class="display-3 mt-2">Admin Profile</h1>
+        <div class="d-flex align-items-center justify-content-center gap-3 mb-3">
+            <i class="bi bi-shield-lock display-4"></i>
+            <i class="bi bi-heart-fill text-warm"></i>
+            <i class="bi bi-egg-fried display-4"></i>
+        </div>
+        <h1 class="display-4">Welcome back, @Model.FirstName! 🥐</h1>
         <div class="honey-accent mx-auto"></div>
+        <p class="mt-3">Your command center as Admin</p>
     </div>
 
-    <div class="row justify-content-center">
-        <div class="col-lg-6">
-            <div class="warm-card text-center p-4">
+    <div class="row g-4">
+        <!-- Admin Info Card -->
+        <div class="col-lg-4">
+            <div class="warm-card text-center">
                 <div class="mb-3">
                     <div class="profile-avatar mx-auto">
                         <i class="bi bi-shield-lock display-1 text-warm"></i>
                     </div>
                 </div>
-                <h2 class="fw-bold">@Model.FirstName @Model.LastName</h2>
+                <h3 class="fw-bold">@Model.FirstName @Model.LastName</h3>
                 <div class="honey-accent mx-auto" style="width: 40px;"></div>
+                <span class="badge bg-warning text-dark mt-2">ADMINISTRATOR</span>
                 
                 <div class="mt-4 text-start">
-                    <div class="info-row mb-3">
-                        <i class="bi bi-envelope me-2 text-warm"></i>
-                        <div>
-                            <small class="text-muted d-block">Email</small>
-                            <span>@Model.Email</span>
-                        </div>
+                    <div class="mb-2">
+                        <small class="text-muted">Email</small>
+                        <p class="mb-0"><i class="bi bi-envelope me-2 text-warm"></i> @Model.Email</p>
                     </div>
-                    <div class="info-row mb-3">
-                        <i class="bi bi-geo-alt me-2 text-warm"></i>
-                        <div>
-                            <small class="text-muted d-block">Address</small>
-                            <span>@(string.IsNullOrEmpty(Model.Address) ? "Not provided" : Model.Address)</span>
-                        </div>
+                    <div class="mb-2">
+                        <small class="text-muted">Location</small>
+                        <p class="mb-0"><i class="bi bi-geo-alt me-2 text-warm"></i> @(string.IsNullOrEmpty(Model.Address) ? "Not shared yet" : Model.Address)</p>
+                    </div>
+                    <div>
+                        <small class="text-muted">Role</small>
+                        <p class="mb-0"><i class="bi bi-shield-lock me-2 text-warm"></i> Full Access • God Mode</p>
                     </div>
                 </div>
 
                 <hr class="stone-divider my-3">
 
-                <div class="d-flex gap-2 justify-content-center">
-                    <a asp-area="Admin" asp-controller="AdminProfile" asp-action="AdminInbox" class="btn-warm-sm">
-                        <i class="bi bi-envelope me-1"></i> Inbox
-                    </a>
-                    <a asp-controller="Account" asp-action="Logout" asp-area="" class="btn-stone-sm">
-                        <i class="bi bi-box-arrow-right me-1"></i> Logout
-                    </a>
+                <a asp-area="Admin" asp-controller="Account" asp-action="Logout" class="btn-warm-sm w-100">
+                    <i class="bi bi-box-arrow-right me-1"></i> Sign out
+                </a>
+            </div>
+        </div>
+
+        <!-- Messages Section -->
+        <div class="col-lg-8">
+            <div class="warm-card">
+                <div class="d-flex gap-2 border-bottom pb-3 mb-3">
+                    <button class="btn-warm-sm active-tab" id="systemTabBtn">
+                        <i class="bi bi-megaphone me-1"></i> System Messages
+                        @if (Model.SystemInbox?.Count(x => !x.IsRead) > 0)
+                        {
+                            <span class="honey-badge ms-1">@Model.SystemInbox.Count(x => !x.IsRead)</span>
+                        }
+                    </button>
+                    <button class="btn-stone-sm" id="contactTabBtn">
+                        <i class="bi bi-chat-heart me-1"></i> Contact Messages
+                        @if (Model.ContactMessages?.Count(x => !x.IsReadByAdmin) > 0)
+                        {
+                            <span class="honey-badge ms-1">@Model.ContactMessages.Count(x => !x.IsReadByAdmin)</span>
+                        }
+                    </button>
+                </div>
+
+                <!-- System Messages Panel -->
+                <div id="systemMessagesPanel">
+                    @if (Model.SystemInbox == null || !Model.SystemInbox.Any())
+                    {
+                        <div class="text-center py-5">
+                            <i class="bi bi-envelope-open display-4 text-muted"></i>
+                            <p class="mt-3">No system messages</p>
+                            <p class="small text-muted">System announcements will appear here</p>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="letters-stack">
+                            @foreach (var message in Model.SystemInbox.OrderByDescending(x => x.CreatedOn))
+                            {
+                                <div class="letter-item mb-3">
+                                    <a asp-area="Admin" asp-controller="AdminProfile" asp-action="SystemMessageDetails" asp-route-id="@message.Id" class="letter-link">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div class="d-flex gap-2 align-items-center">
+                                                <i class="bi bi-megaphone text-warm"></i>
+                                                <div>
+                                                    <h6 class="fw-bold mb-0">@message.Title</h6>
+                                                    <small class="text-muted">@message.CreatedOn.ToLocalTime().ToString("dd MMM yyyy")</small>
+                                                </div>
+                                            </div>
+                                            @if (!message.IsRead)
+                                            {
+                                                <span class="honey-badge">New</span>
+                                            }
+                                        </div>
+                                        <p class="mt-2 mb-0 small text-muted">@(message.Description.Length > 100 ? message.Description.Substring(0, 100) + "..." : message.Description)</p>
+                                        <div class="mt-2">
+                                            <span class="read-more-link">Read message <i class="bi bi-arrow-right"></i></span>
+                                        </div>
+                                    </a>
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+
+                <!-- Contact Messages Panel -->
+                <div id="contactMessagesPanel" style="display: none;">
+                    @if (Model.ContactMessages == null || !Model.ContactMessages.Any())
+                    {
+                        <div class="text-center py-5">
+                            <i class="bi bi-envelope-paper display-4 text-muted"></i>
+                            <p class="mt-3">No contact messages</p>
+                            <p class="small text-muted">Customer messages will appear here</p>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="letters-stack">
+                            @foreach (var message in Model.ContactMessages.OrderByDescending(x => x.CreatedOn))
+                            {
+                                <div class="letter-item mb-3">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div class="d-flex gap-2 align-items-center">
+                                            <i class="bi bi-chat-heart text-warm"></i>
+                                            <div>
+                                                <h6 class="fw-bold mb-0">@message.Subject</h6>
+                                                <small class="text-muted">@message.CreatedOn.ToLocalTime().ToString("dd MMM yyyy")</small>
+                                            </div>
+                                        </div>
+                                        @if (!message.IsReadByAdmin)
+                                        {
+                                            <span class="honey-badge">New</span>
+                                        }
+                                    </div>
+                                    <p class="mt-2 mb-2 small text-muted">@(message.Message.Length > 100 ? message.Message.Substring(0, 100) + "..." : message.Message)</p>
+                    
+                                    <!-- ЯВЕН БУТОН -->
+                                    <a asp-area="Admin"
+                                           asp-controller="ContactMessage"
+                                           asp-action="Details"
+                                           asp-route-id="@message.Id"
+                                           class="btn-warm-sm w-100 text-center">
+                                        <i class="bi bi-envelope-open me-1"></i> View & Respond
+                                    </a>
+                                </div>
+                            }
+                        </div>
+                    }
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const systemTab = document.getElementById('systemTabBtn');
+        const contactTab = document.getElementById('contactTabBtn');
+        const systemPanel = document.getElementById('systemMessagesPanel');
+        const contactPanel = document.getElementById('contactMessagesPanel');
+        
+        if (systemTab && contactTab) {
+            systemTab.onclick = function() {
+                systemTab.className = 'btn-warm-sm active-tab';
+                contactTab.className = 'btn-stone-sm';
+                systemPanel.style.display = 'block';
+                contactPanel.style.display = 'none';
+            };
+            
+            contactTab.onclick = function() {
+                contactTab.className = 'btn-warm-sm active-tab';
+                systemTab.className = 'btn-stone-sm';
+                systemPanel.style.display = 'none';
+                contactPanel.style.display = 'block';
+            };
+        }
+    });
+</script>

@@ -33,23 +33,18 @@ public class ContactMessageController : Controller
     [HttpGet]
     public async Task<IActionResult> Details(Guid id)
     {
-        if (id == Guid.Empty)
+        var adminId = _userManager.GetUserId(User);
+        if (string.IsNullOrEmpty(adminId))
         {
-            TempData["Error"] = "Invalid message ID.";
-            return BadRequest();
+            TempData["Error"] = "You must be logged in.";
+            return RedirectToAction("Login", "Account");
         }
 
-        var adminId = _userManager.GetUserId(User);
-        if (adminId == null)
-        {
-            TempData["Error"] = "User not found.";
-            return NotFound();
-        }
         var message = await _contactMessageService.GetMessageDetailsAsync(id, adminId);
 
         if (message == null)
         {
-            TempData["Error"] = "Message not found.";
+            TempData["Error"] = "Message not found or you do not have permission to view it.";
             return NotFound();
         }
 

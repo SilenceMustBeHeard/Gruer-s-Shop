@@ -1,0 +1,95 @@
+﻿@using GruersShop.Web.ViewModels.Admin.Message
+@model ContactMessageDetailsViewModel
+
+@{
+    ViewData["Title"] = "Contact Message Details";
+}
+
+<div class="container py-5">
+    <div class="warm-card p-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="fw-bold mb-0">Contact Message</h2>
+            <a asp-area="Admin" asp-controller="AdminProfile" asp-action="Index" class="btn-warm-sm">
+                <i class="bi bi-arrow-left me-1"></i> Back to Profile
+            </a>
+        </div>
+
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert-oven alert-success mb-4">
+                <i class="bi bi-fire me-2"></i> @TempData["Success"]
+            </div>
+        }
+
+        <div class="row">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <div>
+                        <h3 class="fw-bold">@Model.Subject</h3>
+                        <div class="d-flex align-items-center gap-2 mt-2">
+                            <span class="stone-badge">Contact Message</span>
+                            @if (!Model.IsReadByAdmin)
+                            {
+                                <span class="honey-badge">New</span>
+                            }
+                        </div>
+                    </div>
+                    <small class="text-muted">
+                        <i class="bi bi-clock me-1"></i>
+                        @Model.CreatedOn.ToLocalTime().ToString("dd MMM yyyy HH:mm")
+                    </small>
+                </div>
+
+                <hr class="stone-divider">
+
+                <div class="mb-4">
+                    <h6 class="text-warm mb-3">Sender Information</h6>
+                    <div class="warm-card p-3">
+                        <p class="mb-1"><strong>Name:</strong> @Model.SenderName</p>
+                        <p class="mb-1"><strong>Email:</strong> <a href="mailto:@Model.SenderEmail" class="text-warm">@Model.SenderEmail</a></p>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <h6 class="text-warm mb-3">Message</h6>
+                    <div class="warm-card p-3">
+                        <p class="mb-0" style="white-space: pre-wrap;">@Model.Message</p>
+                    </div>
+                </div>
+
+                @if (!string.IsNullOrEmpty(Model.Response))
+                {
+                    <div class="mb-4">
+                        <h6 class="text-success mb-3">Your Response</h6>
+                        <div class="response-card p-3">
+                            <p class="mb-2" style="white-space: pre-wrap;">@Model.Response</p>
+                            <small class="text-muted">
+                                <i class="bi bi-reply-all me-1"></i> Responded on @Model.RespondedOnFormatted
+                            </small>
+                        </div>
+                    </div>
+                }
+
+                <hr class="stone-divider">
+
+                <div class="d-flex gap-2 justify-content-end mt-4">
+                    @if (string.IsNullOrEmpty(Model.Response))
+                    {
+                        <a asp-area="Admin" asp-controller="ContactMessage" asp-action="Respond" asp-route-id="@Model.Id" class="btn-glow">
+                            <i class="bi bi-reply me-2"></i> Respond to Message
+                        </a>
+                    }
+                    else
+                    {
+                        <div class="alert-oven alert-success">
+                            <i class="bi bi-check-circle me-2"></i> Response sent on @Model.RespondedOnFormatted
+                        </div>
+                    }
+                    <a asp-area="Admin" asp-controller="AdminProfile" asp-action="Index" class="btn-warm">
+                        <i class="bi bi-check2-circle me-2"></i> Done
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

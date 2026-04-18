@@ -4,6 +4,7 @@ using GruersShop.Data.Models.Messages;
 using GruersShop.Data.Repositories.Interfaces.Messages;
 using GruersShop.Services.Core.Service.Interfaces.Messages;
 using GruersShop.Web.ViewModels.Account.Messages;
+using GruersShop.Web.ViewModels.Admin.Message;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
@@ -28,10 +29,8 @@ public class ContactMessageClientService : IContactMessageClientService
         var sender = await _userManager.GetUserAsync(userPrincipal)
             ?? throw new ArgumentException("You must be logged in to send a contact message.");
 
-
         var adminUser = (await _userManager.GetUsersInRoleAsync("Admin")).FirstOrDefault()
             ?? throw new InvalidOperationException("No admin user found in the system.");
-
 
         var existingMessage = await _messageRepository
             .Query()
@@ -68,6 +67,7 @@ public class ContactMessageClientService : IContactMessageClientService
             .Query()
             .Include(m => m.Sender)
             .Include(m => m.RespondedBy)
+            .Include(m => m.Receiver)  // <- Добави това за да вземеш receiver данните
             .Where(m => m.SenderId == userId && !string.IsNullOrEmpty(m.Response))
             .OrderByDescending(m => m.CreatedAt)
             .Select(m => new ContactMessageDetailsViewModel
@@ -77,8 +77,8 @@ public class ContactMessageClientService : IContactMessageClientService
                 Message = m.Message,
                 SenderName = m.Sender!.FullName ?? "Unknown",
                 SenderEmail = m.Sender!.Email ?? string.Empty,
-                ReceiverName = "Admin",
-                ReceiverEmail = "admin@furnituregarden.com",
+                ReceiverName = m.Receiver!.FullName ?? "Admin",
+                ReceiverEmail = m.Receiver!.Email ?? string.Empty,  // <- Вече е динамично!
                 IsRead = m.IsRead,
                 IsReadByAdmin = m.IsReadByAdmin,
                 CreatedOn = m.CreatedAt,
@@ -100,7 +100,6 @@ public class ContactMessageClientService : IContactMessageClientService
 
         if (message == null) return null;
 
-
         if (!string.IsNullOrEmpty(message.Response) && !message.IsRead)
         {
             message.IsRead = true;
@@ -114,8 +113,8 @@ public class ContactMessageClientService : IContactMessageClientService
             Message = message.Message,
             SenderName = message.Sender!.FullName ?? "Unknown",
             SenderEmail = message.Sender!.Email ?? string.Empty,
-            ReceiverName = "Admin",
-            ReceiverEmail = "admin@furnituregarden.com",
+            ReceiverName = message.Receiver!.FullName ?? "Admin",
+            ReceiverEmail = message.Receiver!.Email ?? string.Empty,  
             IsRead = message.IsRead,
             IsReadByAdmin = message.IsReadByAdmin,
             CreatedOn = message.CreatedAt,
