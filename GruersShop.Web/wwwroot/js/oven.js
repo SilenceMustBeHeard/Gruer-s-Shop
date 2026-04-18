@@ -56,37 +56,35 @@ if (canvas) {
     update();
 }
 
-// =====================
-// PAGE LOAD EFFECT
-// =====================
+
 window.addEventListener("load", () => {
     document.body.classList.add("loaded");
 });
 
-// safe page transition for same-origin links (except POST buttons
-// forms and bootstrap/js controls)
+
 document.querySelectorAll("a").forEach(link => {
 
     const href = link.getAttribute("href");
 
-    //  skip invalid / bootstrap / js controls
+  
     if (
         !href ||
         href === "#" ||
         link.hasAttribute("data-bs-toggle") ||
-        link.classList.contains("dropdown-toggle")
+        link.classList.contains("dropdown-toggle") ||
+        link.classList.contains("btn") && link.getAttribute("type") === "submit"
     ) return;
 
-    // only same-origin links
+   
+    if (link.closest("form")) return;
+
+  
     if (link.hostname === window.location.hostname) {
 
         link.addEventListener("click", function (e) {
 
-            // allow new tab
+         
             if (e.ctrlKey || e.metaKey) return;
-
-            // allow POST buttons / forms navigation
-            if (this.closest("form")) return;
 
             e.preventDefault();
 

@@ -36,13 +36,11 @@ public class UserManagementController : BaseAdminController
     }
 
     // add role to user
-
     [HttpPost]
-
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> AssignRole(ChangeUserRoleViewModel model)
     {
-        if (!ModelState.IsValid
-            || string.IsNullOrWhiteSpace(model.NewRole))
+        if (string.IsNullOrWhiteSpace(model.NewRole))
         {
             TempData["ErrorMessage"] = "Please select a valid role.";
             return RedirectToAction("Index");
@@ -57,8 +55,6 @@ public class UserManagementController : BaseAdminController
 
         return RedirectToAction("Index");
     }
-
-
 
 
 
