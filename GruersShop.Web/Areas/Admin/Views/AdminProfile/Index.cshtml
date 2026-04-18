@@ -148,11 +148,7 @@
                                     </div>
                                     <p class="mt-2 mb-2 small text-muted">@(message.Message.Length > 100 ? message.Message.Substring(0, 100) + "..." : message.Message)</p>
                     
-                                    <!-- ЯВЕН БУТОН -->
-                                    <a asp-area="Admin"
-                                           asp-controller="ContactMessage"
-                                           asp-action="Details"
-                                           asp-route-id="@message.Id"
+                                    <a href="/Admin/ContactMessage/Details/@message.Id"
                                            class="btn-warm-sm w-100 text-center">
                                         <i class="bi bi-envelope-open me-1"></i> View & Respond
                                     </a>

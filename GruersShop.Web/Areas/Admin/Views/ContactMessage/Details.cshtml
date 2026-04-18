@@ -9,7 +9,7 @@
     <div class="warm-card p-4">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="fw-bold mb-0">Contact Message</h2>
-            <a asp-area="Admin" asp-controller="AdminProfile" asp-action="AdminInbox" class="btn-warm-sm">
+            <a href="/Admin/AdminProfile/AdminInbox" class="btn-warm-sm">
                 <i class="bi bi-arrow-left me-1"></i> Back to Inbox
             </a>
         </div>
@@ -75,7 +75,7 @@
                 <div class="d-flex gap-2 justify-content-end mt-4">
                     @if (string.IsNullOrEmpty(Model.Response))
                     {
-                        <a asp-area="Admin" asp-controller="ContactMessage" asp-action="Respond" asp-route-id="@Model.Id" class="btn-glow">
+                        <a href="/Admin/ContactMessage/Respond/@Model.Id" class="btn-glow">
                             <i class="bi bi-reply me-2"></i> Respond to Message
                         </a>
                     }
@@ -85,7 +85,7 @@
                             <i class="bi bi-check-circle me-2"></i> Response sent on @Model.RespondedOnFormatted
                         </div>
                     }
-                    <a asp-area="Admin" asp-controller="AdminProfile" asp-action="AdminInbox" class="btn-warm">
+                    <a href="/Admin/AdminProfile/AdminInbox" class="btn-warm">
                         <i class="bi bi-check2-circle me-2"></i> Done
                     </a>
                 </div>

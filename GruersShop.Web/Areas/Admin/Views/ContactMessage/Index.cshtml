@@ -15,7 +15,7 @@
         </div>
 
         <div class="mb-4">
-            <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="btn-warm-sm">
+            <a href="/Admin/AdminDashboard/Index" class="btn-warm-sm">
                 <i class="bi bi-arrow-left me-1"></i> Back to Dashboard
             </a>
         </div>
@@ -33,7 +33,7 @@
                 @foreach (var message in Model.OrderByDescending(m => m.CreatedOn))
                 {
                     <div class="letter-item mb-3">
-                        <a asp-area="Admin" asp-controller="ContactMessage" asp-action="Details" asp-route-id="@message.Id" class="letter-link">
+                        <a href="/Admin/ContactMessage/Details/@message.Id" class="letter-link">
                             <div class="d-flex justify-content-between align-items-start">
                                 <div class="d-flex gap-2 align-items-center">
                                     <i class="bi bi-chat-heart text-warm"></i>

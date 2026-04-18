@@ -12,7 +12,7 @@
 
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h2 class="fw-bold mb-0">Respond to Customer</h2>
-                    <a asp-area="Admin" asp-controller="ContactMessage" asp-action="Details" asp-route-id="@Model.Id" class="btn-warm-sm">
+                    <a href="/Admin/ContactMessage/Details/@Model.Id" class="btn-warm-sm">
                         <i class="bi bi-arrow-left me-1"></i> Back
                     </a>
                 </div>
@@ -35,18 +35,18 @@
                     </div>
                 </div>
 
-                <!-- Response Form -->
-                <form asp-area="Admin" asp-controller="ContactMessage" asp-action="Respond" method="post">
+                <!-- Response Form -Direct URL -->
+                <form action="/Admin/ContactMessage/Respond" method="post">
                     @Html.AntiForgeryToken()
-                    <input type="hidden" asp-for="Id" />
-                    <input type="hidden" asp-for="Subject" />
-                    <input type="hidden" asp-for="SenderName" />
-                    <input type="hidden" asp-for="SenderEmail" />
-                    <input type="hidden" asp-for="OriginalMessage" />
+                    <input type="hidden" name="Id" value="@Model.Id" />
+                    <input type="hidden" name="Subject" value="@Model.Subject" />
+                    <input type="hidden" name="SenderName" value="@Model.SenderName" />
+                    <input type="hidden" name="SenderEmail" value="@Model.SenderEmail" />
+                    <input type="hidden" name="OriginalMessage" value="@Model.OriginalMessage" />
 
                     <div class="mb-3">
                         <label asp-for="Response" class="form-label fw-bold">Your Response</label>
-                        <textarea asp-for="Response" class="form-control warm-input" rows="8" placeholder="Type your response here..."></textarea>
+                        <textarea asp-for="Response" name="Response" class="form-control warm-input" rows="8" placeholder="Type your response here..."></textarea>
                         <span asp-validation-for="Response" class="text-danger"></span>
                         <small class="text-muted mt-1 d-block">
                             <i class="bi bi-info-circle me-1"></i> Your response will be sent to the customer's email address.
@@ -54,7 +54,7 @@
                     </div>
 
                     <div class="d-flex justify-content-end gap-2 mt-4">
-                        <a asp-area="Admin" asp-controller="ContactMessage" asp-action="Details" asp-route-id="@Model.Id" class="btn-warm">
+                        <a href="/Admin/ContactMessage/Details/@Model.Id" class="btn-warm">
                             Cancel
                         </a>
                         <button type="submit" class="btn-glow">
