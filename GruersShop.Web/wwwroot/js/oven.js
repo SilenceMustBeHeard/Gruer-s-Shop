@@ -62,28 +62,33 @@ window.addEventListener("load", () => {
 });
 
 
+
 document.querySelectorAll("a").forEach(link => {
 
     const href = link.getAttribute("href");
 
-  
     if (
         !href ||
         href === "#" ||
+        href === "" ||
         link.hasAttribute("data-bs-toggle") ||
         link.classList.contains("dropdown-toggle") ||
-        link.classList.contains("btn") && link.getAttribute("type") === "submit"
+        link.classList.contains("dropdown-item")
     ) return;
 
    
-    if (link.closest("form")) return;
+    if (href.includes("/Admin/") || link.href?.includes("/Admin/")) {
+        return;  // ← ПРОПУСКАМЕ АДМИН ЛИНКОВЕТЕ
+    }
 
   
+    if (link.closest("form")) return;
+
     if (link.hostname === window.location.hostname) {
 
         link.addEventListener("click", function (e) {
 
-         
+            
             if (e.ctrlKey || e.metaKey) return;
 
             e.preventDefault();

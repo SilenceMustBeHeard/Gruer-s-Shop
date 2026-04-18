@@ -4,6 +4,9 @@
 
 <div class="container py-5">
 
+
+
+
     <!-- 🔥 HERO -->
     <div class="hero-oven text-center mb-5">
         <i class="bi bi-shield-lock display-1 text-warm"></i>
@@ -27,10 +30,9 @@
                         <p class="small text-muted">Manage users & roles</p>
                     </div>
 
-                    <a asp-area="Admin"
-                           asp-controller="UserManagement"
-                           asp-action="Index"
-                           class="btn-warm-sm mt-3">
+
+                    <a href="/Admin/UserManagement/Index" 
+                    class="btn-warm-sm mt-3">
                         Enter <i class="bi bi-arrow-right"></i>
                     </a>
                 </div>
@@ -45,10 +47,8 @@
                         <p class="small text-muted">Track & process requests</p>
                     </div>
 
-                    <a asp-area="Admin"
-                           asp-controller="OrdersManagement"
-                           asp-action="Manage"
-                           class="btn-warm-sm mt-3">
+                    <a href="/Admin/Error/NotImplemented"
+                            class="btn-warm-sm mt-3">
                         Open <i class="bi bi-arrow-right"></i>
                     </a>
                 </div>
@@ -63,10 +63,8 @@
                         <p class="small text-muted">Manage products & designs</p>
                     </div>
 
-                    <a asp-area="Admin"
-                           asp-controller="CategoryManagement"
-                           asp-action="EditList"
-                           class="btn-warm-sm mt-3">
+                    <a href="/Admin/Error/NotImplemented"
+                    class="btn-warm-sm mt-3">
                         Shape <i class="bi bi-arrow-right"></i>
                     </a>
                 </div>
@@ -81,10 +79,8 @@
                         <p class="small text-muted">Customer messages</p>
                     </div>
 
-                    <a asp-area="Admin"
-                           asp-controller="AdminProfile"
-                           asp-action="AdminInbox"
-                           class="btn-warm-sm mt-3">
+                    <a href="/Admin/AdminProfile/AdminInbox" 
+                    class="btn-warm-sm mt-3">
                         Read <i class="bi bi-arrow-right"></i>
                     </a>
                 </div>
@@ -99,10 +95,8 @@
                         <p class="small text-muted">Customer reviews</p>
                     </div>
 
-                    <a asp-area="Admin"
-                           asp-controller="Error"
-                           asp-action="NotImplemented"
-                           class="btn-warm-sm mt-3">
+                    <a href="/Admin/Error/NotImplemented"
+                    class="btn-warm-sm mt-3">
                         Review <i class="bi bi-arrow-right"></i>
                     </a>
                 </div>
@@ -117,10 +111,8 @@
                         <p class="small text-muted">System controls</p>
                     </div>
 
-                    <a asp-area="Admin"
-                           asp-controller="Error"
-                           asp-action="NotImplemented"
-                           class="btn-warm-sm mt-3">
+                    <a href="/Admin/Error/NotImplemented"
+                    class="btn-warm-sm mt-3">
                         Configure <i class="bi bi-arrow-right"></i>
                     </a>
                 </div>
