@@ -57,6 +57,7 @@ public class ContactMessageService : IContactMessageService
         message.IsReadByAdmin = true;
 
         await _messageRepository.UpdateAsync(message);
+        await _messageRepository.SaveChangesAsync();
     }
 
     public async Task<ContactMessageDetailsViewModel?> GetMessageDetailsAsync(Guid messageId, string adminId)
@@ -74,6 +75,7 @@ public class ContactMessageService : IContactMessageService
         {
             message.IsReadByAdmin = true;
             await _messageRepository.UpdateAsync(message);
+                await _messageRepository.SaveChangesAsync();
         }
 
         return new ContactMessageDetailsViewModel
@@ -100,6 +102,22 @@ public class ContactMessageService : IContactMessageService
             .GetAllAttachedAsync()
             .CountAsync(m => m.ReceiverId == adminId && !m.IsReadByAdmin);
     }
+    public async Task MarkAllMessagesAsReadAsync(string adminId)
+    {
+        var messages = await _messageRepository
+            .GetAllAttachedAsync()
+            .Where(m => m.ReceiverId == adminId && !m.IsReadByAdmin)
+            .ToListAsync();
+
+        foreach (var message in messages)
+        {
+            message.IsReadByAdmin = true;
+            await _messageRepository.UpdateAsync(message);
+        }
+
+        // Save all changes at once
+        await _messageRepository.SaveChangesAsync();
+    }
 
     public async Task MarkMessageAsReadAsync(Guid messageId, string adminId)
     {
@@ -110,6 +128,7 @@ public class ContactMessageService : IContactMessageService
         {
             message.IsReadByAdmin = true;
             await _messageRepository.UpdateAsync(message);
+            await _messageRepository.SaveChangesAsync();
         }
     }
 

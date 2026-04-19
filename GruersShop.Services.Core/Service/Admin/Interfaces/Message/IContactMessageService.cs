@@ -13,4 +13,5 @@ public interface IContactMessageService
     Task RespondToMessageAsync(Guid messageId, string response, string adminId);
     Task MarkMessageAsReadAsync(Guid messageId, string adminId);
     Task<int> GetUnreadCountAsync(string adminId);
+    Task MarkAllMessagesAsReadAsync(string adminId);
 }

@@ -48,6 +48,12 @@ public class ContactMessageController : Controller
             return NotFound();
         }
 
+        if (!message.IsReadByAdmin)
+        {
+            await _contactMessageService.MarkMessageAsReadAsync(id, adminId);
+            message.IsReadByAdmin = true;
+        }
+
         return View(message);
     }
 
@@ -60,6 +66,7 @@ public class ContactMessageController : Controller
             TempData["Error"] = "User not found.";
             return NotFound();
         }
+
         var message = await _contactMessageService.GetMessageDetailsAsync(id, adminId);
 
         if (message == null)
@@ -69,11 +76,6 @@ public class ContactMessageController : Controller
         }
 
         if (!string.IsNullOrEmpty(message.Response))
-        {
-            TempData["Error"] = "This message has already been responded to.";
-            return RedirectToAction(nameof(Details), new { id });
-        }
-        if (message.Response != null)
         {
             TempData["Error"] = "This message has already been responded to.";
             return RedirectToAction(nameof(Details), new { id });
@@ -120,5 +122,35 @@ public class ContactMessageController : Controller
         }
 
         return RedirectToAction(nameof(Details), new { id = model.Id });
+    }
+
+
+    [HttpGet]
+    public async Task<IActionResult> GetUnreadCount()
+    {
+        var adminId = _userManager.GetUserId(User);
+        var unreadCount = await _contactMessageService.GetUnreadCountAsync(adminId);
+        return Json(new { unreadCount });
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetMessagesPartial()
+    {
+        var adminId = _userManager.GetUserId(User);
+        var messages = await _contactMessageService.GetAdminMessagesAsync(adminId);
+        return PartialView("_MessagesList", messages);
+    }
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> MarkAllAsRead()
+    {
+        var adminId = _userManager.GetUserId(User);
+        if (string.IsNullOrEmpty(adminId))
+        {
+            return Json(new { success = false, message = "User not found" });
+        }
+
+        await _contactMessageService.MarkAllMessagesAsReadAsync(adminId);
+        return Json(new { success = true });
     }
 }

@@ -4,11 +4,8 @@
 
 <div class="container py-5">
 
-
-
-
     <!-- 🔥 HERO -->
-    <div class="hero-oven text-center mb-5">
+    <div class="hero-oven text-center mb-5" data-aos="fade-down">
         <i class="bi bi-shield-lock display-1 text-warm"></i>
         <h1 class="display-3 mt-2">The Oven Control</h1>
         <div class="honey-accent mx-auto"></div>
@@ -23,116 +20,114 @@
 
             <!-- USERS -->
             <div class="col-lg-3 col-md-6">
-                <div class="warm-card h-100 text-center p-4 d-flex flex-column justify-content-between">
+                <div class="dashboard-card warm-card h-100 text-center p-4 d-flex flex-column justify-content-between">
                     <div>
-                        <i class="bi bi-people display-4 text-warm"></i>
+                        <div class="card-icon">
+                            <i class="bi bi-people display-4 text-warm"></i>
+                        </div>
                         <h5 class="fw-bold mt-3">The Guests</h5>
                         <p class="small text-muted">Manage users & roles</p>
                     </div>
-
-
                     <a asp-area="Admin"
                            asp-controller="UserManagement"
                            asp-action="Index"
-                           class="btn btn-warm-sm">
-                        Rule
-    
+                           class="btn-warm-sm mt-3 card-btn">
+                        Rule <i class="bi bi-arrow-right"></i>
                     </a>
                 </div>
             </div>
 
             <!-- ORDERS -->
             <div class="col-lg-3 col-md-6">
-                <div class="warm-card h-100 text-center p-4 d-flex flex-column justify-content-between">
+                <div class="dashboard-card warm-card h-100 text-center p-4 d-flex flex-column justify-content-between">
                     <div>
-                        <i class="bi bi-receipt display-4 text-warm"></i>
+                        <div class="card-icon">
+                            <i class="bi bi-receipt display-4 text-warm"></i>
+                        </div>
                         <h5 class="fw-bold mt-3">The Orders</h5>
                         <p class="small text-muted">Track & process requests</p>
                     </div>
-
                     <a asp-area="Admin"
                            asp-controller="Error"
                            asp-action="NotImplemented"
-                           class="btn btn-warm-sm">
-                            The Guests
-    
+                           class="btn-warm-sm mt-3 card-btn">
+                        Track <i class="bi bi-arrow-right"></i>
                     </a>
-        
                 </div>
             </div>
 
             <!-- CATALOG -->
             <div class="col-lg-3 col-md-6">
-                <div class="warm-card h-100 text-center p-4 d-flex flex-column justify-content-between">
+                <div class="dashboard-card warm-card h-100 text-center p-4 d-flex flex-column justify-content-between">
                     <div>
-                        <i class="bi bi-grid-3x3-gap-fill display-4 text-warm"></i>
+                        <div class="card-icon">
+                            <i class="bi bi-grid-3x3-gap-fill display-4 text-warm"></i>
+                        </div>
                         <h5 class="fw-bold mt-3">The Creations</h5>
                         <p class="small text-muted">Manage products & designs</p>
                     </div>
-
-                  <a asp-area="Admin"
+                    <a asp-area="Admin"
                            asp-controller="Error"
                            asp-action="NotImplemented"
-                           class="btn btn-warm-sm">
-                            Shape
-    
+                           class="btn-warm-sm mt-3 card-btn">
+                        Shape <i class="bi bi-arrow-right"></i>
                     </a>
                 </div>
             </div>
 
             <!-- MESSAGES -->
             <div class="col-lg-3 col-md-6">
-                <div class="warm-card h-100 text-center p-4 d-flex flex-column justify-content-between">
+                <div class="dashboard-card warm-card h-100 text-center p-4 d-flex flex-column justify-content-between">
                     <div>
-                        <i class="bi bi-envelope-paper display-4 text-warm"></i>
+                        <div class="card-icon">
+                            <i class="bi bi-envelope-paper display-4 text-warm"></i>
+                        </div>
                         <h5 class="fw-bold mt-3">The Letters</h5>
                         <p class="small text-muted">Customer messages</p>
                     </div>
-
                     <a asp-area="Admin"
                            asp-controller="AdminProfile"
                            asp-action="AdminInbox"
-                           class="btn btn-warm-sm">
-                        Read
-    
+                           class="btn-warm-sm mt-3 card-btn">
+                        Read <i class="bi bi-arrow-right"></i>
                     </a>
                 </div>
             </div>
 
             <!-- REVIEWS -->
             <div class="col-lg-3 col-md-6">
-                <div class="warm-card h-100 text-center p-4 d-flex flex-column justify-content-between">
+                <div class="dashboard-card warm-card h-100 text-center p-4 d-flex flex-column justify-content-between">
                     <div>
-                        <i class="bi bi-star display-4 text-warm"></i>
+                        <div class="card-icon">
+                            <i class="bi bi-star display-4 text-warm"></i>
+                        </div>
                         <h5 class="fw-bold mt-3">The Voices</h5>
                         <p class="small text-muted">Customer reviews</p>
                     </div>
-
                     <a asp-area="Admin"
                            asp-controller="Error"
                            asp-action="NotImplemented"
-                           class="btn btn-warm-sm">
-                        See
-    
+                           class="btn-warm-sm mt-3 card-btn">
+                        Hear <i class="bi bi-arrow-right"></i>
                     </a>
                 </div>
             </div>
 
             <!-- SYSTEM -->
             <div class="col-lg-3 col-md-6">
-                <div class="warm-card h-100 text-center p-4 d-flex flex-column justify-content-between">
+                <div class="dashboard-card warm-card h-100 text-center p-4 d-flex flex-column justify-content-between">
                     <div>
-                        <i class="bi bi-gear display-4 text-warm"></i>
+                        <div class="card-icon">
+                            <i class="bi bi-gear display-4 text-warm"></i>
+                        </div>
                         <h5 class="fw-bold mt-3">The Machine</h5>
                         <p class="small text-muted">System controls</p>
                     </div>
-
                     <a asp-area="Admin"
                            asp-controller="Error"
                            asp-action="NotImplemented"
-                           class="btn btn-warm-sm">
-                        Configure
-    
+                           class="btn-warm-sm mt-3 card-btn">
+                        Tune <i class="bi bi-arrow-right"></i>
                     </a>
                 </div>
             </div>
@@ -150,3 +145,63 @@
     </div>
 
 </div>
+
+
+    // add ripple effect on click for cards
+    document.querySelectorAll('.dashboard-card').forEach(card => {
+        card.addEventListener('click', function(e) {
+
+            // if  click is on a link, don't create ripple
+            if (e.target.closest('a')) return;
+            
+            const ripple = document.createElement('div');
+            ripple.className = 'ripple-effect';
+            ripple.style.left = e.clientX - card.getBoundingClientRect().left + 'px';
+            ripple.style.top = e.clientY - card.getBoundingClientRect().top + 'px';
+            card.appendChild(ripple);
+            
+            setTimeout(() => ripple.remove(), 500);
+        });
+    });
+
+    // load animation for cards
+    document.querySelectorAll('.dashboard-card').forEach((card, index) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(30px)';
+        setTimeout(() => {
+            card.style.transition = 'all 0.5s ease';
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+        }, index * 100);
+    });
+
+    // animation when hovering over the hero section
+
+    const hero = document.querySelector('.hero-oven');
+    if (hero) {
+        hero.addEventListener('mousemove', (e) => {
+            const rect = hero.getBoundingClientRect();
+            const x = (e.clientX - rect.left) / rect.width;
+            const y = (e.clientY - rect.top) / rect.height;
+            hero.style.background = `radial-gradient(circle at ${x * 100}% ${y * 100}%, #8B4000, #2e1a0a)`;
+        });
+        hero.addEventListener('mouseleave', () => {
+            hero.style.background = '';
+        });
+    }
+</script>
+
+<style>
+    .ripple-effect {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(245, 197, 66, 0.4);
+        width: 10px;
+        height: 10px;
+        animation: rippleAnim 0.5s ease-out forwards;
+        pointer-events: none;
+    }
+
+   
+    
+</style>

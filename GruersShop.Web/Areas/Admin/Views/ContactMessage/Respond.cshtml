@@ -1,4 +1,4 @@
-﻿@using GruersShop.Web.ViewModels.Admin.Message
+﻿﻿@using GruersShop.Web.ViewModels.Admin.Message
 @model ContactMessageResponseViewModel
 
 @{
@@ -8,35 +8,62 @@
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-lg-8">
-            <div class="warm-card p-4">
-
+            <div class="warm-card p-4 response-container">
+                <!-- Header with animated icon -->
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h2 class="fw-bold mb-0">Respond to Customer</h2>
-                    <a href="/Admin/ContactMessage/Details/@Model.Id" class="btn-warm-sm">
+                    <h2 class="fw-bold mb-0">
+                        <i class="bi bi-reply-all-fill text-warm icon-pulse me-2"></i>
+                        Respond to Customer
+                    </h2>
+                    <a href="/Admin/ContactMessage/Details/@Model.Id" class="btn-warm-sm back-btn">
                         <i class="bi bi-arrow-left me-1"></i> Back
                     </a>
                 </div>
 
-                <!-- Original Message -->
-                <div class="warm-card mb-4 p-3">
-                    <h6 class="text-warm mb-3">Original Message</h6>
-                    <div class="mb-2">
-                        <strong>From:</strong> @Model.SenderName
+                <!-- Original Message Card -->
+                <div class="warm-card mb-4 p-3 original-message-card">
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <i class="bi bi-envelope-paper-fill text-warm"></i>
+                        <h6 class="text-warm mb-0">Original Message</h6>
                     </div>
-                    <div class="mb-2">
-                        <strong>Email:</strong> @Model.SenderEmail
+                    
+                    <div class="message-details">
+                        <div class="row mb-2">
+                            <div class="col-md-6">
+                                <small class="text-muted">From</small>
+                                <p class="fw-bold mb-0">
+                                    <i class="bi bi-person me-1"></i> @Model.SenderName
+                                </p>
+                            </div>
+                            <div class="col-md-6">
+                                <small class="text-muted">Email</small>
+                                <p class="mb-0">
+                                    <i class="bi bi-envelope me-1"></i> 
+                                    <a href="mailto:@Model.SenderEmail" class="text-warm">@Model.SenderEmail</a>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="mb-2">
+                            <small class="text-muted">Subject</small>
+                            <p class="fw-bold mb-0">
+                                <i class="bi bi-chat-heart me-1"></i> @Model.Subject
+                            </p>
+                        </div>
                     </div>
-                    <div class="mb-2">
-                        <strong>Subject:</strong> @Model.Subject
-                    </div>
-                    <hr class="stone-divider">
-                    <div class="story-text p-3 rounded-3" style="background: var(--stone-light);">
-                        @Model.OriginalMessage
+                    
+                    <hr class="stone-divider my-3">
+                    
+                    <div class="original-message-content p-3 rounded-3" style="background: var(--stone-light);">
+                        <div class="d-flex gap-2 mb-2">
+                            <i class="bi bi-quote text-warm"></i>
+                            <small class="text-muted">Customer wrote:</small>
+                        </div>
+                        <p class="mb-0" style="white-space: pre-wrap;">@Model.OriginalMessage</p>
                     </div>
                 </div>
 
-                <!-- Response Form -Direct URL -->
-                <form action="/Admin/ContactMessage/Respond" method="post">
+                <!-- Response Form -->
+                <form id="responseForm" action="/Admin/ContactMessage/Respond" method="post">
                     @Html.AntiForgeryToken()
                     <input type="hidden" name="Id" value="@Model.Id" />
                     <input type="hidden" name="Subject" value="@Model.Subject" />
@@ -45,19 +72,69 @@
                     <input type="hidden" name="OriginalMessage" value="@Model.OriginalMessage" />
 
                     <div class="mb-3">
-                        <label asp-for="Response" class="form-label fw-bold">Your Response</label>
-                        <textarea asp-for="Response" name="Response" class="form-control warm-input" rows="8" placeholder="Type your response here..."></textarea>
+                        <label class="form-label fw-bold">
+                            <i class="bi bi-pencil-square me-1 text-warm"></i>
+                            Your Response
+                        </label>
+                        <div class="response-editor-container">
+                            <textarea asp-for="Response" 
+                                      name="Response" 
+                                      class="form-control warm-input response-textarea" 
+                                      rows="8" 
+                                      placeholder="Type your response here..."
+                                      id="responseText"></textarea>
+                            <div class="response-tools mt-2 d-flex gap-2">
+                                <button type="button" class="tool-btn" data-action="bold" title="Bold">
+                                    <i class="bi bi-type-bold"></i>
+                                </button>
+                                <button type="button" class="tool-btn" data-action="italic" title="Italic">
+                                    <i class="bi bi-type-italic"></i>
+                                </button>
+                                <button type="button" class="tool-btn" data-action="insertGreeting" title="Insert Greeting">
+                                    <i class="bi bi-emoji-smile"></i>
+                                </button>
+                                <button type="button" class="tool-btn" data-action="insertClosing" title="Insert Closing">
+                                    <i class="bi bi-suit-heart"></i>
+                                </button>
+                                <div class="ms-auto">
+                                    <span class="badge bg-light text-dark" id="charCount">0 characters</span>
+                                </div>
+                            </div>
+                        </div>
                         <span asp-validation-for="Response" class="text-danger"></span>
-                        <small class="text-muted mt-1 d-block">
-                            <i class="bi bi-info-circle me-1"></i> Your response will be sent to the customer's email address.
+                        <small class="text-muted mt-2 d-block">
+                            <i class="bi bi-info-circle me-1"></i> 
+                            Your response will be sent to the customer's email address. A copy will be saved in your sent folder.
                         </small>
                     </div>
 
+                    <!-- Quick Response Templates -->
+                    <div class="mb-4">
+                        <label class="form-label fw-bold small">
+                            <i class="bi bi-lightning-charge me-1 text-warm"></i>
+                            Quick Templates
+                        </label>
+                        <div class="d-flex flex-wrap gap-2">
+                            <button type="button" class="template-btn" data-template="thankyou">
+                                Thank You
+                            </button>
+                            <button type="button" class="template-btn" data-template="investigation">
+                                Under Investigation
+                            </button>
+                            <button type="button" class="template-btn" data-template="resolved">
+                                Issue Resolved
+                            </button>
+                            <button type="button" class="template-btn" data-template="escalated">
+                                Escalated
+                            </button>
+                        </div>
+                    </div>
+
                     <div class="d-flex justify-content-end gap-2 mt-4">
-                        <a href="/Admin/ContactMessage/Details/@Model.Id" class="btn-warm">
-                            Cancel
+                        <a href="/Admin/ContactMessage/Details/@Model.Id" class="btn-warm cancel-btn">
+                            <i class="bi bi-x-circle me-2"></i> Cancel
                         </a>
-                        <button type="submit" class="btn-glow">
+                        <button type="submit" class="btn-glow send-btn" id="sendBtn">
                             <i class="bi bi-send me-2"></i> Send Response
                         </button>
                     </div>
@@ -66,6 +143,326 @@
         </div>
     </div>
 </div>
+
+<style>
+    .response-container {
+        animation: slideUp 0.4s ease;
+    }
+    
+    @@keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .original-message-card {
+        transition: all 0.3s ease;
+    }
+    
+    .original-message-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    }
+    
+    .original-message-content {
+        border-left: 3px solid var(--honey-gold);
+        transition: all 0.3s ease;
+    }
+    
+    .response-textarea {
+        transition: all 0.3s ease;
+        resize: vertical;
+    }
+    
+    .response-textarea:focus {
+        box-shadow: 0 0 0 3px rgba(212, 163, 115, 0.2);
+        border-color: var(--honey-gold);
+    }
+    
+    .tool-btn {
+        background: var(--stone-light);
+        border: 1px solid var(--stone-medium);
+        border-radius: 6px;
+        padding: 6px 12px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-size: 14px;
+    }
+    
+    .tool-btn:hover {
+        background: var(--honey-gold);
+        color: white;
+        border-color: var(--honey-gold);
+        transform: translateY(-1px);
+    }
+    
+    .template-btn {
+        background: white;
+        border: 1px solid var(--stone-medium);
+        border-radius: 20px;
+        padding: 6px 14px;
+        font-size: 13px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    
+    .template-btn:hover {
+        background: var(--honey-gold);
+        color: white;
+        border-color: var(--honey-gold);
+        transform: translateY(-1px);
+    }
+    
+    .send-btn {
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .send-btn.sending {
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
+    
+    .send-btn.sending::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+        animation: shimmer 1.5s infinite;
+    }
+    
+    @@keyframes shimmer {
+        0% { left: -100%; }
+        100% { left: 100%; }
+    }
+    
+    .cancel-btn, .back-btn {
+        transition: all 0.2s ease;
+    }
+    
+    .cancel-btn:hover, .back-btn:hover {
+        transform: translateX(-2px);
+    }
+    
+    .icon-pulse {
+        animation: pulse 2s infinite;
+    }
+    
+    @@keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.7; }
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const responseTextarea = document.getElementById('responseText');
+        const sendBtn = document.getElementById('sendBtn');
+        const form = document.getElementById('responseForm');
+        const charCountSpan = document.getElementById('charCount');
+        
+        // Character counter
+        function updateCharCount() {
+            const length = responseTextarea.value.length;
+            charCountSpan.textContent = `${length} characters`;
+            
+            if (length > 500) {
+                charCountSpan.classList.add('text-warning');
+            } else {
+                charCountSpan.classList.remove('text-warning');
+            }
+            if (length > 1000) {
+                charCountSpan.classList.add('text-danger');
+            } else {
+                charCountSpan.classList.remove('text-danger');
+            }
+        }
+        
+        responseTextarea.addEventListener('input', updateCharCount);
+        updateCharCount();
+        
+        // Text formatting tools
+        function insertAtCursor(text) {
+            const start = responseTextarea.selectionStart;
+            const end = responseTextarea.selectionEnd;
+            const value = responseTextarea.value;
+            responseTextarea.value = value.substring(0, start) + text + value.substring(end);
+            responseTextarea.selectionStart = responseTextarea.selectionEnd = start + text.length;
+            responseTextarea.focus();
+            updateCharCount();
+        }
+        
+        function wrapWith(startTag, endTag) {
+            const start = responseTextarea.selectionStart;
+            const end = responseTextarea.selectionEnd;
+            const selectedText = responseTextarea.value.substring(start, end);
+            const wrappedText = startTag + selectedText + endTag;
+            responseTextarea.value = responseTextarea.value.substring(0, start) + wrappedText + responseTextarea.value.substring(end);
+            responseTextarea.selectionStart = start;
+            responseTextarea.selectionEnd = start + wrappedText.length;
+            responseTextarea.focus();
+            updateCharCount();
+        }
+        
+        // Tool buttons
+        document.querySelectorAll('.tool-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const action = btn.dataset.action;
+                switch(action) {
+                    case 'bold':
+                        wrapWith('**', '**');
+                        break;
+                    case 'italic':
+                        wrapWith('*', '*');
+                        break;
+                    case 'insertGreeting':
+                        insertAtCursor('\n\nDear ' + '@Model.SenderName'.split(' ')[0] + ',\n\nThank you for reaching out to us. ');
+                        break;
+                    case 'insertClosing':
+                        insertAtCursor('\n\nBest regards,\n' + 'Admin Team\nGruersShop');
+                        break;
+                }
+            });
+        });
+        
+        // Quick templates
+        const templates = {
+            thankyou: 'Thank you for contacting us. We appreciate your message and will get back to you as soon as possible.',
+            investigation: 'Thank you for bringing this to our attention. Our team is currently investigating the issue and we will update you shortly.',
+            resolved: 'We are happy to inform you that your issue has been resolved. Please let us know if you need any further assistance.',
+            escalated: 'Your concern has been escalated to our senior support team. They will reach out to you within 24 hours.'
+        };
+        
+        document.querySelectorAll('.template-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const template = templates[btn.dataset.template];
+                if (template && responseTextarea.value.trim() === '') {
+                    responseTextarea.value = template;
+                } else if (template) {
+                    responseTextarea.value += '\n\n' + template;
+                }
+                updateCharCount();
+                responseTextarea.focus();
+            });
+        });
+        
+        // Form submission with animation
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            if (!responseTextarea.value.trim()) {
+                showToast('Please enter a response message', 'error');
+                responseTextarea.focus();
+                responseTextarea.style.animation = 'shake 0.3s ease';
+                setTimeout(() => {
+                    responseTextarea.style.animation = '';
+                }, 300);
+                return;
+            }
+            
+            // Show sending state
+            sendBtn.classList.add('sending');
+            const originalText = sendBtn.innerHTML;
+            sendBtn.innerHTML = '<i class="bi bi-hourglass-split me-2"></i> Sending...';
+            sendBtn.disabled = true;
+            
+            // Simulate sending animation
+            await new Promise(resolve => setTimeout(resolve, 500));
+            
+            // Submit the form
+            form.submit();
+        });
+        
+        // Shake animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @@keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                25% { transform: translateX(-5px); }
+                75% { transform: translateX(5px); }
+            }
+        `;
+        document.head.appendChild(style);
+        
+        // Toast function
+        function showToast(message, type) {
+            const toast = document.createElement('div');
+            toast.className = `toast-notification ${type}`;
+            toast.innerHTML = `
+                <i class="bi ${type === 'error' ? 'bi-exclamation-circle' : 'bi-info-circle'} me-2"></i>
+                ${message}
+            `;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                    setTimeout(() => toast.remove(), 300);
+                }, 3000);
+            }, 100);
+        }
+        
+        // Auto-save draft to localStorage
+        const DRAFT_KEY = `response_draft_${@Model.Id}`;
+        
+        function saveDraft() {
+            const content = responseTextarea.value;
+            if (content.trim()) {
+                localStorage.setItem(DRAFT_KEY, content);
+                showDraftSaved();
+            }
+        }
+        
+        function loadDraft() {
+            const saved = localStorage.getItem(DRAFT_KEY);
+            if (saved && !responseTextarea.value.trim()) {
+                responseTextarea.value = saved;
+                updateCharCount();
+                showToast('Draft loaded', 'info');
+            }
+        }
+        
+        function showDraftSaved() {
+            const indicator = document.createElement('div');
+            indicator.className = 'draft-indicator';
+            indicator.innerHTML = '<i class="bi bi-check-circle-fill text-success"></i> Draft saved';
+            document.querySelector('.response-editor-container').appendChild(indicator);
+            setTimeout(() => indicator.remove(), 2000);
+        }
+        
+        // Auto-save every 30 seconds
+        let saveTimeout;
+        responseTextarea.addEventListener('input', () => {
+            clearTimeout(saveTimeout);
+            saveTimeout = setTimeout(saveDraft, 3000);
+        });
+        
+        // Load draft on page load
+        loadDraft();
+        
+        // Clear draft on successful send (will be handled by server redirect)
+        window.addEventListener('beforeunload', () => {
+            if (form.querySelector('.sending')) {
+                localStorage.removeItem(DRAFT_KEY);
+            }
+        });
+        
+        console.log('📝 Response form ready - Draft auto-save enabled');
+    });
+</script>
+
+<style>
+ 
+</style>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

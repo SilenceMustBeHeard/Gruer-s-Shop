@@ -1,4 +1,4 @@
-﻿@using GruersShop.Web.ViewModels.Admin
+﻿﻿@using GruersShop.Web.ViewModels.Admin
 @model AdminInboxViewModel
 
 @{
@@ -6,70 +6,340 @@
 }
 
 <div class="container py-5">
-    <div class="warm-card p-4">
+    <div class="warm-card p-4 inbox-card">
         <div class="text-center mb-4">
-            <i class="bi bi-envelope-paper display-1 text-warm"></i>
+            <div class="inbox-icon-wrapper">
+                <i class="bi bi-envelope-paper display-1 text-warm"></i>
+                <span class="inbox-badge" id="messageCount">@Model.ContactMessages.Count(m => !m.IsReadByAdmin)</span>
+            </div>
             <h1 class="display-4 mt-2">Contact Messages</h1>
             <div class="honey-accent mx-auto"></div>
+            <p class="text-muted">Messages from your customers</p>
         </div>
 
-        <div class="mb-4">
-            <a asp-area="Admin" asp-controller="AdminDashboard" asp-action="Index" class="btn-warm-sm">
+        <div class="mb-4 d-flex justify-content-between align-items-center">
+            <a asp-area="Admin" asp-controller="AdminDashboard" asp-action="Index" class="btn-warm-sm back-btn">
                 <i class="bi bi-arrow-left me-1"></i> Back to Dashboard
             </a>
+            <div class="d-flex gap-2">
+                <button id="markAllReadBtn" class="btn-warm-sm" style="background: var(--stone-light);" title="Mark all as read">
+                    <i class="bi bi-envelope-check me-1"></i> Mark all read
+                </button>
+                <button id="refreshBtn" class="btn-warm-sm" style="background: var(--stone-light);">
+                    <i class="bi bi-arrow-repeat me-1"></i> Refresh
+                </button>
+            </div>
         </div>
 
-        @if (!Model.ContactMessages.Any())
-        {
-            <div class="text-center py-5">
-                <i class="bi bi-envelope-open display-4 text-muted"></i>
-                <p class="mt-3">No contact messages</p>
-            </div>
-        }
-        else
-        {
-            <div class="letters-stack">
-                @foreach (var message in Model.ContactMessages.OrderByDescending(m => m.CreatedOn))
-                {
-                    <!-- ОБВИВАЩ ЛИНК КЪМ DETAILS -->
-                    <a asp-area="Admin"
-                           asp-controller="ContactMessage"
-                           asp-action="Details"
-                           asp-route-id="@message.Id"
-                           class="letter-link">
-                        <div class="letter-item mb-3">
-                            <div class="d-flex justify-content-between align-items-start">
-                                <div class="d-flex gap-2 align-items-center">
-                                    <i class="bi bi-chat-heart text-warm"></i>
-                                    <div>
-                                        <h6 class="fw-bold mb-0">@message.Subject</h6>
-                                        <small class="text-muted">@message.CreatedOn.ToLocalTime().ToString("dd MMM yyyy · HH:mm")</small>
+        <div id="messagesContainer">
+            @if (!Model.ContactMessages.Any())
+            {
+                <div class="text-center py-5 empty-inbox">
+                    <i class="bi bi-inbox display-1 text-muted"></i>
+                    <p class="mt-3">No contact messages</p>
+                    <p class="small text-muted">When customers write to you, their letters will appear here</p>
+                </div>
+            }
+            else
+            {
+                <div class="letters-stack" id="messagesList">
+                    @foreach (var message in Model.ContactMessages.OrderByDescending(m => m.CreatedOn))
+                    {
+                        <div class="letter-item mb-3 message-card @(!message.IsReadByAdmin ? "unread" : "")" data-id="@message.Id" data-read="@message.IsReadByAdmin.ToString().ToLower()">
+                            <a asp-area="Admin"
+                               asp-controller="ContactMessage"
+                               asp-action="Details"
+                               asp-route-id="@message.Id"
+                               class="letter-link"
+                               data-message-id="@message.Id">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div class="d-flex gap-2 align-items-center">
+                                        <div class="message-icon">
+                                            <i class="bi @(string.IsNullOrEmpty(message.Response) ? "bi-chat-heart" : "bi-reply-all-fill") text-warm"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="fw-bold mb-0 message-subject">@message.Subject</h6>
+                                            <small class="text-muted">@message.CreatedOn.ToLocalTime().ToString("dd MMM yyyy · HH:mm")</small>
+                                        </div>
                                     </div>
+                                    @if (!message.IsReadByAdmin)
+                                    {
+                                        <span class="honey-badge pulse-badge">New</span>
+                                    }
+                                    else if (!string.IsNullOrEmpty(message.Response))
+                                    {
+                                        <span class="stone-badge">Replied</span>
+                                    }
                                 </div>
-                                @if (!message.IsReadByAdmin)
-                                {
-                                    <span class="honey-badge">New</span>
-                                }
-                            </div>
-                            <p class="mt-2 mb-1 small text-muted">@(message.Message.Length > 120 ? message.Message.Substring(0, 120) + "..." : message.Message)</p>
-                            <div class="d-flex gap-2 mt-2">
-                                <small class="text-muted">
-                                    <i class="bi bi-person me-1"></i> From: @message.SenderName
-                                </small>
-                                @if (!string.IsNullOrEmpty(message.Response))
-                                {
-                                    <small class="text-success">
-                                        <i class="bi bi-check-circle me-1"></i> Replied
+                                <p class="mt-2 mb-1 small text-muted message-preview">
+                                    @(message.Message.Length > 120 ? message.Message.Substring(0, 120) + "..." : message.Message)
+                                </p>
+                                <div class="d-flex gap-2 mt-2 message-meta">
+                                    <small class="text-muted">
+                                        <i class="bi bi-person me-1"></i> From: @message.SenderName
                                     </small>
-                                }
-                            </div>
-                            <div class="mt-2">
-                                <span class="read-more-link">View & Respond <i class="bi bi-arrow-right"></i></span>
-                            </div>
+                                    @if (!string.IsNullOrEmpty(message.Response))
+                                    {
+                                        <small class="text-success">
+                                            <i class="bi bi-check-circle me-1"></i> Replied
+                                        </small>
+                                    }
+                                </div>
+                                <div class="mt-2">
+                                    <span class="read-more-link">
+                                        @(string.IsNullOrEmpty(message.Response) ? "View & Respond" : "View Response")
+                                        <i class="bi bi-arrow-right"></i>
+                                    </span>
+                                </div>
+                            </a>
                         </div>
-                    </a>
-                }
-            </div>
-        }
+                    }
+                </div>
+            }
+        </div>
     </div>
 </div>
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Animate message cards on load
+        const messages = document.querySelectorAll('.message-card');
+        messages.forEach((msg, index) => {
+            msg.style.opacity = '0';
+            msg.style.transform = 'translateX(-20px)';
+            setTimeout(() => {
+                msg.style.transition = 'all 0.3s ease';
+                msg.style.opacity = '1';
+                msg.style.transform = 'translateX(0)';
+            }, index * 50);
+        });
+        
+        let pollingInterval;
+        let isPolling = true;
+        let lastUnreadCount = @Model.ContactMessages.Count(m => !m.IsReadByAdmin);
+        
+        // Function to fetch unread count
+        async function fetchUnreadCount() {
+            try {
+                const response = await fetch('/Admin/ContactMessage/GetUnreadCount');
+                if (!response.ok) throw new Error('Network response was not ok');
+                const data = await response.json();
+                
+                const badge = document.getElementById('messageCount');
+                if (badge) {
+                    const currentCount = parseInt(badge.textContent);
+                    if (data.unreadCount !== currentCount) {
+                        // Update badge with animation
+                        badge.textContent = data.unreadCount;
+                        badge.style.animation = 'none';
+                        setTimeout(() => {
+                            badge.style.animation = 'bounce 0.5s ease';
+                        }, 10);
+                        
+                        // If new messages arrived
+                        if (data.unreadCount > currentCount) {
+                            const newCount = data.unreadCount - currentCount;
+                            showToast(`${newCount} new message${newCount > 1 ? 's' : ''} received!`, 'info');
+                            
+                            // Play notification sound (optional - uncomment if you have a sound file)
+                            // const audio = new Audio('/sounds/notification.mp3');
+                            // audio.play().catch(e => console.log('Audio play failed:', e));
+                            
+                            await refreshMessages();
+                        } else if (data.unreadCount < currentCount) {
+                            // Messages were read elsewhere, just refresh
+                            await refreshMessages();
+                        }
+                    }
+                }
+            } catch (error) {
+                console.log('Polling error:', error);
+            }
+        }
+        
+        // Function to refresh all messages
+        async function refreshMessages() {
+            const container = document.getElementById('messagesList');
+            if (!container) return;
+            
+            // Save current scroll position
+            const scrollPosition = window.scrollY;
+            
+            // Show loading state
+            const originalContent = container.innerHTML;
+            container.innerHTML = '<div class="text-center py-5"><div class="spinner-border text-warm" role="status"></div><p class="mt-2">Refreshing messages...</p></div>';
+            
+            try {
+                const response = await fetch('/Admin/ContactMessage/GetMessagesPartial');
+                if (!response.ok) throw new Error('Failed to fetch messages');
+                const html = await response.text();
+                
+                // Smooth transition
+                setTimeout(() => {
+                    container.innerHTML = html;
+                    
+                    // Animate new messages
+                    const newMessages = document.querySelectorAll('.message-card');
+                    newMessages.forEach((msg, index) => {
+                        msg.style.opacity = '0';
+                        msg.style.transform = 'translateX(-20px)';
+                        setTimeout(() => {
+                            msg.style.transition = 'all 0.3s ease';
+                            msg.style.opacity = '1';
+                            msg.style.transform = 'translateX(0)';
+                        }, index * 30);
+                    });
+                    
+                    // Restore scroll position
+                    window.scrollTo(0, scrollPosition);
+                    
+                    // Update unread count badge
+                    const unreadMessages = document.querySelectorAll('.message-card.unread');
+                    const badge = document.getElementById('messageCount');
+                    if (badge) {
+                        badge.textContent = unreadMessages.length;
+                    }
+                    
+                    showToast('Messages refreshed', 'success');
+                }, 300);
+            } catch (error) {
+                console.error('Refresh error:', error);
+                container.innerHTML = originalContent;
+                showToast('Failed to refresh messages', 'error');
+            }
+        }
+        
+        // Mark all messages as read
+        async function markAllAsRead() {
+            try {
+                const response = await fetch('/Admin/ContactMessage/MarkAllAsRead', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]')?.value || ''
+                    }
+                });
+                
+                if (response.ok) {
+                    showToast('All messages marked as read', 'success');
+                    await refreshMessages();
+                } else {
+                    showToast('Failed to mark messages as read', 'error');
+                }
+            } catch (error) {
+                console.error('Mark all read error:', error);
+                showToast('Failed to mark messages as read', 'error');
+            }
+        }
+        
+        // Toast notification function
+        function showToast(message, type = 'info') {
+            // Remove existing toasts
+            const existingToasts = document.querySelectorAll('.toast-notification');
+            existingToasts.forEach(toast => toast.remove());
+            
+            const toast = document.createElement('div');
+            toast.className = `toast-notification ${type}`;
+            toast.innerHTML = `
+                <i class="bi ${type === 'success' ? 'bi-check-circle-fill' : type === 'error' ? 'bi-exclamation-triangle-fill' : 'bi-info-circle-fill'} me-2"></i>
+                ${message}
+            `;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                    setTimeout(() => toast.remove(), 300);
+                }, 3000);
+            }, 100);
+        }
+        
+        // Start polling for new messages
+        function startPolling() {
+            if (pollingInterval) clearInterval(pollingInterval);
+            pollingInterval = setInterval(() => {
+                if (isPolling && !document.hidden) {
+                    fetchUnreadCount();
+                }
+            }, 10000); // Check every 10 seconds
+        }
+        
+        // Stop polling when page is hidden to save resources
+        document.addEventListener('visibilitychange', () => {
+            isPolling = !document.hidden;
+            if (isPolling && !pollingInterval) {
+                startPolling();
+            }
+        });
+        
+        // Refresh button handler
+        const refreshBtn = document.getElementById('refreshBtn');
+        if (refreshBtn) {
+            refreshBtn.addEventListener('click', async () => {
+                refreshBtn.disabled = true;
+                refreshBtn.innerHTML = '<i class="bi bi-arrow-repeat spinner me-1"></i> Refreshing...';
+                await refreshMessages();
+                refreshBtn.innerHTML = '<i class="bi bi-arrow-repeat me-1"></i> Refresh';
+                refreshBtn.disabled = false;
+            });
+        }
+        
+        // Mark all read button handler
+        const markAllReadBtn = document.getElementById('markAllReadBtn');
+        if (markAllReadBtn) {
+            markAllReadBtn.addEventListener('click', async () => {
+                if (confirm('Mark all messages as read?')) {
+                    markAllReadBtn.disabled = true;
+                    markAllReadBtn.innerHTML = '<i class="bi bi-hourglass-split me-1"></i> Processing...';
+                    await markAllAsRead();
+                    markAllReadBtn.innerHTML = '<i class="bi bi-envelope-check me-1"></i> Mark all read';
+                    markAllReadBtn.disabled = false;
+                }
+            });
+        }
+        
+        // Add click animation to message links
+        const links = document.querySelectorAll('.letter-link');
+        links.forEach(link => {
+            link.addEventListener('click', function(e) {
+                // Visual feedback
+                this.style.transform = 'scale(0.98)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 150);
+            });
+        });
+        
+        // Add hover sound effect (visual only)
+        const cards = document.querySelectorAll('.message-card');
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transition = 'all 0.2s ease';
+            });
+        });
+        
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            // Ctrl/Cmd + R to refresh
+            if ((e.ctrlKey || e.metaKey) && e.key === 'r') {
+                e.preventDefault();
+                refreshBtn?.click();
+            }
+            // Ctrl/Cmd + M to mark all as read
+            if ((e.ctrlKey || e.metaKey) && e.key === 'm') {
+                e.preventDefault();
+                markAllReadBtn?.click();
+            }
+        });
+        
+        // Start polling
+        startPolling();
+        
+        // Log welcome message
+        console.log('📬 Admin Inbox loaded - ' + new Date().toLocaleTimeString());
+        console.log(`📊 Current stats: ${document.querySelectorAll('.message-card').length} total messages, ${document.querySelectorAll('.message-card.unread').length} unread`);
+    });
+</script>

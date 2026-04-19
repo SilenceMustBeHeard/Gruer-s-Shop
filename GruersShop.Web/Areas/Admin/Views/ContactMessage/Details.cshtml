@@ -2,94 +2,204 @@
 @model ContactMessageDetailsViewModel
 
 @{
-    ViewData["Title"] = "Message Details";
+    ViewData["Title"] = "Contact Message Details";
+    bool hasResponse = !string.IsNullOrEmpty(Model.Response);
 }
 
 <div class="container py-5">
-    <div class="warm-card p-4">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="fw-bold mb-0">Contact Message</h2>
-            <a href="/Admin/AdminProfile/AdminInbox" class="btn-warm-sm">
-                <i class="bi bi-arrow-left me-1"></i> Back to Inbox
+    <div class="warm-card p-4 details-card">
+        
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+            <div class="d-flex align-items-center gap-3">
+                <i class="bi bi-envelope-heart-fill display-6 text-warm"></i>
+                <div>
+                    <h2 class="fw-bold mb-0">
+                        <i class="bi bi-chat-heart me-2 text-warm"></i>Contact Message
+                    </h2>
+                    <p class="text-muted small mb-0">Fresh from our customers</p>
+                </div>
+            </div>
+            <a asp-area="Admin" asp-controller="AdminProfile" asp-action="Index" class="btn-warm-sm back-btn">
+                <i class="bi bi-arrow-left me-1"></i> Back to Profile
             </a>
         </div>
 
+        <!-- Success Message -->
         @if (TempData["Success"] != null)
         {
-            <div class="alert-oven alert-success mb-4">
-                <i class="bi bi-fire me-2"></i> @TempData["Success"]
+            <div class="alert-oven alert-success mb-4 success-alert">
+                <i class="bi bi-cake2 me-2"></i> @TempData["Success"]
             </div>
         }
 
-        <div class="row">
-            <div class="col-12">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <div>
-                        <h3 class="fw-bold">@Model.Subject</h3>
-                        <div class="d-flex align-items-center gap-2 mt-2">
-                            <span class="stone-badge">Contact Message</span>
-                            @if (!Model.IsReadByAdmin)
-                            {
-                                <span class="honey-badge">New</span>
-                            }
-                        </div>
-                    </div>
-                    <small class="text-muted">
-                        <i class="bi bi-clock me-1"></i>
-                        @Model.CreatedOn.ToLocalTime().ToString("dd MMM yyyy HH:mm")
-                    </small>
-                </div>
+        <!-- Info Message for already responded -->
+        @if (hasResponse && TempData["Success"] == null)
+        {
+            <div class="alert-oven alert-info mb-4">
+                <i class="bi bi-cookie me-2"></i> You have already responded to this message.
+            </div>
+        }
 
-                <hr class="stone-divider">
-
-                <div class="mb-4">
-                    <h6 class="text-warm mb-3">Sender Information</h6>
-                    <div class="warm-card p-3">
-                        <p class="mb-1"><strong>Name:</strong> @Model.SenderName</p>
-                        <p class="mb-1"><strong>Email:</strong> <a href="mailto:@Model.SenderEmail" class="text-warm">@Model.SenderEmail</a></p>
-                    </div>
-                </div>
-
-                <div class="mb-4">
-                    <h6 class="text-warm mb-3">Message</h6>
-                    <div class="warm-card p-3">
-                        <p class="mb-0" style="white-space: pre-wrap;">@Model.Message</p>
-                    </div>
-                </div>
-
-                @if (!string.IsNullOrEmpty(Model.Response))
-                {
-                    <div class="mb-4">
-                        <h6 class="text-success mb-3">Your Response</h6>
-                        <div class="response-card p-3">
-                            <p class="mb-2" style="white-space: pre-wrap;">@Model.Response</p>
-                            <small class="text-muted">
-                                <i class="bi bi-reply-all me-1"></i> Responded on @Model.RespondedOnFormatted
-                            </small>
-                        </div>
-                    </div>
-                }
-
-                <hr class="stone-divider">
-
-                <div class="d-flex gap-2 justify-content-end mt-4">
-                    @if (string.IsNullOrEmpty(Model.Response))
+        <!-- Subject & Status -->
+        <div class="d-flex justify-content-between align-items-start mb-4 flex-wrap gap-3">
+            <div>
+                <h3 class="fw-bold message-subject">@Model.Subject</h3>
+                <div class="d-flex align-items-center gap-2 mt-2 flex-wrap">
+                    <span class="stone-badge">
+                        <i class="bi bi-chat-heart me-1"></i> Contact Message
+                    </span>
+                    @if (!Model.IsReadByAdmin && !hasResponse)
                     {
-                        <a href="/Admin/ContactMessage/Respond/@Model.Id" class="btn-glow">
-                            <i class="bi bi-reply me-2"></i> Respond to Message
-                        </a>
+                        <span class="honey-badge pulse-badge">
+                            <i class="bi bi-star-fill me-1"></i> New
+                        </span>
                     }
-                    else
+                    @if (hasResponse)
                     {
-                        <div class="alert-oven alert-success">
-                            <i class="bi bi-check-circle me-2"></i> Response sent on @Model.RespondedOnFormatted
-                        </div>
+                        <span class="stone-badge" style="background: var(--leaf-green); color: white;">
+                            <i class="bi bi-check-circle me-1"></i> Responded
+                        </span>
                     }
-                    <a href="/Admin/AdminProfile/AdminInbox" class="btn-warm">
-                        <i class="bi bi-check2-circle me-2"></i> Done
-                    </a>
+                </div>
+            </div>
+            <div class="message-date">
+                <i class="bi bi-clock me-1"></i>
+                <span>@Model.CreatedOnFormatted</span>
+            </div>
+        </div>
+
+        <hr class="stone-divider animated-hr">
+
+        <!-- Sender Information -->
+        <div class="mb-4 sender-section">
+            <h6 class="text-warm mb-3">
+                <i class="bi bi-person-circle me-1"></i> Sender Information
+            </h6>
+            <div class="warm-card p-3 sender-card">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Name:</strong></p>
+                        <p><i class="bi bi-person me-2 text-warm"></i> @Model.SenderName</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Email:</strong></p>
+                        <p>
+                            <i class="bi bi-envelope me-2 text-warm"></i>
+                            <a href="mailto:@Model.SenderEmail" class="text-warm email-link">@Model.SenderEmail</a>
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
+
+        <!-- Message Content -->
+        <div class="mb-4 message-section">
+            <h6 class="text-warm mb-3">
+                <i class="bi bi-chat-text me-1"></i> Message
+            </h6>
+            <div class="warm-card p-3 message-content">
+                <p style="white-space: pre-wrap;">@Model.Message</p>
+            </div>
+        </div>
+
+        <!-- Response Section -->
+        @if (hasResponse)
+        {
+            <div class="mb-4 response-section">
+                <h6 class="text-success mb-3">
+                    <i class="bi bi-reply-all-fill me-1"></i> Your Response
+                </h6>
+                <div class="response-card p-3">
+                    <p style="white-space: pre-wrap;">@Model.Response</p>
+                    <div class="response-meta">
+                        <small class="text-muted">
+                            <i class="bi bi-reply-all me-1"></i> Responded on @Model.RespondedOnFormatted
+                        </small>
+                        @if (!string.IsNullOrEmpty(Model.RespondedByName))
+                        {
+                            <small class="text-muted ms-3">
+                                <i class="bi bi-person me-1"></i> By: @Model.RespondedByName
+                            </small>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+
+        <hr class="stone-divider">
+
+        <!-- Action Buttons -->
+        <div class="d-flex gap-2 justify-content-end mt-4 action-buttons">
+            @if (!hasResponse)
+            {
+                <a asp-area="Admin"
+                       asp-controller="ContactMessage"
+                       asp-action="Respond"
+                       asp-route-id="@Model.Id"
+                       class="btn-glow respond-btn"
+                       id="respondBtn">
+                    <i class="bi bi-send-heart me-2"></i> Respond to Message
+                </a>
+            }
+            else
+            {
+                <div class="alert-dark alert-success response-sent">
+                    <i class="bi bi-check-circle me-2"></i> Response sent on @Model.RespondedOnFormatted
+                </div>
+            }
+            <a asp-area="Admin"
+                   asp-controller="AdminProfile"
+                   asp-action="Index"
+                   class="btn-warm done-btn">
+                <i class="bi bi-house-heart me-2"></i> Done
+            </a>
+        </div>
+
+        <!-- Decorative footer -->
+        <div class="text-center mt-4">
+            <small class="text-muted">
+                <i class="bi bi-heart-fill text-danger me-1" style="font-size: 0.7rem;"></i>
+                Baked with love at Gruers Bakery
+                <i class="bi bi-heart-fill text-danger ms-1" style="font-size: 0.7rem;"></i>
+            </small>
+        </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const hasResponse = @(hasResponse ? "true" : "false");
+        
+        console.log('🍰 Bakery Inbox - Message Details Loaded');
+        console.log('Has Response:', hasResponse);
+        
+        // Auto-hide success message after 5 seconds
+        const successAlert = document.querySelector('.success-alert');
+        if (successAlert) {
+            setTimeout(() => {
+                successAlert.style.transition = 'opacity 0.5s ease';
+                successAlert.style.opacity = '0';
+                setTimeout(() => {
+                    if (successAlert && successAlert.remove) successAlert.remove();
+                }, 500);
+            }, 5000);
+        }
+        
+        // Prevent multiple clicks on respond button
+        const respondBtn = document.getElementById('respondBtn');
+        if (respondBtn) {
+            let isClicked = false;
+            respondBtn.addEventListener('click', function(e) {
+                if (isClicked) {
+                    e.preventDefault();
+                    console.log('⏳ Already baking a response...');
+                    return;
+                }
+                isClicked = true;
+                console.log('🍪 Opening bakery oven for response...');
+                setTimeout(() => { isClicked = false; }, 2000);
+            });
+        }
+    });
+</script>
