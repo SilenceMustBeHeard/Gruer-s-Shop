@@ -1,50 +1,141 @@
-﻿@{
-    ViewData["Title"] = "Not Implemented";
-    string featureName = ViewBag.FeatureName ?? "This feature";
+﻿﻿@{
+    ViewData["Title"] = "Under Construction - Gruers Bakery";
+    string featureName = ViewBag.FeatureName ?? "This recipe";
 }
 
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-md-8 col-lg-6">
-            <div class="card glassmorphism-card text-center p-5 animate__animated animate__fadeInUp">
+            <div class="warm-card p-5 text-center bakery-error-card" id="errorCard">
                 
-                @* Error image *@
-                <div class="error-image-container mb-4">
-                    <img src="~/images/errors/under-construction.png"
-                         alt="Under Construction"
-                         class="img-fluid floating-animation"
-                         style="max-height: 220px;"
-                         onerror="this.onerror=null; this.src='https://via.placeholder.com/300x220/2c3e50/ffffff?text=🚧+Under+Construction'">
+                <!-- Animated construction bakery elements -->
+                <div class="construction-area mb-4">
+                    <div class="oven-baking">
+                        <i class="bi bi-egg-fried display-1 text-warm"></i>
+                        <div class="steam">
+                            <i class="bi bi-cloud"></i>
+                            <i class="bi bi-cloud"></i>
+                            <i class="bi bi-cloud"></i>
+                        </div>
                     </div>
-
-                    <div class="error-badge bg-warning bg-opacity-10 text-warning px-3 py-1 rounded-pill d-inline-block mx-auto mb-3">
-                        <small>⚠️ ERROR @(ViewBag.ErrorCode ?? 501)</small>
+                    <div class="tools">
+                        <i class="bi bi-hammer tool-1"></i>
+                        <i class="bi bi-wrench tool-2"></i>
+                        <i class="bi bi-gear tool-3"></i>
                     </div>
+                </div>
 
-                    <h1 class="display-5 fw-bold text-warning mb-3">
-                        <span class="d-block">🚧 Under Construction</span>
-                    </h1>
+                <div class="error-badge mb-3">
+                    <span class="stone-badge" style="background: var(--honey-gold); color: var(--wood-very-dark);">
+                        <i class="bi bi-tools me-1"></i> 501 - Baking in Progress
+                    </span>
+                </div>
 
-                    <p class="text-muted mb-2">Oops! @featureName is still in development.</p>
-                    <p class="text-muted mb-4">We're working hard to bring you something amazing!</p>
+                <h1 class="display-4 fw-bold mb-3" style="color: var(--wood-dark);">
+                    🚧 <span class="text-warm">Still in the Oven!</span>
+                </h1>
 
-                    <div class="progress mb-4" style="height: 10px;">
-                        <div class="progress-bar bg-warning progress-bar-striped progress-bar-animated"
-                             role="progressbar" style="width: 65%;" aria-valuenow="65" aria-valuemin="0" aria-valuemax="100"></div>
+                <p class="text-muted mb-2">@featureName is currently being perfected by our master bakers.</p>
+                <p class="text-muted mb-4">We're kneading, proofing, and baking something amazing for you!</p>
+
+                <div class="progress-container mb-4">
+                    <div class="progress-label d-flex justify-content-between mb-1">
+                        <small class="text-muted">Baking Progress</small>
+                        <small class="text-warm" id="progressPercent">65%</small>
                     </div>
-
-                    <div class="d-flex justify-content-center gap-3">
-                        <a asp-controller="Home"
-                               asp-action="Index"
-                               class="btn btn-warning btn-lg px-4 hover-scale">
-                            <i class="bi bi-house-door me-2"></i>Back to Home
-                        </a>
-                        <button onclick="history.back()"
-                                class="btn btn-outline-secondary btn-lg px-4 hover-scale">
-                            <i class="bi bi-arrow-left me-2"></i>Go Back
-                        </button>
+                    <div class="progress" style="height: 12px; border-radius: 20px; background: var(--stone-light);">
+                        <div class="progress-bar" id="bakingProgress" 
+                             role="progressbar" style="width: 65%; background: var(--honey-gold); border-radius: 20px; transition: width 0.5s ease;">
+                        </div>
                     </div>
+                    <div class="baking-status mt-2">
+                        <small class="text-muted" id="bakingStatus">🍪 Kneading dough...</small>
+                    </div>
+                </div>
+
+                <div class="estimated-time warm-card p-3 mb-4">
+                    <div class="d-flex align-items-center justify-content-center gap-2">
+                        <i class="bi bi-clock-history text-warm"></i>
+                        <span class="small">Estimated baking time: <strong id="estimatedTime">~5 minutes</strong></span>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-center gap-3 flex-wrap">
+                    <a asp-controller="Home" asp-action="Index" class="btn-glow">
+                        <i class="bi bi-house-heart me-2"></i> Visit Bakery
+                    </a>
+                    <button onclick="history.back()" class="btn-warm">
+                        <i class="bi bi-arrow-return-left me-2"></i> Go Back
+                    </button>
+                </div>
+
+                <div class="mt-4">
+                    <small class="text-muted">
+                        <i class="bi bi-heart-fill text-danger me-1" style="font-size: 0.7rem;"></i>
+                        Freshly baked at Gruers Bakery
+                        <i class="bi bi-heart-fill text-danger ms-1" style="font-size: 0.7rem;"></i>
+                    </small>
                 </div>
             </div>
         </div>
     </div>
+</div>
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('🔧 Bakery Error Page - Under Construction');
+        
+        let progress = 65;
+        const progressBar = document.getElementById('bakingProgress');
+        const progressPercent = document.getElementById('progressPercent');
+        const bakingStatus = document.getElementById('bakingStatus');
+        const estimatedTime = document.getElementById('estimatedTime');
+        
+        const statusMessages = [
+            '🍪 Kneading dough...',
+            '🥐 Shaping croissants...',
+            '🍰 Preparing frosting...',
+            '🎂 Decorating cake...',
+            '🔥 Preheating oven...',
+            '🍞 Baking fresh bread...',
+            '✨ Adding magic sprinkles...'
+        ];
+        
+        let messageIndex = 0;
+        
+        // Simulate baking progress
+        const progressInterval = setInterval(() => {
+            if (progress < 100) {
+                progress += Math.random() * 3;
+                if (progress > 100) progress = 100;
+                
+                progressBar.style.width = progress + '%';
+                progressPercent.textContent = Math.floor(progress) + '%';
+                
+                // Update status message
+                if (Math.random() > 0.7) {
+                    bakingStatus.textContent = statusMessages[messageIndex % statusMessages.length];
+                    messageIndex++;
+                }
+                
+                // Update estimated time based on progress
+                const remainingMinutes = Math.ceil((100 - progress) / 10);
+                if (remainingMinutes > 0) {
+                    estimatedTime.textContent = `~${remainingMinutes} minute${remainingMinutes > 1 ? 's' : ''}`;
+                } else {
+                    estimatedTime.textContent = 'Almost ready!';
+                }
+            } else {
+                clearInterval(progressInterval);
+                bakingStatus.innerHTML = '🎉 Ready to serve! Coming soon... 🎉';
+                estimatedTime.textContent = 'Any moment now!';
+            }
+        }, 800);
+        
+        // Animate on page load
+        const card = document.querySelector('.bakery-error-card');
+        card.style.animation = 'gentleFloat 0.6s ease-out';
+    });
+</script>

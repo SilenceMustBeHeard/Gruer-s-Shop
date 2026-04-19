@@ -1,51 +1,158 @@
-﻿@{
-    ViewData["Title"] = "Server Error";
+﻿﻿@{
+    ViewData["Title"] = "Server Error - Gruers Bakery";
 }
 
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-md-8 col-lg-6">
-            <div class="card glassmorphism-card text-center p-5 animate__animated animate__fadeInUp">
+            <div class="warm-card p-5 text-center bakery-error-card" id="errorCard">
                 
-                @* Error image *@
-                <div class="error-image-container mb-4">
-                    <img src="~/images/errors/server-error.png"
-                         alt="Server Error"
-                         class="img-fluid"
-                         style="max-height: 220px;"
-                         onerror="this.onerror=null; this.src='https://via.placeholder.com/300x220/2c3e50/ffffff?text=⚠️+Server+Error'">
+                <!-- Animated broken bakery elements -->
+                <div class="broken-oven mb-4">
+                    <div class="smoke-burst">
+                        <i class="bi bi-egg-fried display-1 text-warning"></i>
+                        <div class="smoke-clouds">
+                            <i class="bi bi-cloud-fill"></i>
+                            <i class="bi bi-cloud-fill"></i>
+                            <i class="bi bi-cloud-fill"></i>
+                            <i class="bi bi-cloud-fill"></i>
+                        </div>
                     </div>
-
-                    <div class="error-badge bg-danger bg-opacity-10 text-danger px-3 py-1 rounded-pill d-inline-block mx-auto mb-3">
-                        <small>🔧 ERROR @(ViewBag.ErrorCode ?? 500)</small>
+                    <div class="sparks">
+                        <i class="bi bi-lightning-charge spark-1"></i>
+                        <i class="bi bi-lightning-charge spark-2"></i>
+                        <i class="bi bi-lightning-charge spark-3"></i>
                     </div>
+                </div>
 
-                    <h1 class="display-5 fw-bold text-danger mb-3">
-                        <span class="d-block">⚠️ Oops! Something went wrong</span>
-                    </h1>
+                <div class="error-badge mb-3">
+                    <span class="stone-badge" style="background: #dc3545; color: white;">
+                        <i class="bi bi-exclamation-triangle-fill me-1"></i> 500 - Oven Malfunction
+                    </span>
+                </div>
 
-                    <p class="text-muted mb-2">We're experiencing some technical difficulties.</p>
-                    <p class="text-muted mb-4">Our team has been notified and is working on it.</p>
+                <h1 class="display-4 fw-bold mb-3" style="color: var(--wood-dark);">
+                    😰 <span class="text-danger">Our Oven Broke!</span>
+                </h1>
 
-                    <div class="technical-details bg-light bg-opacity-10 p-3 rounded-3 mb-4">
-                        <small class="text-muted">
-                            <i class="bi bi-info-circle me-1"></i>
-                            Error ID: @Guid.NewGuid().ToString().Substring(0, 8)
-                        </small>
+                <p class="text-muted mb-2">Something went wrong in our bakery kitchen. The master bakers are fixing it!</p>
+                <p class="text-muted mb-4">Please try again in a few minutes while we get things back to normal.</p>
+
+                <div class="technical-details warm-card p-3 mb-4">
+                    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                        <div>
+                            <i class="bi bi-receipt text-warm me-1"></i>
+                            <small class="text-muted">Error Reference:</small>
+                            <code id="errorId" class="small"></code>
+                        </div>
+                        <div>
+                            <i class="bi bi-clock text-warm me-1"></i>
+                            <small class="text-muted" id="errorTime"></small>
+                        </div>
                     </div>
+                </div>
 
-                    <div class="d-flex justify-content-center gap-3">
-                        <a asp-controller="Home"
-                               asp-action="Index"
-                               class="btn btn-danger btn-lg px-4 hover-scale">
-                            <i class="bi bi-house-door me-2"></i>Back to Home
-                        </a>
-                        <button onclick="location.reload()"
-                                class="btn btn-outline-secondary btn-lg px-4 hover-scale">
-                            <i class="bi bi-arrow-clockwise me-2"></i>Try Again
+                <div class="auto-refresh-box warm-card p-3 mb-4">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <i class="bi bi-arrow-repeat me-2 text-warm"></i>
+                            <span class="small">Auto-retry in</span>
+                            <strong id="countdown">10</strong>
+                            <span class="small">seconds</span>
+                        </div>
+                        <button class="btn-sm" id="retryNowBtn" style="background: var(--honey-gold); border: none; border-radius: 20px; padding: 5px 15px;">
+                            <i class="bi bi-play-fill me-1"></i> Retry Now
                         </button>
                     </div>
+                    <div class="progress mt-2" style="height: 4px;">
+                        <div class="progress-bar" id="retryProgress" style="width: 0%; background: var(--honey-gold);"></div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-center gap-3 flex-wrap">
+                    <a asp-controller="Home" asp-action="Index" class="btn-glow">
+                        <i class="bi bi-house-heart me-2"></i> Visit Bakery
+                    </a>
+                    <button onclick="location.reload()" class="btn-warm" id="reloadBtn">
+                        <i class="bi bi-arrow-clockwise me-2"></i> Try Again
+                    </button>
+                </div>
+
+                <div class="mt-4">
+                    <small class="text-muted">
+                        <i class="bi bi-heart-fill text-danger me-1" style="font-size: 0.7rem;"></i>
+                        Freshly baked at Gruers Bakery
+                        <i class="bi bi-heart-fill text-danger ms-1" style="font-size: 0.7rem;"></i>
+                    </small>
                 </div>
             </div>
         </div>
     </div>
+</div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('🔥 Bakery Error Page - Server Error');
+        
+        // Generate error ID
+        const errorId = Math.random().toString(36).substring(2, 10).toUpperCase();
+        document.getElementById('errorId').textContent = errorId;
+        
+        // Set error time
+        const errorTime = new Date().toLocaleTimeString();
+        document.getElementById('errorTime').textContent = errorTime;
+        
+        // Auto-retry countdown
+        let countdown = 10;
+        const countdownElement = document.getElementById('countdown');
+        const retryProgress = document.getElementById('retryProgress');
+        
+        const countdownInterval = setInterval(() => {
+            countdown--;
+            countdownElement.textContent = countdown;
+            retryProgress.style.width = ((10 - countdown) / 10 * 100) + '%';
+            
+            if (countdown <= 0) {
+                clearInterval(countdownInterval);
+                document.getElementById('retryNowBtn').innerHTML = '<i class="bi bi-arrow-repeat me-1"></i> Retrying...';
+                setTimeout(() => {
+                    location.reload();
+                }, 500);
+            }
+        }, 1000);
+        
+        // Retry now button
+        const retryBtn = document.getElementById('retryNowBtn');
+        retryBtn.addEventListener('click', function() {
+            clearInterval(countdownInterval);
+            this.innerHTML = '<i class="bi bi-arrow-repeat me-1"></i> Retrying...';
+            this.disabled = true;
+            setTimeout(() => {
+                location.reload();
+            }, 300);
+        });
+        
+        // Reload button animation
+        const reloadBtn = document.getElementById('reloadBtn');
+        reloadBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            this.innerHTML = '<i class="bi bi-hourglass-split me-2"></i> Restarting Oven...';
+            this.disabled = true;
+            setTimeout(() => {
+                location.reload();
+            }, 500);
+        });
+        
+        // Animated smoke effect
+        const smokeClouds = document.querySelector('.smoke-clouds');
+        if (smokeClouds) {
+            setInterval(() => {
+                smokeClouds.style.animation = 'none';
+                setTimeout(() => {
+                    smokeClouds.style.animation = 'smokeBurst 1.5s infinite';
+                }, 10);
+            }, 3000);
+        }
+    });
+</script>

@@ -1,0 +1,483 @@
+/*==== BAD REQUEST ===*/
+
+.bakery-error-card {
+    position: relative;
+    overflow: hidden;
+    animation: gentleFloat 0.6s ease-out;
+}
+
+.bakery-floaties i {
+    position: absolute;
+    font-size: 1.5rem;
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+.floating-1 {
+    top: 10%;
+    left: 5%;
+    animation: floatAround 8s infinite ease-in-out;
+}
+
+.floating-2 {
+    bottom: 15%;
+    right: 8%;
+    animation: floatAround 10s infinite ease-in-out reverse;
+}
+
+.floating-3 {
+    top: 20%;
+    right: 12%;
+    animation: floatAround 12s infinite ease-in-out;
+}
+
+.bakery-oven-glow {
+    display: inline-block;
+    animation: ovenGlow 2s infinite;
+}
+
+.smoke-animation {
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0.5rem;
+    opacity: 0;
+    animation: smokeRise 3s infinite;
+}
+
+    .smoke-animation i {
+        font-size: 1rem;
+        color: var(--stone-medium);
+    }
+
+.error-icon-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+@@keyframes gentleFloat {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@@keyframes ovenGlow {
+    0%, 100% {
+        text-shadow: 0 0 0px rgba(245, 197, 66, 0);
+    }
+
+    50% {
+        text-shadow: 0 0 20px rgba(245, 197, 66, 0.5);
+    }
+}
+
+@@keyframes floatAround {
+    0%, 100% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+
+    25% {
+        transform: translate(10px, -15px) rotate(5deg);
+    }
+
+    50% {
+        transform: translate(-5px, -25px) rotate(-3deg);
+    }
+
+    75% {
+        transform: translate(15px, -10px) rotate(8deg);
+    }
+}
+
+@@keyframes smokeRise {
+    0% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(0);
+    }
+
+    20% {
+        opacity: 0.3;
+    }
+
+    50% {
+        opacity: 0.1;
+        transform: translateX(-50%) translateY(-30px);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-60px);
+    }
+}
+
+
+/*=== NOT ALLOWED ===*/
+
+.security-shield {
+    position: relative;
+    display: inline-block;
+}
+
+.shield-pulse {
+    animation: shieldPulse 1.5s infinite;
+}
+
+.door-knock-animation {
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0.5rem;
+    font-size: 1.5rem;
+    color: var(--wood-dark);
+    opacity: 0;
+    animation: knockDoor 2s infinite;
+}
+
+    .door-knock-animation i:first-child {
+        animation: doorClose 2s infinite;
+    }
+
+    .door-knock-animation i:last-child {
+        animation: doorOpen 2s infinite;
+    }
+
+@@keyframes shieldPulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+    }
+}
+
+@@keyframes knockDoor {
+    0%, 100% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(0);
+    }
+
+    10%, 30% {
+        opacity: 0.6;
+    }
+
+    20% {
+        transform: translateX(-50%) translateY(-5px);
+    }
+}
+
+@@keyframes doorClose {
+    0%, 100% {
+        transform: translateX(0);
+    }
+
+    50% {
+        transform: translateX(-5px);
+    }
+}
+
+@@keyframes doorOpen {
+    0%, 100% {
+        transform: translateX(0);
+    }
+
+    50% {
+        transform: translateX(5px);
+    }
+}
+
+
+/*=== NOT FOUND ==*/
+.lost-items-container {
+    position: relative;
+    display: inline-block;
+}
+
+.searching-light {
+    animation: searchPulse 2s infinite;
+}
+
+.lost-items {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    gap: 1rem;
+    opacity: 0;
+    animation: revealLost 3s infinite;
+}
+
+.lost-item-1, .lost-item-2, .lost-item-3 {
+    font-size: 1.5rem;
+    color: var(--stone-medium);
+}
+
+.lost-item-1 {
+    animation: floatItem 2s infinite ease-in-out;
+}
+
+.lost-item-2 {
+    animation: floatItem 2.5s infinite ease-in-out reverse;
+}
+
+.lost-item-3 {
+    animation: floatItem 3s infinite ease-in-out;
+}
+
+@@keyframes searchPulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.1);
+        opacity: 0.7;
+    }
+}
+
+@@keyframes revealLost {
+    0%, 100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8);
+    }
+
+    20%, 80% {
+        opacity: 0.6;
+    }
+
+    50% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+
+@@keyframes floatItem {
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+
+/*== NOT IMPLEMENTED ==*/
+
+.construction-area {
+    position: relative;
+    display: inline-block;
+}
+
+.oven-baking {
+    position: relative;
+    display: inline-block;
+    animation: ovenShake 0.5s infinite;
+}
+
+.steam {
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0.3rem;
+    opacity: 0;
+    animation: steamRise 2s infinite;
+}
+
+    .steam i {
+        font-size: 1rem;
+        color: var(--stone-medium);
+    }
+
+.tools {
+    position: absolute;
+    bottom: -20px;
+    right: -30px;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.tool-1, .tool-2, .tool-3 {
+    font-size: 1.2rem;
+    color: var(--wood-medium);
+    animation: toolWiggle 1s infinite;
+}
+
+.tool-2 {
+    animation-delay: 0.2s;
+}
+
+.tool-3 {
+    animation-delay: 0.4s;
+}
+
+@@keyframes ovenShake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-2px);
+    }
+
+    75% {
+        transform: translateX(2px);
+    }
+}
+
+@@keyframes steamRise {
+    0% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(0);
+    }
+
+    20% {
+        opacity: 0.5;
+    }
+
+    50% {
+        opacity: 0.3;
+        transform: translateX(-50%) translateY(-20px);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-40px);
+    }
+}
+
+@@keyframes toolWiggle {
+    0%, 100% {
+        transform: rotate(0deg);
+    }
+
+    50% {
+        transform: rotate(15deg);
+    }
+}
+
+
+/*== SERVER ERROR ==*/
+.broken-oven {
+    position: relative;
+    display: inline-block;
+}
+
+.smoke-burst {
+    position: relative;
+    animation: ovenShake 0.3s infinite;
+}
+
+.smoke-clouds {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0.3rem;
+    opacity: 0;
+    animation: smokeBurst 1.5s infinite;
+}
+
+    .smoke-clouds i {
+        font-size: 1.2rem;
+        color: #6c757d;
+    }
+
+.sparks {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.spark-1, .spark-2, .spark-3 {
+    position: absolute;
+    font-size: 0.8rem;
+    color: #ffc107;
+    animation: sparkle 0.5s infinite;
+}
+
+.spark-1 {
+    top: -10px;
+    left: -10px;
+    animation-delay: 0s;
+}
+
+.spark-2 {
+    bottom: -10px;
+    right: -10px;
+    animation-delay: 0.2s;
+}
+
+.spark-3 {
+    top: 50%;
+    right: -15px;
+    animation-delay: 0.4s;
+}
+
+@@keyframes ovenShake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-3px);
+    }
+
+    75% {
+        transform: translateX(3px);
+    }
+}
+
+@@keyframes smokeBurst {
+    0% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(0) scale(0.8);
+    }
+
+    20% {
+        opacity: 0.6;
+    }
+
+    50% {
+        opacity: 0.3;
+        transform: translateX(-50%) translateY(-25px) scale(1.2);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-50px) scale(1.5);
+    }
+}
+
+@@keyframes sparkle {
+    0%, 100% {
+        opacity: 0;
+        transform: scale(0);
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}

@@ -1,50 +1,100 @@
-﻿@{
-    ViewData["Title"] = "Access Denied";
+﻿﻿@{
+ViewData["Title"] = "Access Denied - Gruers Bakery";
 }
 
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-md-8 col-lg-6">
-            <div class="card glassmorphism-card text-center p-5 animate__animated animate__fadeInUp">
+            <div class="warm-card p-5 text-center bakery-error-card" id="errorCard">
                 
-                @* Error image *@
-                <div class="error-image-container mb-4">
-                    <img src="~/images/errors/access-denied.png"
-                         alt="Access Denied"
-                         class="img-fluid shake-animation"
-                         style="max-height: 220px;"
-                         onerror="this.onerror=null; this.src='https://via.placeholder.com/300x220/2c3e50/ffffff?text=⛔+Access+Denied'">
+                <!-- Animated lock and bakery elements -->
+                <div class="security-shield mb-4">
+                    <div class="shield-pulse">
+                        <i class="bi bi-shield-lock-fill display-1" style="color: #dc3545;"></i>
                     </div>
-
-                    <div class="error-badge bg-danger bg-opacity-10 text-danger px-3 py-1 rounded-pill d-inline-block mx-auto mb-3">
-                        <small>🔒 ERROR @(ViewBag.ErrorCode ?? 403)</small>
+                    <div class="door-knock-animation">
+                        <i class="bi bi-door-closed"></i>
+                        <i class="bi bi-door-open"></i>
                     </div>
+                </div>
 
-                    <h1 class="display-5 fw-bold text-danger mb-3">
-                        <span class="d-block">⛔ Access Denied</span>
-                    </h1>
+                <div class="error-badge mb-3">
+                    <span class="stone-badge" style="background: #dc3545; color: white;">
+                        <i class="bi bi-lock-fill me-1"></i> 403 - Access Denied
+                    </span>
+                </div>
 
-                    <p class="text-muted mb-2">Sorry, you don't have permission to access this area.</p>
-                    <p class="text-muted mb-4">If you believe this is a mistake, please contact your administrator.</p>
+                <h1 class="display-4 fw-bold mb-3" style="color: var(--wood-dark);">
+                    🔒 <span class="text-danger">Staff Only</span> Area
+                </h1>
 
-                    <div class="alert alert-danger bg-opacity-10 border-0 mb-4" role="alert">
-                        <i class="bi bi-shield-lock me-2"></i>
-                        This area is restricted to authorized personnel only.
+                <p class="text-muted mb-2">This part of the bakery is reserved for our master bakers.</p>
+                <p class="text-muted mb-4">Please present your baker's badge to enter! 👨‍🍳</p>
+
+                <div class="warning-box warm-card p-4 mb-4" style="border-left: 4px solid #dc3545;">
+                    <div class="d-flex align-items-center gap-3">
+                        <i class="bi bi-exclamation-octagon-fill text-danger fs-1"></i>
+                        <div class="text-start">
+                            <h6 class="mb-1 fw-bold">Restricted Area</h6>
+                            <p class="mb-0 small text-muted">This section is for authorized bakery staff only.</p>
+                        </div>
                     </div>
+                </div>
 
-                    <div class="d-flex justify-content-center gap-3">
-                        <a asp-controller="Home"
-                               asp-action="Index"
-                               class="btn btn-danger btn-lg px-4 hover-scale">
-                            <i class="bi bi-house-door me-2"></i>Back to Home
-                        </a>
-                        <a asp-controller="Account"
-                               asp-action="Login"
-                               class="btn btn-outline-primary btn-lg px-4 hover-scale">
-                            <i class="bi bi-box-arrow-in-right me-2"></i>Login
-                        </a>
-                    </div>
+                <div class="d-flex justify-content-center gap-3 flex-wrap">
+                    <a asp-controller="Home" asp-action="Index" class="btn-glow" id="homeBtn">
+                        <i class="bi bi-house-heart me-2"></i> Return to Bakery
+                    </a>
+                    <a asp-controller="Account" asp-action="Login" class="btn-warm" id="loginBtn">
+                        <i class="bi bi-person-badge me-2"></i> Baker Login
+                    </a>
+                </div>
+
+                <div class="mt-4">
+                    <small class="text-muted">
+                        <i class="bi bi-heart-fill text-danger me-1" style="font-size: 0.7rem;"></i>
+                        Freshly baked at Gruers Bakery
+                        <i class="bi bi-heart-fill text-danger ms-1" style="font-size: 0.7rem;"></i>
+                    </small>
                 </div>
             </div>
         </div>
     </div>
+</div>
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('🔒 Bakery Error Page - Access Denied');
+        
+        // Add shake animation to the card
+        const card = document.querySelector('.bakery-error-card');
+        card.style.animation = 'gentleShake 0.5s ease';
+        
+        setTimeout(() => {
+            card.style.animation = '';
+        }, 500);
+        
+        // Button hover effects
+        const buttons = document.querySelectorAll('.btn-glow, .btn-warm');
+        buttons.forEach(btn => {
+            btn.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-2px) scale(1.02)';
+            });
+            btn.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+        
+        const style = document.createElement('style');
+        style.textContent = `
+            @@keyframes gentleShake {
+                0%, 100% { transform: translateX(0); }
+                10%, 30%, 50%, 70%, 90% { transform: translateX(-3px); }
+                20%, 40%, 60%, 80% { transform: translateX(3px); }
+            }
+        `;
+        document.head.appendChild(style);
+    });
+</script>
