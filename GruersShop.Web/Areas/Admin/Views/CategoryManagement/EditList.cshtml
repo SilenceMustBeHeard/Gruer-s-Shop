@@ -1,25 +1,352 @@
-﻿@{
-    ViewData["Title"] = "Category Management";
+﻿﻿
+@model IEnumerable<GruersShop.Web.ViewModels.Admin.Category.CategoryViewModelList>
+
+@{
+    ViewData["Title"] = "Category Management - Gruers Bakery";
 }
 
 <div class="container py-5">
-    <div class="warm-card p-4">
+    <div class="warm-card p-4" data-aos="fade-up">
+        
+        <!-- Header with Bakery Magic -->
         <div class="text-center mb-4">
-            <i class="bi bi-tags display-1 text-warm"></i>
-            <h1 class="display-4 mt-2">Category Management</h1>
-            <div class="honey-accent mx-auto"></div>
-            <p class="text-muted">Manage your product categories</p>
+            <div class="category-header">
+                <div class="header-icon-wrapper">
+                    <i class="bi bi-tags-fill display-1 text-warm"></i>
+                    <div class="flour-dust">
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                    </div>
+                </div>
+                <h1 class="display-4 mt-2 fw-bold">Our <span class="text-warm">Categories</span></h1>
+                <div class="honey-accent mx-auto"></div>
+                <p class="text-muted">Organize your bakery products with love</p>
+                <div class="category-stats mt-2 d-flex gap-3 justify-content-center flex-wrap">
+                    <span class="honey-badge d-inline-flex align-items-center gap-2 px-3 py-2">
+                        <i class="bi bi-tags-fill fs-6"></i>
+                        <span class="fw-semibold">Total Categories:</span>
+                        <strong class="text-glow fs-5">@Model.Count()</strong>
+                    </span>
+                    <span class="honey-badge d-inline-flex align-items-center gap-2 px-3 py-2">
+                        <i class="bi bi-check-circle-fill fs-6"></i>
+                        <span class="fw-semibold">Active:</span>
+                        <strong class="text-glow fs-5">@Model.Count(c => !c.IsDeleted)</strong>
+                    </span>
+                </div>
+            </div>
         </div>
 
-        <div class="alert-oven alert-info">
-            <i class="bi bi-info-circle me-2"></i>
-            Category management features coming soon!
-        </div>
-
-        <div class="text-center mt-4">
-            <a asp-area="Admin" asp-controller="Home" asp-action="Index" class="btn-warm">
-                <i class="bi bi-arrow-left me-1"></i> Back to Dashboard
+        <!-- Back Button -->
+        <div class="mb-4">
+            <a asp-area="Admin" asp-controller="AdminDashboard" asp-action="Index" class="btn-warm-sm back-btn">
+                <i class="bi bi-arrow-left me-1"></i> Back to Bakery
             </a>
         </div>
+
+        @if (!Model.Any())
+        {
+            <div class="text-center py-5 empty-state">
+                <i class="bi bi-tags display-4 text-muted"></i>
+                <p class="mt-3">No categories yet.</p>
+                <p class="small text-muted">Create your first category to organize your bakery products!</p>
+                <a asp-area="Admin" asp-controller="CategoryManagement" asp-action="Create" class="btn-glow mt-3">
+                    <i class="bi bi-plus-circle me-2"></i> Create First Category
+                </a>
+            </div>
+        }
+        else
+        {
+            <!-- Categories Table -->
+            <div class="table-responsive">
+                <table class="warm-table">
+                    <thead>
+                        <tr>
+                            <th><i class="bi bi-bookmark-fill me-2 text-warm"></i>Category Name</th>
+                            <th><i class="bi bi-activity me-2 text-warm"></i>Status</th>
+                            <th class="text-end"><i class="bi bi-tools me-2 text-warm"></i>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var category in Model)
+                        {
+                            var isActive = !category.IsDeleted;
+                            <tr class="category-row @(category.IsDeleted ? "inactive-row" : "")" data-aos="fade-up">
+                                <td class="fw-semibold">
+                                    <div class="d-flex align-items-center gap-2">
+                                        <i class="bi @(category.IsDeleted ? "bi-archive" : "bi-bookmark-heart") text-warm"></i>
+                                        <span>@category.Name</span>
+                                        @if (category.IsDeleted)
+                                        {
+                                            <span class="stone-badge small ms-2">Archived</span>
+                                        }
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="status-badge @(isActive ? "status-active" : "status-inactive")">
+                                        <i class="bi @(isActive ? "bi-check-circle-fill" : "bi-slash-circle") me-1"></i>
+                                        @(isActive ? "Fresh" : "Archived")
+                                    </span>
+                                </td>
+                                <td class="text-end">
+                                    <div class="d-flex gap-2 justify-content-end">
+                                        <!-- Edit Button -->
+                                        <a asp-area="Admin"
+                                           asp-controller="CategoryManagement"
+                                           asp-action="Edit"
+                                           asp-route-id="@category.Id"
+                                           class="action-icon-btn edit-btn"
+                                           title="Edit Category">
+                                            <i class="bi bi-pencil-fill"></i>
+                                        </a>
+
+                                        <!-- Toggle Status Button -->
+                                        <form asp-area="Admin"
+                                              asp-controller="CategoryManagement"
+                                              asp-action="ToggleActive"
+                                              asp-route-id="@category.Id"
+                                              method="post"
+                                              class="d-inline"
+                                              onsubmit="return confirmToggle('@category.Name', '@(isActive ? "archive" : "restore")')">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit" 
+                                                    class="action-icon-btn @(isActive ? "archive-btn" : "restore-btn")"
+                                                    title="@(isActive ? "Archive Category" : "Restore Category")">
+                                                <i class="bi @(isActive ? "bi-archive" : "bi-arrow-repeat")"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Add Category Button -->
+            <div class="text-center mt-4">
+                <a asp-area="Admin"
+                   asp-controller="CategoryManagement"
+                   asp-action="Create"
+                   class="btn-glow">
+                    <i class="bi bi-plus-circle me-2"></i> Add New Category
+                </a>
+            </div>
+        }
     </div>
 </div>
+
+<style>
+    .warm-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0 8px;
+    }
+    
+    .warm-table thead th {
+        padding: 12px 16px;
+        background: linear-gradient(135deg, rgba(245, 197, 66, 0.1), rgba(245, 197, 66, 0.05));
+        color: var(--wood-dark);
+        font-weight: 600;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    
+    .warm-table tbody tr {
+        background: var(--warm-light);
+        transition: all 0.3s ease;
+        border-radius: 12px;
+    }
+    
+    .warm-table tbody tr:hover {
+        transform: translateX(5px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    
+    [data-bs-theme="dark"] .warm-table tbody tr {
+        background: rgba(61, 37, 20, 0.6);
+    }
+    
+    .warm-table td {
+        padding: 16px;
+        border: none;
+    }
+    
+    .category-row {
+        animation: slideInRow 0.3s ease;
+    }
+    
+    .inactive-row {
+        opacity: 0.7;
+    }
+    
+    @@keyframes slideInRow {
+        from {
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+    
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+    
+    .status-active {
+        background: linear-gradient(135deg, rgba(40, 167, 69, 0.15), rgba(40, 167, 69, 0.05));
+        color: #28a745;
+    }
+    
+    .status-inactive {
+        background: linear-gradient(135deg, rgba(108, 117, 125, 0.15), rgba(108, 117, 125, 0.05));
+        color: #6c757d;
+    }
+    
+    [data-bs-theme="dark"] .status-active {
+        background: linear-gradient(135deg, rgba(40, 167, 69, 0.25), rgba(40, 167, 69, 0.1));
+    }
+    
+    .action-icon-btn {
+        background: transparent;
+        border: none;
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-size: 1rem;
+    }
+    
+    .edit-btn {
+        color: var(--honey-gold);
+        background: rgba(245, 197, 66, 0.1);
+    }
+    
+    .edit-btn:hover {
+        background: var(--honey-gold);
+        color: var(--wood-very-dark);
+        transform: scale(1.1);
+    }
+    
+    .archive-btn {
+        color: #dc3545;
+        background: rgba(220, 53, 69, 0.1);
+    }
+    
+    .archive-btn:hover {
+        background: #dc3545;
+        color: white;
+        transform: scale(1.1);
+    }
+    
+    .restore-btn {
+        color: #28a745;
+        background: rgba(40, 167, 69, 0.1);
+    }
+    
+    .restore-btn:hover {
+        background: #28a745;
+        color: white;
+        transform: scale(1.1);
+    }
+    
+    .flour-dust {
+        position: absolute;
+        top: -10px;
+        right: -20px;
+        display: flex;
+        gap: 0.3rem;
+    }
+    
+    .flour-dust i {
+        font-size: 0.8rem;
+        color: var(--honey-gold);
+        animation: floatDust 2s infinite;
+    }
+    
+    .flour-dust i:nth-child(2) {
+        animation-delay: 0.3s;
+    }
+    
+    .flour-dust i:nth-child(3) {
+        animation-delay: 0.6s;
+    }
+    
+    @@keyframes floatDust {
+        0%, 100% {
+            transform: translateY(0) scale(1);
+            opacity: 0.3;
+        }
+        50% {
+            transform: translateY(-10px) scale(1.2);
+            opacity: 0.8;
+        }
+    }
+    
+    .header-icon-wrapper {
+        position: relative;
+        display: inline-block;
+    }
+</style>
+
+@section Scripts {
+    <script>
+        function confirmToggle(categoryName, action) {
+            const isArchive = action === 'archive';
+            const message = isArchive 
+                ? `Are you sure you want to archive "${categoryName}"? Archived categories won't appear on the frontend.`
+                : `Are you sure you want to restore "${categoryName}"? It will appear on the frontend again.`;
+            
+            const title = isArchive ? 'Archive Category' : 'Restore Category';
+            
+            return confirm(`${title}\n\n${message}`);
+        }
+        
+        // Check for TempData messages
+        document.addEventListener('DOMContentLoaded', function() {
+            const successMessage = '@TempData["Success"]';
+            const errorMessage = '@TempData["Error"]';
+            
+            if (successMessage && successMessage !== '') {
+                showToast(successMessage, 'success');
+            }
+            
+            if (errorMessage && errorMessage !== '') {
+                showToast(errorMessage, 'error');
+            }
+        });
+        
+        function showToast(message, type) {
+            const toast = document.createElement('div');
+            toast.className = `user-toast ${type}`;
+            toast.innerHTML = `
+                <i class="bi ${type === 'success' ? 'bi-check-circle-fill' : 'bi-exclamation-triangle-fill'}"></i>
+                <span>${message}</span>
+            `;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                    setTimeout(() => toast.remove(), 300);
+                }, 3000);
+            }, 100);
+        }
+        
+        console.log('🍰 Category Management Loaded!');
+    </script>
+}

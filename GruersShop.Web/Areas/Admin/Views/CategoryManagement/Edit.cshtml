@@ -1,0 +1,183 @@
+﻿﻿
+@model GruersShop.Web.ViewModels.Admin.Category.CategoryViewModelEdit
+
+@{
+    ViewData["Title"] = "Edit Category - Gruers Bakery";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-xl-6 col-lg-7 col-md-8 col-12">
+            <div class="warm-card p-4 p-md-5" data-aos="fade-up">
+                
+                <!-- Header -->
+                <div class="text-center mb-4">
+                    <div class="header-icon-wrapper">
+                        <i class="bi bi-pencil-square display-1 text-warm"></i>
+                        <div class="flour-dust">
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                        </div>
+                    </div>
+                    <h1 class="display-4 mt-2 fw-bold">Edit <span class="text-warm">Category</span></h1>
+                    <div class="honey-accent mx-auto"></div>
+                    <p class="text-muted">Update your bakery category details</p>
+                </div>
+
+                <!-- Form -->
+                <form asp-area="Admin" asp-controller="CategoryManagement" asp-action="Edit" method="post">
+                    @Html.AntiForgeryToken()
+
+                    <input type="hidden" asp-for="Id" />
+
+                    <div class="mb-4">
+                        <label asp-for="Name" class="form-label fw-semibold">
+                            <i class="bi bi-bookmark-heart me-1 text-warm"></i> Category Name
+                        </label>
+                        <input asp-for="Name" class="form-control warm-input" />
+                        <span asp-validation-for="Name" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="Description" class="form-label fw-semibold">
+                            <i class="bi bi-chat-text me-1 text-warm"></i> Description
+                        </label>
+                        <textarea asp-for="Description" rows="4" class="form-control warm-input"></textarea>
+                        <span asp-validation-for="Description" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="form-check form-switch">
+                            <input asp-for="IsDeleted" class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
+                            <label class="form-check-label fw-semibold" for="flexSwitchCheckDefault">
+                                <i class="bi bi-archive me-1 text-warm"></i> Archive Category
+                            </label>
+                        </div>
+                        <small class="text-muted">Archived categories won't appear on the frontend.</small>
+                    </div>
+
+                    <div class="d-flex justify-content-between gap-3 mt-4">
+                        <a asp-area="Admin" asp-controller="CategoryManagement" asp-action="EditList" class="btn-warm-sm">
+                            <i class="bi bi-arrow-left me-1"></i> Back to Categories
+                        </a>
+                        <button type="submit" class="btn-glow">
+                            <i class="bi bi-save2 me-2"></i> Save Changes
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Decorative footer -->
+                <div class="text-center mt-4">
+                    <small class="text-muted">
+                        <i class="bi bi-heart-fill text-danger me-1" style="font-size: 0.7rem;"></i> 
+                        Freshly baked at Gruers Bakery
+                        <i class="bi bi-heart-fill text-danger ms-1" style="font-size: 0.7rem;"></i>
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .flour-dust {
+        position: absolute;
+        top: -10px;
+        right: -20px;
+        display: flex;
+        gap: 0.3rem;
+    }
+    
+    .flour-dust i {
+        font-size: 0.8rem;
+        color: var(--honey-gold);
+        animation: floatDust 2s infinite;
+    }
+    
+    .flour-dust i:nth-child(2) {
+        animation-delay: 0.3s;
+    }
+    
+    .flour-dust i:nth-child(3) {
+        animation-delay: 0.6s;
+    }
+    
+    @@keyframes floatDust {
+        0%, 100% {
+            transform: translateY(0) scale(1);
+            opacity: 0.3;
+        }
+        50% {
+            transform: translateY(-10px) scale(1.2);
+            opacity: 0.8;
+        }
+    }
+    
+    .header-icon-wrapper {
+        position: relative;
+        display: inline-block;
+    }
+    
+    /* Custom switch styling */
+    .form-switch .form-check-input {
+        width: 2.5em;
+        height: 1.25em;
+        cursor: pointer;
+        background-color: var(--stone-medium);
+        border: none;
+    }
+    
+    .form-switch .form-check-input:checked {
+        background-color: #dc3545;
+        border-color: #dc3545;
+    }
+    
+    [data-bs-theme="dark"] .form-switch .form-check-input {
+        background-color: #5c3a1e;
+    }
+    
+    [data-bs-theme="dark"] .form-switch .form-check-input:checked {
+        background-color: #dc3545;
+    }
+</style>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🍰 Edit Category Form Ready!');
+            
+            // Add warning when archiving
+            const archiveSwitch = document.querySelector('#flexSwitchCheckDefault');
+            if (archiveSwitch) {
+                archiveSwitch.addEventListener('change', function() {
+                    if (this.checked) {
+                        showToast('This category will be archived and hidden from customers.', 'info');
+                    } else {
+                        showToast('This category will be restored and visible to customers.', 'info');
+                    }
+                });
+            }
+        });
+        
+        function showToast(message, type) {
+            const toast = document.createElement('div');
+            toast.className = `user-toast ${type}`;
+            toast.innerHTML = `
+                <i class="bi bi-info-circle-fill"></i>
+                <span>${message}</span>
+            `;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                    setTimeout(() => toast.remove(), 300);
+                }, 3000);
+            }, 100);
+        }
+    </script>
+}

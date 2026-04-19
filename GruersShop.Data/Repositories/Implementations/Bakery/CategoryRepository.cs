@@ -30,6 +30,25 @@ namespace GruersShop.Data.Repositories.Implementations.Bakery
                 .OrderBy(c => c.DisplayOrder)
                 .ToListAsync();
         }
+        public async Task<Catalog> GetDefaultCatalogAsync()
+        {
+            var catalog = await _context.Catalogs.FirstOrDefaultAsync();
+            if (catalog == null)
+            {
+              
+                catalog = new Catalog
+                {
+                    Id = Guid.Parse("11111111-1111-1111-1111-111111111111"),
+                    Name = "Gruer's Signature Collection",
+                    Description = "Our most beloved baked goods, crafted with love",
+                    DisplayOrder = 1,
+                    CreatedAt = DateTime.UtcNow
+                };
+                await _context.Catalogs.AddAsync(catalog);
+                await _context.SaveChangesAsync();
+            }
+            return catalog;
+        }
 
         public async Task<IEnumerable<Category>> GetAllForAdminAsync()
         {

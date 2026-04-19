@@ -8,6 +8,7 @@ namespace GruersShop.Data.Repositories.Interfaces.Bakery;
 
 public interface ICategoryRepository : IFullRepositoryAsync<Category, Guid>
 {
+    Task<Catalog> GetDefaultCatalogAsync();
     Task<Category?> GetByIdIncludingDeletedAsync(Guid id);
     Task<IEnumerable<Category>> GetAllActiveAsync();
     Task<IEnumerable<Category>> GetAllForAdminAsync();

@@ -75,6 +75,25 @@
                 </div>
             </div>
 
+            <!-- CATEGORIES -->
+            <div class="col-lg-3 col-md-6">
+                <div class="dashboard-card warm-card h-100 text-center p-4 d-flex flex-column justify-content-between">
+                    <div>
+                        <div class="card-icon">
+                            <i class="bi bi-bookmarks-fill display-4 text-warm"></i>
+                        </div>
+                        <h5 class="fw-bold mt-3">The Recipe Books</h5>
+                        <p class="small text-muted">Organize your bakery collections</p>
+                    </div>
+                    <a asp-area="Admin"
+                           asp-controller="CategoryManagement"
+                           asp-action="EditList"
+                           class="btn-warm-sm mt-3 card-btn">
+                        Categorize <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
             <!-- MESSAGES -->
             <div class="col-lg-3 col-md-6">
                 <div class="dashboard-card warm-card h-100 text-center p-4 d-flex flex-column justify-content-between">
