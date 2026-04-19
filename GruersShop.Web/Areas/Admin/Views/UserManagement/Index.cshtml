@@ -5,67 +5,133 @@
 @inject RoleManager<IdentityRole> RoleManager;
 
 @{
-    ViewData["Title"] = "User Management";
+    ViewData["Title"] = "User Management - Gruers Bakery";
 }
 
 <div class="container py-5">
-    <div class="warm-card p-4">
+    <div class="warm-card p-4 user-management-card" data-aos="fade-up">
+        
+        <!-- Animated Header with Bakery Flair -->
         <div class="text-center mb-4">
-            <i class="bi bi-people display-1 text-warm"></i>
-            <h1 class="display-4 mt-2">User Management</h1>
-            <div class="honey-accent mx-auto"></div>
-            <p class="text-muted">Manage platform users and their roles</p>
+            <div class="user-management-header">
+                <div class="header-icon-wrapper">
+                    <i class="bi bi-people-fill display-1 text-warm"></i>
+                    <div class="flour-dust">
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                    </div>
+                </div>
+                <h1 class="display-4 mt-2 fw-bold">Gruer's <span class="text-warm">Guests</span></h1>
+                <div class="honey-accent mx-auto"></div>
+                <p class="text-muted">Manage our wonderful family members</p>
+
+                <div class="user-stats mt-2 d-flex gap-3 justify-content-center flex-wrap">
+                    <div class="honey-badge d-inline-flex align-items-center gap-2 px-3 py-2">
+                        <i class="bi bi-people-fill fs-6"></i>
+                        <span class="fw-semibold">Total Users:</span>
+                        <strong class="text-glow fs-5">@Model.Count()</strong>
+                    </div>
+                   @*  <div class="honey-badge d-inline-flex align-items-center gap-2 px-3 py-2">
+                        <i class="bi bi-crown-fill fs-6"></i>
+                        <span class="fw-semibold">Master Bakers:</span>
+                        <strong class="text-glow fs-5">@Model.Count(u => u.Roles.Contains("Admin"))</strong>
+                    </div> *@
+                    <div class="honey-badge d-inline-flex align-items-center gap-2 px-3 py-2">
+                        <i class="bi bi-crown-fill fs-6"></i>
+                        <span class="fw-semibold">Apprentices:</span>
+                        <strong class="text-glow fs-5">@Model.Count(u => u.Roles.Contains("Manager"))</strong>
+                    </div>
+                    <div class="honey-badge d-inline-flex align-items-center gap-2 px-3 py-2">
+                        <i class="bi bi-crown-fill fs-6"></i>
+                        <span class="fw-semibold">Guests:</span>
+                        <strong class="text-glow fs-5">@Model.Count(u => u.Roles.Contains("User"))</strong>
+                    </div>
+                </div>
+
+            </div>
         </div>
 
-        <div class="mb-4">
-            <a asp-area="Admin" asp-controller="AdminDashboard" asp-action="Index" class="btn-warm-sm">
-                <i class="bi bi-arrow-left me-1"></i> Back to Dashboard
+        <!-- Back Button -->
+        <div class="mb-4 d-flex justify-content-between align-items-center">
+            <a asp-area="Admin" asp-controller="AdminDashboard" asp-action="Index" class="btn-warm-sm back-btn">
+                <i class="bi bi-arrow-left me-1"></i> Back to Bakery
             </a>
+            <button id="refreshUsersBtn" class="btn-warm">
+                <i class="bi bi-arrow-repeat me-1"></i> Refresh Guests
+            </button>
         </div>
 
         @if (!Model.Any())
         {
-            <div class="text-center py-5">
+            <div class="text-center py-5 empty-state">
                 <i class="bi bi-people display-4 text-muted"></i>
-                <p class="mt-3">No users available.</p>
+                <p class="mt-3">No family members yet.</p>
+                <p class="small text-muted">Invite your first member to start baking!</p>
             </div>
         }
         else
         {
-            <div class="row g-4">
+            <div class="row g-4" id="usersGrid">
                 @foreach (var user in Model)
                 {
                     var isBanned = user.LockoutEnd != null && user.LockoutEnd > DateTimeOffset.UtcNow;
+                    var isAdmin = user.Roles.Contains("Admin");
 
-                    <div class="col-lg-4 col-md-6">
-                        <div class="warm-card h-100 position-relative @(isBanned ? "opacity-75" : "")">
+                    <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="@(Array.IndexOf(Model.ToArray(), user) * 100)">
+                        <div class="user-card warm-card h-100 position-relative @(isBanned ? "banned-user" : "") @(isAdmin ? "admin-user" : "")">
+                            
+                            <!-- Banned Badge -->
                             @if (isBanned)
                             {
-                                <div class="position-absolute top-0 start-0 w-100 text-center py-2 bg-danger text-white fw-bold rounded-top">
-                                    <i class="bi bi-ban me-1"></i> USER BANNED
+                                <div class="banned-ribbon">
+                                    <i class="bi bi-ban me-1"></i> BANNED
+                                    <i class="bi bi-ban ms-1"></i>
+                                </div>
+                            }
+
+                            <!-- Admin Crown -->
+                            @if (isAdmin)
+                            {
+                                <div class="admin-crown">
+                                    <i class="bi bi-crown-fill"></i>
+                                    <span>Master Baker</span>
                                 </div>
                             }
 
                             <div class="card-body d-flex flex-column @(isBanned ? "pt-5" : "pt-3")">
+                                <!-- User Avatar with Status -->
                                 <div class="text-center mb-3">
-                                    <div class="profile-avatar-sm mx-auto mb-2">
-                                        <i class="bi bi-person-circle display-4 text-warm"></i>
+                                    <div class="user-avatar-wrapper">
+                                        <div class="profile-avatar-sm mx-auto mb-2 @(isBanned ? "banned-avatar" : "")">
+                                            <i class="bi @(isAdmin ? "bi-shield-lock" : "bi-person-circle") display-4 text-warm"></i>
+                                        </div>
+                                        <div class="user-status @(isBanned ? "status-banned" : "status-active")">
+                                            <i class="bi @(isBanned ? "bi-ban" : "bi-check-circle-fill")"></i>
+                                        </div>
                                     </div>
-                                    <h5 class="fw-bold mb-1">@user.Email</h5>
+                                    <h5 class="fw-bold mb-1 user-email">@user.Email</h5>
                                 </div>
 
-                                <div class="mb-3 d-flex flex-wrap gap-2 justify-content-center">
+                                <!-- Roles Display -->
+                                <div class="mb-3 d-flex flex-wrap gap-2 justify-content-center user-roles">
                                     @foreach (var role in user.Roles)
                                     {
-                                        <span class="stone-badge">@role</span>
+                                        <span class="role-badge @(role == "Admin" ? "role-admin" : "role-user")">
+                                            <i class="bi @(role == "Admin" ? "bi-crown-fill" : "bi-person-badge") me-1"></i>
+                                            @role
+                                        </span>
                                     }
                                 </div>
 
-                                @if (!user.Roles.Contains("Admin"))
+                                @if (!isAdmin)
                                 {
-                                    <div class="mb-3">
-                                        <label class="form-label small text-muted">Change Role</label>
-                                        <select name="NewRole" class="form-select warm-input" id="roleSelect-@user.Id">
+                                    <!-- Role Selection -->
+                                    <div class="mb-3 role-selector">
+                                        <label class="form-label small text-muted">
+                                            <i class="bi bi-tag me-1"></i> Assign Bakery Role
+                                        </label>
+                                        <select class="form-select warm-input role-select" id="roleSelect-@user.Id" @(isBanned ? "disabled" : "")>
                                             <option value="">-- Select Role --</option>
                                             @foreach (var role in RoleManager.Roles)
                                             {
@@ -74,51 +140,71 @@
                                         </select>
                                     </div>
 
-                                    <div class="d-flex flex-wrap gap-2 mt-auto">
-                                        <!-- Assign Role Form - АБСОЛЮТЕН URL -->
-                                        <form method="post"
-                                              action="/Admin/UserManagement/AssignRole"
-                                              class="flex-fill">
-                                            @Html.AntiForgeryToken()
-                                            <input type="hidden" name="UserId" value="@user.Id" />
-                                            <button type="submit"
-                                                    class="btn-glow-sm w-100"
-                                                    onclick="document.querySelector('input[name=NewRole]').value = document.getElementById('roleSelect-@user.Id').value"
-                                                @(isBanned ? "disabled" : "")>
-                                                <i class="bi bi-person-plus-fill me-1"></i> Assign
-                                            </button>
-                                        </form>
+                                    <!-- Action Buttons -->
+                                    <div class="d-flex flex-wrap gap-2 mt-auto user-actions">
+                                        @if (!isBanned)
+                                        {
+                                            <!-- Assign Role Form -->
+                                            <form method="post"
+                                                  asp-area="Admin"
+                                                  asp-controller="UserManagement"
+                                                  asp-action="AssignRole"
+                                                  class="flex-fill"
+                                                  onsubmit="return prepareAssignRole('@user.Id')">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="UserId" value="@user.Id" />
+                                                <input type="hidden" name="NewRole" id="newRoleInput-@user.Id" />
+                                                <button type="submit" class="btn-glow-sm action-btn assign-btn w-100">
+                                                    <i class="bi bi-person-plus-fill me-1"></i> Assign
+                                                </button>
+                                            </form>
 
-                                        <!-- Ban/Unban User Form - АБСОЛЮТЕН URL -->
-                                        <form method="post"
-                                              action="/Admin/UserManagement/DisableUser"
-                                              class="flex-fill">
-                                            @Html.AntiForgeryToken()
-                                            <input type="hidden" name="userId" value="@user.Id" />
-                                            <button class="btn-warm-sm w-100"
-                                                    style="background: #dc3545; border-color: #dc3545;"
-                                                @(isBanned ? "disabled" : "")>
-                                                <i class="bi bi-person-x me-1"></i> Ban
-                                            </button>
-                                        </form>
+                                            <!-- Ban Form -->
+                                            <form method="post"
+                                                  asp-area="Admin"
+                                                  asp-controller="UserManagement"
+                                                  asp-action="DisableUser"
+                                                  class="flex-fill"
+                                                  onsubmit="return confirmAction('@user.Id', 'ban')">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="userId" value="@user.Id" />
+                                                <button type="submit" class="action-btn ban-btn w-100">
+                                                    <i class="bi bi-person-x me-1"></i> Ban
+                                                </button>
+                                            </form>
 
-                                        <!-- Send Message Form -->
-                                        <form method="get"
-                                              action="/Admin/SystemMessage/Create"
-                                              class="flex-fill">
-                                            <input type="hidden" name="userId" value="@user.Id" />
-                                            <button type="submit"
-                                                    class="btn-warm-sm w-100"
-                                                @(isBanned ? "disabled" : "")>
-                                                <i class="bi bi-envelope me-1"></i> Message
-                                            </button>
-                                        </form>
+                                            <!-- Message Button -->
+                                            <a asp-area="Admin"
+                                                   asp-controller="SystemMessage"
+                                                   asp-action="NotImplemented"
+                                                   asp-route-featureName="System Messages"
+                                                   class="action-btn message-btn">
+                                                Message
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <!-- Unban Form -->
+                                            <form method="post"
+                                                  asp-area="Admin"
+                                                  asp-controller="UserManagement"
+                                                  asp-action="EnableUser"
+                                                  class="w-100"
+                                                  onsubmit="return confirmAction('@user.Id', 'unban')">
+                                                @Html.AntiForgeryToken()
+                                                <input type="hidden" name="userId" value="@user.Id" />
+                                                <button type="submit" class="action-btn unban-btn w-100">
+                                                    <i class="bi bi-person-check me-1"></i> Unban Baker
+                                                </button>
+                                            </form>
+                                        }
                                     </div>
                                 }
                                 else
                                 {
-                                    <div class="text-center text-muted mt-2">
-                                        <i class="bi bi-shield-lock me-1"></i> Cannot edit Admin
+                                    <div class="text-center text-muted mt-2 admin-protected">
+                                        <i class="bi bi-shield-lock me-1"></i>
+                                        <small>Master Bakers cannot be modified</small>
                                     </div>
                                 }
                             </div>
@@ -130,56 +216,123 @@
     </div>
 </div>
 
-<style>
-    .profile-avatar-sm {
-        width: 60px;
-        height: 60px;
-        background: linear-gradient(135deg, var(--wood-light), var(--wood-medium));
-        border-radius: 50%;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-    }
-    
-    .stone-badge {
-        background: var(--stone-medium);
-        color: var(--wood-very-dark);
-        font-size: 0.7rem;
-        padding: 0.2rem 0.6rem;
-        border-radius: 20px;
-    }
-    
-    [data-bs-theme="dark"] .stone-badge {
-        background: #5c3a1e;
-        color: #e8d9cc;
-    }
-</style>
-
 @section Scripts {
     <script>
+        // Prepare assign role submission
+        function prepareAssignRole(userId) {
+            const select = document.getElementById(`roleSelect-${userId}`);
+            const selectedRole = select?.value;
+            
+            if (!selectedRole) {
+                showToast('Please select a role first!', 'error');
+                select?.focus();
+                select?.classList.add('border-danger');
+                setTimeout(() => select?.classList.remove('border-danger'), 2000);
+                return false;
+            }
+            
+            // Set the hidden input value
+            const hiddenInput = document.getElementById(`newRoleInput-${userId}`);
+            if (hiddenInput) {
+                hiddenInput.value = selectedRole;
+            }
+            
+            return true;
+        }
         
-        document.querySelectorAll('form[action="/Admin/UserManagement/AssignRole"]').forEach(form => {
-            form.addEventListener('submit', function(e) {
-                const userId = this.querySelector('input[name="UserId"]').value;
-                const select = document.getElementById(`roleSelect-${userId}`);
-                const selectedValue = select?.value;
-                
-                if (!selectedValue) {
-                    e.preventDefault();
-                    alert('Моля, изберете роля първо!');
-                    return false;
+        // Confirm ban/unban action
+        function confirmAction(userId, action) {
+            const isBan = action === 'ban';
+            const message = isBan
+                ? 'Are you sure you want to ban this baker? They will lose access to the bakery.'
+                : 'Are you sure you want to unban this baker? They will regain access.';
+            
+            const title = isBan ? 'Ban Baker' : 'Unban Baker';
+            
+            return confirm(`${title}\n\n${message}`);
+        }
+        
+        // Show toast notification
+        function showToast(message, type = 'info') {
+            // Remove any existing toast
+            const existingToast = document.querySelector('.user-toast');
+            if (existingToast) existingToast.remove();
+            
+            const toast = document.createElement('div');
+            toast.className = `user-toast ${type}`;
+            toast.innerHTML = `
+                <i class="bi ${type === 'success' ? 'bi-check-circle-fill' : type === 'error' ? 'bi-exclamation-triangle-fill' : 'bi-info-circle-fill'}"></i>
+                <span>${message}</span>
+            `;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                    setTimeout(() => toast.remove(), 300);
+                }, 3000);
+            }, 100);
+        }
+        
+        // Check for TempData messages on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Show success message from TempData
+            const successMessage = '@TempData["Success"]';
+            const errorMessage = '@TempData["Error"]';
+            
+            if (successMessage && successMessage !== '') {
+                showToast(successMessage, 'success');
+            }
+            
+            if (errorMessage && errorMessage !== '') {
+                showToast(errorMessage, 'error');
+            }
+        });
+        
+        // Refresh users grid
+        document.getElementById('refreshUsersBtn')?.addEventListener('click', function() {
+            this.innerHTML = '<i class="bi bi-arrow-repeat spinner me-1"></i> Refreshing...';
+            this.disabled = true;
+            setTimeout(() => location.reload(), 500);
+        });
+        
+        // Animate cards on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                    observer.unobserve(entry.target);
                 }
-                
-             
-                let hiddenInput = this.querySelector('input[name="NewRole"]');
-                if (!hiddenInput) {
-                    hiddenInput = document.createElement('input');
-                    hiddenInput.type = 'hidden';
-                    hiddenInput.name = 'NewRole';
-                    this.appendChild(hiddenInput);
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('.user-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'all 0.5s ease';
+            observer.observe(card);
+        });
+        
+        // Role select animation
+        document.querySelectorAll('.role-select').forEach(select => {
+            select.addEventListener('change', function() {
+                if (!this.disabled) {
+                    this.style.transform = 'scale(1.02)';
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1)';
+                    }, 200);
                 }
-                hiddenInput.value = selectedValue;
             });
         });
+        
+        console.log('👥 User Management Loaded!');
+        console.log('✨ Total users:', document.querySelectorAll('.user-card').length);
     </script>
 }
