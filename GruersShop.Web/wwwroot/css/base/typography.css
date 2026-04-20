@@ -38,5 +38,20 @@ h3 {
     font-family: var(--font-serif);
     font-size: 1.1rem;
     line-height: 1.8;
-    color: var(--wood-dark);
+    color: antiquewhite;
 }
+
+
+    .story-text p {
+        margin-bottom: 1.25rem;
+        color: var(--text-color);
+    }
+
+    .story-text .lead {
+        font-size: 1.3rem;
+    }
+
+.text-warm {
+    color: var(--honey-gold);
+}
+    
