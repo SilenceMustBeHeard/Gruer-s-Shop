@@ -1,0 +1,203 @@
+﻿@using GruersShop.Web.ViewModels.Products
+@model ProductDetailsViewModel
+
+@{
+    ViewData["Title"] = $"{Model.Product.Name} - Gruers Bakery";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="warm-card p-4" data-aos="fade-up">
+                
+                <!-- Back Button -->
+                <div class="mb-4">
+                    <a asp-area="Admin" asp-controller="ProductManagement" asp-action="EditList" class="btn-warm-sm back-btn">
+                        <i class="bi bi-arrow-left me-1"></i> Back to Products
+                    </a>
+                </div>
+
+                <!-- Product Details -->
+                <div class="row">
+                    <!-- Product Image -->
+                    <div class="col-md-5 mb-4">
+                        <div class="product-detail-image">
+                            <img src="@Model.Product.ImageUrl" alt="@Model.Product.Name" class="img-fluid rounded-3"
+                                 onerror="this.src='https://placehold.co/600x400/2c3e50/ffffff?text=No+Image'">
+                        </div>
+                    </div>
+
+                    <!-- Product Info -->
+                    <div class="col-md-7">
+                        <div class="d-flex align-items-start justify-content-between flex-wrap">
+                            <div>
+                                <h1 class="display-5 fw-bold">@Model.Product.Name</h1>
+                                <div class="d-flex gap-2 mt-2">
+                                    <span class="stone-badge">
+                                        <i class="bi bi-bookmark-heart me-1"></i> @Model.Product.CategoryName
+                                    </span>
+                                    @if (Model.Product.IsInStock)
+                                    {
+                                        <span class="honey-badge">
+                                            <i class="bi bi-check-circle me-1"></i> Available
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="stone-badge" style="background: #dc3545; color: white;">
+                                            <i class="bi bi-x-circle me-1"></i> Unavailable
+                                        </span>
+                                    }
+                                </div>
+                            </div>
+                            <div class="product-price-large">
+                                @Model.Product.FormattedPrice
+                            </div>
+                        </div>
+
+                        <div class="product-meta mt-3">
+                            <div class="d-flex gap-3">
+                                <div>
+                                    <i class="bi bi-star-fill text-warning"></i>
+                                    <span class="fw-semibold">@Model.Product.AverageRating.ToString("0.0")</span>
+                                    <span class="text-muted">(@Model.Product.ReviewCount reviews)</span>
+                                </div>
+                                <div>
+                                    <i class="bi bi-box-seam text-warm"></i>
+                                    <span class="fw-semibold">@Model.Product.StockQuantity</span>
+                                    <span class="text-muted">in stock</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="stone-divider my-4">
+
+                        <h6 class="text-warm">
+                            <i class="bi bi-chat-text me-1"></i> Description
+                        </h6>
+                        <p class="text-muted" style="white-space: pre-wrap; line-height: 1.8;">@Model.Product.Description</p>
+                    </div>
+                </div>
+
+                <!-- Reviews Section -->
+                <div class="mt-5">
+                    <h4 class="mb-3">
+                        <i class="bi bi-chat-heart me-2 text-warm"></i> Customer Reviews
+                    </h4>
+                    
+                    @if (Model.Product.Reviews.Any())
+                    {
+                        <div class="reviews-list">
+                            @foreach (var review in Model.Product.Reviews)
+                            {
+                                <div class="review-card warm-card p-3 mb-3">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <div class="star-rating">
+                                                @for (int i = 1; i <= 5; i++)
+                                                {
+                                                    if (i <= review.Rating)
+                                                    {
+                                                        <i class="bi bi-star-fill text-warning"></i>
+                                                    }
+                                                    else
+                                                    {
+                                                        <i class="bi bi-star text-muted"></i>
+                                                    }
+                                                }
+                                            </div>
+                                            <p class="mt-2 mb-1">@review.Comment</p>
+                                            <small class="text-muted">
+                                                <i class="bi bi-person me-1"></i> @review.UserName
+                                                <i class="bi bi-calendar ms-2 me-1"></i> @review.CreatedAt.ToLocalTime().ToString("dd MMM yyyy")
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center py-4">
+                            <i class="bi bi-chat display-4 text-muted"></i>
+                            <p class="mt-2">No reviews yet for this product.</p>
+                        </div>
+                    }
+                </div>
+
+                <!-- Related Products -->
+                @if (Model.RelatedProducts.Any())
+                {
+                    <div class="mt-5">
+                        <h4 class="mb-3">
+                            <i class="bi bi-diagram-3 me-2 text-warm"></i> You May Also Like
+                        </h4>
+                        <div class="row g-3">
+                            @foreach (var related in Model.RelatedProducts.Take(3))
+                            {
+                                <div class="col-md-4">
+                                    <div class="related-product-card warm-card p-2 text-center">
+                                        <img src="@related.ImageUrl" alt="@related.Name" class="related-product-img"
+                                             onerror="this.src='https://placehold.co/100x100/2c3e50/ffffff?text=No+Image'">
+                                        <h6 class="mt-2 mb-0">@related.Name</h6>
+                                        <small class="text-warm fw-bold">@related.FormattedPrice</small>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .product-detail-image img {
+        width: 100%;
+        border-radius: 16px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    }
+    
+    .product-price-large {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--honey-gold);
+    }
+    
+    .review-card {
+        transition: all 0.2s ease;
+    }
+    
+        .review-card:hover {
+            transform: translateX(5px);
+        }
+    
+    .related-product-card {
+        transition: all 0.2s ease;
+    }
+    
+        .related-product-card:hover {
+            transform: translateY(-3px);
+        }
+    
+    .related-product-img {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 12px;
+    }
+    
+    .star-rating i {
+        font-size: 0.9rem;
+    }
+</style>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🍰 Product Details Loaded!');
+        });
+    </script>
+}

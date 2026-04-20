@@ -1,0 +1,163 @@
+﻿@using GruersShop.Web.ViewModels.Admin.Products
+@model ProductViewModelCreate
+
+@{
+    ViewData["Title"] = "Add New Product - Gruers Bakery";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-xl-6 col-lg-7 col-md-8 col-12">
+            <div class="warm-card p-4 p-md-5" data-aos="fade-up">
+                
+                <!-- Header -->
+                <div class="text-center mb-4">
+                    <div class="header-icon-wrapper">
+                        <i class="bi bi-plus-circle-fill display-1 text-warm"></i>
+                        <div class="flour-dust">
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                        </div>
+                    </div>
+                    <h1 class="display-4 mt-2 fw-bold">Add New <span class="text-warm">Product</span></h1>
+                    <div class="honey-accent mx-auto"></div>
+                    <p class="text-muted">Create a delicious new product for your bakery</p>
+                </div>
+
+                <!-- Form -->
+                <form asp-area="Admin" asp-controller="ProductManagement" asp-action="Create" method="post">
+                    @Html.AntiForgeryToken()
+
+                    <div class="mb-4">
+                        <label asp-for="Name" class="form-label fw-semibold">
+                            <i class="bi bi-cake2 me-1 text-warm"></i> Product Name
+                        </label>
+                        <input asp-for="Name" class="form-control warm-input" placeholder="e.g., Butter Croissant, Chocolate Cake..." />
+                        <span asp-validation-for="Name" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="Description" class="form-label fw-semibold">
+                            <i class="bi bi-chat-text me-1 text-warm"></i> Description
+                        </label>
+                        <textarea asp-for="Description" rows="4" class="form-control warm-input" placeholder="Describe what makes this product special..."></textarea>
+                        <span asp-validation-for="Description" class="text-danger small"></span>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <label asp-for="Price" class="form-label fw-semibold">
+                                <i class="bi bi-currency-dollar me-1 text-warm"></i> Price
+                            </label>
+                            <input asp-for="Price" class="form-control warm-input" type="number" step="0.01" placeholder="0.00" />
+                            <span asp-validation-for="Price" class="text-danger small"></span>
+                        </div>
+
+                        <div class="col-md-6 mb-4">
+                            <label asp-for="StockQuantity" class="form-label fw-semibold">
+                                <i class="bi bi-box-seam me-1 text-warm"></i> Stock Quantity
+                            </label>
+                            <input asp-for="StockQuantity" class="form-control warm-input" type="number" placeholder="0" />
+                            <span asp-validation-for="StockQuantity" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="ImageUrl" class="form-label fw-semibold">
+                            <i class="bi bi-image me-1 text-warm"></i> Image URL
+                        </label>
+                        <input asp-for="ImageUrl" class="form-control warm-input" placeholder="https://..." />
+                        <span asp-validation-for="ImageUrl" class="text-danger small"></span>
+                        <small class="text-muted">Enter a valid image URL for your product</small>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="CategoryId" class="form-label fw-semibold">
+                            <i class="bi bi-bookmark-heart me-1 text-warm"></i> Category
+                        </label>
+                        <select asp-for="CategoryId" class="form-select warm-input">
+                            <option value="">-- Select Category --</option>
+                            @if (Model.Categories != null)
+                            {
+                                @foreach (var cat in Model.Categories)
+                                {
+                                    <option value="@cat.Id">@cat.Name</option>
+                                }
+                            }
+                        </select>
+                        <span asp-validation-for="CategoryId" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="form-check form-switch">
+                            <input asp-for="IsAvailable" class="form-check-input" type="checkbox">
+                            <label class="form-check-label fw-semibold" asp-for="IsAvailable">
+                                <i class="bi bi-check-circle me-1 text-warm"></i> Available for sale
+                            </label>
+                        </div>
+                        <small class="text-muted">If unchecked, product won't appear in the public catalog</small>
+                    </div>
+
+                    <div class="d-flex justify-content-between gap-3 mt-4">
+                        <a asp-area="Admin" asp-controller="ProductManagement" asp-action="EditList" class="btn-warm-sm">
+                            <i class="bi bi-arrow-left me-1"></i> Back to Products
+                        </a>
+                        <button type="submit" class="btn-glow">
+                            <i class="bi bi-cake2 me-2"></i> Create Product
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Decorative footer -->
+                <div class="text-center mt-4">
+                    <small class="text-muted">
+                        <i class="bi bi-heart-fill text-danger me-1" style="font-size: 0.7rem;"></i> 
+                        Freshly baked at Gruers Bakery
+                        <i class="bi bi-heart-fill text-danger ms-1" style="font-size: 0.7rem;"></i>
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .flour-dust {
+        position: absolute;
+        top: -10px;
+        right: -20px;
+        display: flex;
+        gap: 0.3rem;
+    }
+    
+    .flour-dust i {
+        font-size: 0.8rem;
+        color: var(--honey-gold);
+        animation: floatDust 2s infinite;
+    }
+    
+    .flour-dust i:nth-child(2) { animation-delay: 0.3s; }
+    .flour-dust i:nth-child(3) { animation-delay: 0.6s; }
+    
+    @@keyframes floatDust {
+        0%, 100% { transform: translateY(0) scale(1); opacity: 0.3; }
+        50% { transform: translateY(-10px) scale(1.2); opacity: 0.8; }
+    }
+    
+    .header-icon-wrapper {
+        position: relative;
+        display: inline-block;
+    }
+</style>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelector('#Name')?.focus();
+            console.log('🍰 Create Product Form Ready!');
+        });
+    </script>
+}
