@@ -11,7 +11,12 @@ namespace GruersShop.Web.ViewModels.Admin.Products;
         public string Name { get; set; } = null!;
         public string CategoryName { get; set; } = null!;
         public decimal Price { get; set; }
-    
-        public bool IsDeleted { get; set; }
+   public string ImageUrl { get; set; } = null!;
+
+public bool IsAvailable { get; set; }
+    public int StockQuantity { get; set; }
+
+ public DateTime CreatedOn { get; set; }
+    public bool IsDeleted { get; set; }
     }
 
