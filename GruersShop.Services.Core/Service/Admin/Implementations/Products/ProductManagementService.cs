@@ -1,20 +1,46 @@
-﻿using GruersShop.Services.Core.Service.Admin.Interfaces.Product;
-using GruersShop.Services.Core.Service.Interfaces.Bakery;
+﻿using GruersShop.Data.Models.Products;
+using GruersShop.Data.Repositories.Interfaces.Bakery;
+using GruersShop.Services.Core.Service.Admin.Interfaces.Catalog;
+using GruersShop.Services.Core.Service.Admin.Interfaces.Product;
 using GruersShop.Web.ViewModels.Admin.Products;
 using GruersShop.Web.ViewModels.Bakery;
 using GruersShop.Web.ViewModels.Products;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace GruersShop.Services.Core.Service.Admin.Implementations.Products;
 
 public class ProductManagementService : IProductManagementService
 {
+    private readonly IProductRepository _productRepository;
+    private readonly ICategoryManagementService _categoryService;
+   
+    public ProductManagementService(ICategoryManagementService categoryService, 
+        IProductRepository productRepository)
+    {
+        _productRepository = productRepository;
+        _categoryService = categoryService;
+    }
+
+
+
+
+
     public async Task AddProductAsync(ProductViewModelCreate model)
     {
-        throw new NotImplementedException();
+        var product = new Product
+        {
+            Name = model.Name,
+            Description = model.Description,
+            Price = model.Price,
+            ImageUrl = model.ImageUrl,
+            IsAvailable = model.IsAvailable,
+            CategoryId = model.CategoryId,
+            StockQuantity = model.StockQuantity
+          
+        };
+        
+         await _productRepository.AddAsync(product);  
     }
+    
 
     public async Task EditProductAsync(Guid id, ProductViewModelEdit model)
     {
