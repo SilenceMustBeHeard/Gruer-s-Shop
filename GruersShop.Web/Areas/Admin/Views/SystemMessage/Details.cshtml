@@ -1,0 +1,178 @@
+﻿@using GruersShop.Data.Common.Enums
+@using GruersShop.Web.ViewModels.Account.Messages
+@model SystemInboxMessageViewModel
+
+@{
+    ViewData["Title"] = "Message Details - Gruers Bakery";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <div class="warm-card p-4 p-md-5" data-aos="fade-up">
+                
+                <!-- Header -->
+                <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+                    <div class="d-flex align-items-center gap-3">
+                        <i class="bi bi-envelope-heart-fill display-6 text-warm"></i>
+                        <div>
+                            <h2 class="fw-bold mb-0">Message <span class="text-warm">Details</span></h2>
+                            <p class="text-muted small mb-0">Read your communication</p>
+                        </div>
+                    </div>
+                    <a asp-area="Admin" asp-controller="SystemMessage" asp-action="Index" class="btn-warm-sm back-btn">
+                        <i class="bi bi-arrow-left me-1"></i> Back to Messages
+                    </a>
+                </div>
+
+                <!-- Message Content -->
+                <div class="warm-card p-4">
+                    <!-- Sender & Type -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <span class="text-muted small">From</span>
+                            <p class="fw-semibold mb-0">
+                                <i class="bi bi-person-badge me-2 text-warm"></i>
+                                @(Model.SenderName ?? "Gruers Bakery System")
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            <span class="text-muted small">Message Type</span>
+                            <p class="mb-0">
+                                @if (Model.Type == InboxMessageType.AdminToUser)
+                                {
+                                    <span class="stone-badge">
+                                        <i class="bi bi-megaphone me-1"></i> Admin Announcement
+                                    </span>
+                                }
+                                else if (Model.Type == InboxMessageType.Notification)
+                                {
+                                    <span class="stone-badge">
+                                        <i class="bi bi-bell me-1"></i> Notification
+                                    </span>
+                                }
+                                else if (Model.Type == InboxMessageType.System)
+                                {
+                                    <span class="stone-badge">
+                                        <i class="bi bi-gear me-1"></i> System Announcement
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="stone-badge">
+                                        <i class="bi bi-chat me-1"></i> User Message
+                                    </span>
+                                }
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Date -->
+                    <div class="row mb-4">
+                        <div class="col-md-12">
+                            <span class="text-muted small">Sent on</span>
+                            <p class="mb-0">
+                                <i class="bi bi-calendar-heart me-2 text-warm"></i>
+                                @Model.CreatedOn.ToLocalTime().ToString("dddd, dd MMMM yyyy")
+                            </p>
+                            <small class="text-muted">@Model.CreatedOn.ToLocalTime().ToString("hh:mm tt")</small>
+                        </div>
+                    </div>
+
+                    <!-- Message Body -->
+                    <div class="mb-4">
+                        <span class="text-muted small">Message</span>
+                        <div class="message-body p-4 mt-2">
+                            <i class="bi bi-quote text-warm me-1" style="opacity: 0.5;"></i>
+                            <p class="mb-0" style="white-space: pre-wrap; line-height: 1.8;">
+                                @Model.Description
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Status -->
+                    <div class="mt-3">
+                        <span class="text-muted small">Status</span>
+                        <div class="mt-1">
+                            @if (Model.IsRead)
+                            {
+                                <span class="status-badge status-read">
+                                    <i class="bi bi-check-circle-fill me-1"></i> Read
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="status-badge status-unread">
+                                    <i class="bi bi-envelope-paper me-1"></i> Unread
+                                </span>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="d-flex justify-content-end gap-3 mt-4">
+                    <a asp-area="Admin"
+                           asp-controller="SystemMessage"
+                           asp-action="Create"
+                           class="btn-glow">
+                        <i class="bi bi-plus-circle me-2"></i> New Message
+                    </a>
+                    <a asp-area="Admin"
+                           asp-controller="SystemMessage"
+                           asp-action="Index"
+                           class="btn-warm">
+                        <i class="bi bi-check2-circle me-2"></i> Done
+                    </a>
+                </div>
+
+                <!-- Decorative footer -->
+                <div class="text-center mt-4">
+                    <small class="text-muted">
+                        <i class="bi bi-heart-fill text-danger me-1" style="font-size: 0.7rem;"></i>
+                        Every message strengthens our bakery family
+                        <i class="bi bi-heart-fill text-danger ms-1" style="font-size: 0.7rem;"></i>
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('📖 Message Details Loaded!');
+            
+            const successMessage = '@TempData["Success"]';
+            const errorMessage = '@TempData["Error"]';
+            
+            if (successMessage && successMessage !== '') {
+                showToast(successMessage, 'success');
+            }
+            
+            if (errorMessage && errorMessage !== '') {
+                showToast(errorMessage, 'error');
+            }
+        });
+        
+        function showToast(message, type) {
+            const toast = document.createElement('div');
+            toast.className = `user-toast ${type}`;
+            toast.innerHTML = `
+                <i class="bi ${type === 'success' ? 'bi-check-circle-fill' : 'bi-exclamation-triangle-fill'}"></i>
+                <span>${message}</span>
+            `;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                    setTimeout(() => toast.remove(), 300);
+                }, 3000);
+            }, 100);
+        }
+    </script>
+}

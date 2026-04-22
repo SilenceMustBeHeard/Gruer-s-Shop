@@ -1,0 +1,173 @@
+﻿@using GruersShop.Data.Common.Enums
+@using GruersShop.Web.ViewModels.Account.Messages
+@model IEnumerable<SystemInboxMessageViewModel>
+
+@{
+    ViewData["Title"] = "System Messages - Gruers Bakery";
+}
+
+<div class="container py-5">
+    <div class="warm-card p-4" data-aos="fade-up">
+        
+        <!-- Header with Bakery Magic -->
+        <div class="text-center mb-4">
+            <div class="messages-header">
+                <div class="header-icon-wrapper">
+                    <i class="bi bi-megaphone-fill display-1 text-warm"></i>
+                    <div class="flour-dust">
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                    </div>
+                </div>
+                <h1 class="display-4 mt-2 fw-bold">System <span class="text-warm">Messages</span></h1>
+                <div class="honey-accent mx-auto"></div>
+                <p class="text-muted">Keep your customers informed with important updates</p>
+                <div class="message-stats mt-2 d-flex gap-3 justify-content-center flex-wrap">
+                    <span class="honey-badge d-inline-flex align-items-center gap-2 px-3 py-2">
+                        <i class="bi bi-envelope-paper fs-6"></i>
+                        <span class="fw-semibold">Total Sent:</span>
+                        <strong class="text-glow fs-5">@Model.Count()</strong>
+                    </span>
+                    <span class="honey-badge d-inline-flex align-items-center gap-2 px-3 py-2">
+                        <i class="bi bi-envelope-open-fill fs-6"></i>
+                        <span class="fw-semibold">Unread:</span>
+                        <strong class="text-glow fs-5">@Model.Count(m => !m.IsRead)</strong>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Back and New Message Buttons -->
+        <div class="mb-4 d-flex justify-content-between align-items-center flex-wrap gap-3">
+            <a asp-area="Admin" asp-controller="AdminDashboard" asp-action="Index" class="btn-warm-sm back-btn">
+                <i class="bi bi-arrow-left me-1"></i> Back to Bakery
+            </a>
+            <a asp-area="Admin" asp-controller="SystemMessage" asp-action="Create" class="btn-glow">
+                <i class="bi bi-plus-circle me-1"></i> New Message
+            </a>
+        </div>
+
+        @if (!Model.Any())
+        {
+            <div class="text-center py-5 empty-state">
+                <i class="bi bi-envelope-paper display-4 text-muted"></i>
+                <p class="mt-3">No messages sent yet.</p>
+                <p class="small text-muted">Send your first message to connect with customers</p>
+                <a asp-area="Admin" asp-controller="SystemMessage" asp-action="Create" class="btn-glow mt-3">
+                    <i class="bi bi-plus-circle me-2"></i> Send First Message
+                </a>
+            </div>
+        }
+        else
+        {
+            <!-- Messages Grid -->
+            <div class="row g-4">
+                @foreach (var message in Model.OrderByDescending(m => m.CreatedOn))
+                {
+                    <div class="col-md-6 col-lg-4" data-aos="fade-up">
+                        <div class="message-card warm-card h-100 @(!message.IsRead ? "unread-message" : "")">
+                            <div class="card-header d-flex justify-content-between align-items-start flex-wrap gap-2">
+                                <div class="d-flex gap-2">
+                                    @if (!message.IsRead)
+                                    {
+                                        <span class="honey-badge pulse-badge">
+                                            <i class="bi bi-star-fill me-1"></i> New
+                                        </span>
+                                    }
+                                    <span class="stone-badge">
+                                        @if (message.Type == InboxMessageType.AdminToUser)
+                                        {
+                                            <i class="bi bi-megaphone me-1"></i>
+                                        }
+                                        else if (message.Type == InboxMessageType.Notification)
+                                        {
+                                            <i class="bi bi-bell me-1"></i> 
+                                        }
+                                        else if (message.Type == InboxMessageType.System)
+                                        {
+                                            <i class="bi bi-gear me-1"></i> 
+                                        }
+                                        else
+                                        {
+                                            <i class="bi bi-chat me-1"></i> 
+                                        }
+                                    </span>
+                                </div>
+                                <small class="text-muted">
+                                    <i class="bi bi-calendar-heart me-1"></i>
+                                    @message.CreatedOn.ToLocalTime().ToString("dd MMM yyyy")
+                                </small>
+                            </div>
+                            <div class="card-body">
+                                <p class="text-muted small message-preview">
+                                    @(message.Description.Length > 100
+                                        ? message.Description.Substring(0, 100) + "..."
+                                        : message.Description)
+                                </p>
+                            </div>
+                            <div class="card-footer">
+                                <a asp-area="Admin"
+                                   asp-controller="SystemMessage"
+                                   asp-action="Details"
+                                   asp-route-id="@message.Id"
+                                   class="btn-warm-sm w-100">
+                                    <i class="bi bi-eye me-1"></i> Read Message
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+
+        <!-- Footer Stats -->
+        <div class="text-center mt-4">
+            <div class="honey-accent mx-auto mb-3" style="width: 50px;"></div>
+            <small class="text-muted">
+                <i class="bi bi-heart-fill text-danger me-1" style="font-size: 0.7rem;"></i> 
+                Stay connected with your bakery family
+                <i class="bi bi-heart-fill text-danger ms-1" style="font-size: 0.7rem;"></i>
+            </small>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const successMessage = '@TempData["Success"]';
+            const errorMessage = '@TempData["Error"]';
+            
+            if (successMessage && successMessage !== '') {
+                showToast(successMessage, 'success');
+            }
+            
+            if (errorMessage && errorMessage !== '') {
+                showToast(errorMessage, 'error');
+            }
+            
+            function showToast(message, type) {
+                const toast = document.createElement('div');
+                toast.className = `user-toast ${type}`;
+                toast.innerHTML = `
+                    <i class="bi ${type === 'success' ? 'bi-check-circle-fill' : 'bi-exclamation-triangle-fill'}"></i>
+                    <span>${message}</span>
+                `;
+                document.body.appendChild(toast);
+                
+                setTimeout(() => {
+                    toast.classList.add('show');
+                    setTimeout(() => {
+                        toast.classList.remove('show');
+                        setTimeout(() => toast.remove(), 300);
+                    }, 3000);
+                }, 100);
+            }
+            
+            console.log('📬 System Messages Loaded!');
+        });
+    </script>
+}

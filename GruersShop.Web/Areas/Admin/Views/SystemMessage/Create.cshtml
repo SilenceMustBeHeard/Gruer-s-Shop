@@ -1,0 +1,226 @@
+﻿@using GruersShop.Data.Common.Enums
+@using GruersShop.Web.ViewModels.Admin.Message
+@model SystemInboxMessageCreateViewModel
+
+@{
+    ViewData["Title"] = "Send Message - Gruers Bakery";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-7 col-md-9 col-12">
+            <div class="warm-card p-4 p-md-5" data-aos="fade-up">
+                
+                <!-- Header with Bakery Magic -->
+                <div class="text-center mb-4">
+                    <div class="header-icon-wrapper">
+                        <i class="bi bi-envelope-heart-fill display-1 text-warm"></i>
+                        <div class="flour-dust">
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                        </div>
+                    </div>
+                    <h1 class="display-4 mt-2 fw-bold">Send <span class="text-warm">Message</span></h1>
+                    <div class="honey-accent mx-auto"></div>
+                    <p class="text-muted">Reach out to your customers with a personal touch</p>
+                </div>
+
+                <!-- Recipient Info Alert -->
+                @if (!string.IsNullOrEmpty(Model.ReceiverName))
+                {
+                    <div class="alert-oven alert-info mb-4">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="bi bi-person-badge fs-4"></i>
+                            <div>
+                                <strong>Sending to:</strong> @Model.ReceiverName
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <!-- Form -->
+                <form asp-area="Admin" asp-controller="SystemMessage" asp-action="Create" method="post">
+                    @Html.AntiForgeryToken()
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                    <!-- Recipient Selection -->
+                    <div class="mb-4">
+                        <label asp-for="ReceiverId" class="form-label fw-semibold">
+                            <i class="bi bi-person-heart me-1 text-warm"></i> Recipient
+                        </label>
+                        @if (Model.AvailableUsers != null && Model.AvailableUsers.Any())
+                        {
+                            <select asp-for="ReceiverId" class="form-select warm-input" required>
+                                <option value="">-- Select a customer --</option>
+                                @foreach (var user in Model.AvailableUsers)
+                                {
+                                    <option value="@user.Id" selected="@(user.Id == Model.ReceiverId)">
+                                        🍪 @user.FullName (@user.Email)
+                                    </option>
+                                }
+                            </select>
+                        }
+                        else
+                        {
+                            <input type="text" class="form-control warm-input" value="@Model.ReceiverName" readonly />
+                        }
+                        <span asp-validation-for="ReceiverId" class="text-danger small"></span>
+                    </div>
+
+                    <!-- Message Type -->
+                    <div class="mb-4">
+                        <label asp-for="Type" class="form-label fw-semibold">
+                            <i class="bi bi-tag me-1 text-warm"></i> Message Type
+                        </label>
+                        <select asp-for="Type" class="form-select warm-input">
+                            <option value="">-- Select type --</option>
+                            <option value="@InboxMessageType.AdminToUser">📢 Admin </option>
+                            <option value="@InboxMessageType.Notification">📦 Notification</option>
+                            <option value="@InboxMessageType.System">📢 System Announcement</option>
+                            <option value="@InboxMessageType.UserToAdmin">📧 User </option>
+                        </select>
+                        <span asp-validation-for="Type" class="text-danger small"></span>
+                    </div>
+
+                    <!-- Title -->
+                    <div class="mb-4">
+                        <label asp-for="Title" class="form-label fw-semibold">
+                            <i class="bi bi-chat-text me-1 text-warm"></i> Title
+                        </label>
+                        <input asp-for="Title" class="form-control warm-input" placeholder="e.g., Special Announcement, Order Update..." />
+                        <span asp-validation-for="Title" class="text-danger small"></span>
+                    </div>
+
+                    <!-- Message Content -->
+                    <div class="mb-4">
+                        <label asp-for="Description" class="form-label fw-semibold">
+                            <i class="bi bi-envelope-paper me-1 text-warm"></i> Message
+                        </label>
+                        <textarea asp-for="Description"
+                                  class="form-control warm-input"
+                                  rows="6"
+                                  placeholder="Write your message here... (minimum 20 characters)"></textarea>
+                        <span asp-validation-for="Description" class="text-danger small"></span>
+                        <div class="d-flex justify-content-between align-items-center mt-1">
+                            <small class="text-muted">
+                                <i class="bi bi-info-circle me-1"></i> Minimum 20 characters
+                            </small>
+                            <small class="text-muted" id="charCount">0 characters</small>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="d-flex justify-content-between gap-3 mt-4">
+                        <a asp-area="Admin"
+                           asp-controller="SystemMessage"
+                           asp-action="Index"
+                           class="btn-warm-sm">
+                            <i class="bi bi-arrow-left me-1"></i> Cancel
+                        </a>
+                        <button type="submit" class="btn-glow" id="sendBtn">
+                            <i class="bi bi-send-heart me-2"></i> Send Message
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Decorative footer -->
+                <div class="text-center mt-4">
+                    <small class="text-muted">
+                        <i class="bi bi-heart-fill text-danger me-1" style="font-size: 0.7rem;"></i> 
+                        Every message strengthens our bakery family
+                        <i class="bi bi-heart-fill text-danger ms-1" style="font-size: 0.7rem;"></i>
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Character counter
+            const textarea = document.querySelector('textarea[name="Description"]');
+            const charCountSpan = document.getElementById('charCount');
+            const sendBtn = document.getElementById('sendBtn');
+            
+            function updateCharCount() {
+                if (textarea && charCountSpan) {
+                    const length = textarea.value.length;
+                    charCountSpan.textContent = `${length} characters`;
+                    
+                    if (length >= 20) {
+                        charCountSpan.style.color = '#28a745';
+                    } else if (length > 0) {
+                        charCountSpan.style.color = '#fd7e14';
+                    } else {
+                        charCountSpan.style.color = '';
+                    }
+                }
+            }
+            
+            if (textarea) {
+                textarea.addEventListener('input', updateCharCount);
+                updateCharCount();
+                
+                // Auto-focus on title
+                document.querySelector('#Title')?.focus();
+            }
+            
+            // Send button animation
+            if (sendBtn) {
+                sendBtn.addEventListener('click', function(e) {
+                    const message = textarea?.value.trim();
+                    if (!message || message.length < 20) {
+                        e.preventDefault();
+                        showToast('Please enter a message (minimum 20 characters)', 'error');
+                        textarea?.focus();
+                        textarea?.classList.add('border-danger');
+                        setTimeout(() => textarea?.classList.remove('border-danger'), 2000);
+                    } else {
+                        this.innerHTML = '<i class="bi bi-hourglass-split me-2"></i> Sending...';
+                        this.style.opacity = '0.7';
+                    }
+                });
+            }
+            
+            // Show toast if needed
+            const successMessage = '@TempData["Success"]';
+            const errorMessage = '@TempData["Error"]';
+            
+            if (successMessage && successMessage !== '') {
+                showToast(successMessage, 'success');
+            }
+            
+            if (errorMessage && errorMessage !== '') {
+                showToast(errorMessage, 'error');
+            }
+            
+            function showToast(message, type) {
+                const toast = document.createElement('div');
+                toast.className = `user-toast ${type}`;
+                toast.innerHTML = `
+                    <i class="bi ${type === 'success' ? 'bi-check-circle-fill' : 'bi-exclamation-triangle-fill'}"></i>
+                    <span>${message}</span>
+                `;
+                document.body.appendChild(toast);
+                
+                setTimeout(() => {
+                    toast.classList.add('show');
+                    setTimeout(() => {
+                        toast.classList.remove('show');
+                        setTimeout(() => toast.remove(), 300);
+                    }, 3000);
+                }, 100);
+            }
+            
+            console.log('🍰 Send Message Form Ready!');
+        });
+    </script>
+}
