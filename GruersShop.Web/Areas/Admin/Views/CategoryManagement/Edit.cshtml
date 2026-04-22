@@ -80,67 +80,7 @@
     </div>
 </div>
 
-<style>
-    .flour-dust {
-        position: absolute;
-        top: -10px;
-        right: -20px;
-        display: flex;
-        gap: 0.3rem;
-    }
-    
-    .flour-dust i {
-        font-size: 0.8rem;
-        color: var(--honey-gold);
-        animation: floatDust 2s infinite;
-    }
-    
-    .flour-dust i:nth-child(2) {
-        animation-delay: 0.3s;
-    }
-    
-    .flour-dust i:nth-child(3) {
-        animation-delay: 0.6s;
-    }
-    
-    @@keyframes floatDust {
-        0%, 100% {
-            transform: translateY(0) scale(1);
-            opacity: 0.3;
-        }
-        50% {
-            transform: translateY(-10px) scale(1.2);
-            opacity: 0.8;
-        }
-    }
-    
-    .header-icon-wrapper {
-        position: relative;
-        display: inline-block;
-    }
-    
-    /* Custom switch styling */
-    .form-switch .form-check-input {
-        width: 2.5em;
-        height: 1.25em;
-        cursor: pointer;
-        background-color: var(--stone-medium);
-        border: none;
-    }
-    
-    .form-switch .form-check-input:checked {
-        background-color: #dc3545;
-        border-color: #dc3545;
-    }
-    
-    [data-bs-theme="dark"] .form-switch .form-check-input {
-        background-color: #5c3a1e;
-    }
-    
-    [data-bs-theme="dark"] .form-switch .form-check-input:checked {
-        background-color: #dc3545;
-    }
-</style>
+
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
