@@ -128,14 +128,15 @@
                             </p>
                         </div>
 
-                        <div class="review-actions mt-3 d-flex gap-2 justify-content-end">
+                        <div class="review-actions mt-3 d-flex gap-3 justify-content-end">
                             <a asp-area="Admin"
-                               asp-controller="ReviewManagement"
-                               asp-action="Details"
-                               asp-route-id="@review.Id"
-                               class="action-icon-btn details-btn"
-                               title="View Details">
-                                <i class="bi bi-eye-fill"></i>
+                                   asp-controller="ReviewManagement"
+                                   asp-action="Details"
+                                   asp-route-id="@review.Id"
+                                   class="action-btn details-btn"
+                                   style="text-decoration: none; width: auto; min-width: 130px; text-align: center;"
+                                   title="View Details">
+                                <i class="bi bi-eye-fill me-1"></i> View Details
                             </a>
 
                             <form asp-area="Admin"
@@ -146,14 +147,16 @@
                                   class="d-inline"
                                   onsubmit="return confirmToggle('@review.UserName', '@(isActive ? "hide" : "show")')">
                                 @Html.AntiForgeryToken()
-                                <button type="submit" 
-                                        class="action-icon-btn @(isActive ? "hide-btn" : "show-btn")"
+                                <button type="submit"
+                                        class="action-btn @(isActive ? "hide-btn" : "show-btn")"
+                                        style="width: auto; min-width: 130px;"
                                         title="@(isActive ? "Hide Review" : "Show Review")">
-                                    <i class="bi @(isActive ? "bi-eye-slash" : "bi-eye")"></i>
+                                    <i class="bi @(isActive ? "bi-eye-slash" : "bi-eye") me-1"></i>
+                                    @(isActive ? "Hide Review" : "Show Review")
                                 </button>
                             </form>
                         </div>
-                    </div>
+                    </div> 
                 }
             </div>
         }
@@ -169,7 +172,6 @@
         </div>
     </div>
 </div>
-
 
 
 

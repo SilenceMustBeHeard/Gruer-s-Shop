@@ -2415,18 +2415,32 @@ body {
     color: #6c757d;
 }
 
-.action-icon-btn {
+.action-btn {
     background: transparent;
     border: none;
-    width: 34px;
-    height: 34px;
+    padding: 8px 16px;
     border-radius: 8px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     transition: all 0.2s ease;
-    font-size: 1rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    gap: 6px;
+    min-width: 140px;
+    width: 100%;
+}
+
+.review-actions .action-btn,
+.review-actions button,
+.review-actions a {
+    width: 140px !important;
+    min-width: 140px !important;
+    max-width: 140px !important;
+    justify-content: center !important;
+    text-align: center !important;
+    white-space: nowrap !important;
 }
 
 .details-btn {
@@ -2437,7 +2451,7 @@ body {
     .details-btn:hover {
         background: #17a2b8;
         color: white;
-        transform: scale(1.1);
+        transform: translateY(-2px);
     }
 
 .hide-btn {
@@ -2448,7 +2462,7 @@ body {
     .hide-btn:hover {
         background: #fd7e14;
         color: white;
-        transform: scale(1.1);
+        transform: translateY(-2px);
     }
 
 .show-btn {
@@ -2459,7 +2473,7 @@ body {
     .show-btn:hover {
         background: #28a745;
         color: white;
-        transform: scale(1.1);
+        transform: translateY(-2px);
     }
 
 .active-filter {
@@ -2509,3 +2523,31 @@ body {
     position: relative;
     display: inline-block;
 }
+
+.user-toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 12px 20px;
+    border-radius: 8px;
+    z-index: 9999;
+    transform: translateX(400px);
+    transition: transform 0.3s ease;
+    font-weight: 500;
+}
+
+    .user-toast.show {
+        transform: translateX(0);
+    }
+
+    .user-toast.success {
+        background: #d4edda;
+        color: #155724;
+        border-left: 4px solid #28a745;
+    }
+
+    .user-toast.error {
+        background: #f8d7da;
+        color: #721c24;
+        border-left: 4px solid #dc3545;
+    }
