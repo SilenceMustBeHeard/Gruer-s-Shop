@@ -1,0 +1,53 @@
+﻿@{
+    ViewData["Title"] = "Review Submitted - Gruers Bakery";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+            <div class="warm-card p-5 text-center" data-aos="fade-up">
+                
+                <!-- Success Animation -->
+                <div class="success-icon-wrapper mb-4">
+                    <div class="success-circle">
+                        <i class="bi bi-check-lg display-1 text-success"></i>
+                    </div>
+                    <div class="sparkles">
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                    </div>
+                </div>
+
+                <h1 class="display-5 fw-bold mb-3">Thank You! <span class="text-warm">🎉</span></h1>
+                <div class="honey-accent mx-auto mb-4"></div>
+                
+                <p class="text-muted mb-3">
+                    Your review has been successfully submitted.
+                </p>
+                <p class="text-muted mb-4">
+                    We truly appreciate you taking the time to share your experience with us.
+                </p>
+
+                <div class="d-flex justify-content-center gap-3 flex-wrap">
+                    <a asp-area="Admin" asp-controller="CatalogManagement" asp-action="AdminIndex" class="btn-glow">
+                        <i class="bi bi-grid-3x3-gap-fill me-2"></i> Browse More Products
+                    </a>
+                    <a asp-area="" asp-controller="Home" asp-action="Index" class="btn-warm">
+                        <i class="bi bi-house-heart me-2"></i> Return Home
+                    </a>
+                </div>
+
+                <!-- Decorative footer -->
+                <div class="text-center mt-5">
+                    <small class="text-muted">
+                        <i class="bi bi-heart-fill text-danger me-1" style="font-size: 0.7rem;"></i> 
+                        Your voice helps us bake better
+                        <i class="bi bi-heart-fill text-danger ms-1" style="font-size: 0.7rem;"></i>
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

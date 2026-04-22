@@ -1,0 +1,171 @@
+﻿@using GruersShop.Web.ViewModels.Products
+@model ProductViewModel
+
+@{
+    ViewData["Title"] = "Write a Review - Gruers Bakery";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="warm-card p-4 p-md-5" data-aos="fade-up">
+                
+                <!-- Header -->
+                <div class="text-center mb-4">
+                    <div class="header-icon-wrapper">
+                        <i class="bi bi-chat-heart-fill display-1 text-warm"></i>
+                        <div class="flour-dust">
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                        </div>
+                    </div>
+                    <h1 class="display-4 mt-2 fw-bold">Share Your <span class="text-warm">Thoughts</span></h1>
+                    <div class="honey-accent mx-auto"></div>
+                    <p class="text-muted">Your feedback helps us bake better</p>
+                </div>
+
+                <div class="row g-5 align-items-start">
+                    
+                    <!-- Product Preview -->
+                    <div class="col-lg-5 text-center">
+                        <div class="product-preview warm-card p-4">
+                            <img src="@Model.ImageUrl"
+                                 class="img-fluid rounded-3 mb-3"
+                                 alt="@Model.Name"
+                                 style="max-height: 200px; width: auto;"
+                                 onerror="this.src='https://placehold.co/300x200/2c3e50/ffffff?text=No+Image'" />
+                            
+                            <h4 class="fw-bold mb-2">@Model.Name</h4>
+                            <p class="small text-muted">@(Model.Description?.Length > 100 ? Model.Description.Substring(0, 100) + "..." : Model.Description)</p>
+                            
+                            <div class="product-meta mt-3">
+                                <div class="d-flex justify-content-center gap-3">
+                                    <span class="honey-badge">
+                                        <i class="bi bi-tag me-1"></i> @Model.CategoryName
+                                    </span>
+                                    <span class="honey-badge">
+                                        <i class="bi bi-currency-dollar me-1"></i> @Model.FormattedPrice
+                                    </span>
+                                </div>
+                                <div class="mt-2">
+                                    <span class="text-warning fw-semibold">
+                                        @Model.AverageRating.ToString("0.0") ★
+                                    </span>
+                                    <span class="text-muted small">
+                                        (@Model.ReviewCount reviews)
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Review Form -->
+                    <div class="col-lg-7">
+                        <form asp-area="Admin" 
+                              asp-controller="ReviewManagement" 
+                              asp-action="Post" 
+                              method="post" 
+                              class="review-form">
+                            
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="productId" value="@Model.Id" />
+
+                            <!-- Rating Selection with interactive stars -->
+                            <div class="mb-4">
+                                <label class="form-label fw-semibold">
+                                    <i class="bi bi-star-fill text-warning me-1"></i> Your Rating
+                                </label>
+                                <div class="rating-selector">
+                                    <div class="stars-container">
+                                        @for (int i = 5; i >= 1; i--)
+                                        {
+                                            <input type="radio" name="rating" value="@i" id="star@(i)" required />
+                                            <label for="star@(i)" title="@i stars">
+                                                <i class="bi bi-star"></i>
+                                            </label>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="form-text small text-muted" id="ratingMessage">Click on a star to rate</div>
+                            </div>
+
+                            <!-- Comment -->
+                            <div class="mb-4">
+                                <label class="form-label fw-semibold">
+                                    <i class="bi bi-chat-text me-1 text-warm"></i> Your Review
+                                </label>
+                                <textarea name="comment" 
+                                          class="form-control warm-input" 
+                                          rows="5" 
+                                          placeholder="Tell us about your experience with this product..."></textarea>
+                                <div class="form-text small text-muted">
+                                    <i class="bi bi-info-circle me-1"></i> Your honest feedback helps other customers
+                                </div>
+                            </div>
+
+                            <!-- Submit Buttons -->
+                            <div class="d-flex gap-3">
+                                <button type="submit" class="btn-glow flex-grow-1">
+                                    <i class="bi bi-send-heart me-2"></i> Submit Review
+                                </button>
+                                <a asp-area="Admin" 
+                                   asp-controller="CatalogManagement" 
+                                   asp-action="Details" 
+                                   asp-route-id="@Model.Id" 
+                                   class="btn-warm">
+                                    <i class="bi bi-arrow-left me-1"></i> Back
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Decorative footer -->
+                <div class="text-center mt-4">
+                    <small class="text-muted">
+                        <i class="bi bi-heart-fill text-danger me-1" style="font-size: 0.7rem;"></i> 
+                        Freshly baked at Gruers Bakery
+                        <i class="bi bi-heart-fill text-danger ms-1" style="font-size: 0.7rem;"></i>
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('⭐ Write Review Form Ready!');
+            
+            // Interactive rating message
+            const stars = document.querySelectorAll('.stars-container input');
+            const ratingMessage = document.getElementById('ratingMessage');
+            const messages = {
+                1: '😔 Not satisfied - We\'ll do better!',
+                2: '😐 Needs improvement - Thanks for your honesty',
+                3: '🙂 Good - Glad you enjoyed it',
+                4: '😊 Very Good - Happy you liked it!',
+                5: '❤️ Excellent - You made our day!'
+            };
+            
+            stars.forEach(star => {
+                star.addEventListener('change', function() {
+                    const value = this.value;
+                    ratingMessage.innerHTML = `<i class="bi bi-star-fill text-warning me-1"></i> ${messages[value]}`;
+                    ratingMessage.style.color = 'var(--honey-gold)';
+                });
+            });
+            
+            // Auto-focus on first star
+            const firstStar = document.querySelector('#star5');
+            if (firstStar) {
+                firstStar.focus();
+            }
+        });
+    </script>
+}

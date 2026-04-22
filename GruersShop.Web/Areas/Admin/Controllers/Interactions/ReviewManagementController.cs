@@ -95,20 +95,20 @@ public class ReviewManagementController : BaseAdminController
     // gets the list of all reviews for editing (including soft deleted ones) and returns the view with the reviews list
     [HttpGet]
     [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> EditList(bool includeDeleted = true)
+    public async Task<IActionResult> EditList(bool includeDeleted = false)
     {
         IEnumerable<ReviewViewModelList> reviews;
 
         if (includeDeleted)
         {
             reviews = await _reviewManagementService.GetAllIncludingDeletedAsync();
-            ViewData["ShowDeleted"] = true;
         }
         else
         {
             reviews = await _reviewManagementService.GetAllActiveAsync();
-            ViewData["ShowDeleted"] = false;
         }
+
+        ViewBag.IncludeDeleted = includeDeleted;
 
         return View("EditList", reviews.OrderByDescending(r => r.CreatedAt));
     }
@@ -123,11 +123,22 @@ public class ReviewManagementController : BaseAdminController
     {
         try
         {
+           
             await _reviewManagementService.ToggleReviewAsync(id);
+
+          
             var review = await _reviewManagementService.GetByIdAsync(id);
-            TempData["Success"] = review.IsDeleted
-                ? "Review has been deactivated (soft deleted)!"
-                : "Review has been activated!";
+
+            if (review != null)
+            {
+                TempData["Success"] = review.IsDeleted
+                    ? "🔒 Review has been hidden from customers!"
+                    : "✨ Review is now visible to customers!";
+            }
+            else
+            {
+                TempData["Success"] = "Review status changed successfully!";
+            }
         }
         catch (Exception ex)
         {

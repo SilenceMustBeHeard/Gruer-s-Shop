@@ -1,0 +1,212 @@
+﻿@using GruersShop.Web.ViewModels.Interactions
+@model ReviewViewModelList
+
+@{
+    ViewData["Title"] = "Review Details - Gruers Bakery";
+    var isActive = !Model.IsDeleted;
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="warm-card p-4" data-aos="fade-up">
+                
+                <!-- Header -->
+                <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+                    <div class="d-flex align-items-center gap-3">
+                        <i class="bi bi-chat-heart-fill display-6 text-warm"></i>
+                        <div>
+                            <h2 class="fw-bold mb-0">Review <span class="text-warm">Details</span></h2>
+                            <p class="text-muted small mb-0">Customer feedback at a glance</p>
+                        </div>
+                    </div>
+                    <a asp-area="Admin" asp-controller="ReviewManagement" asp-action="EditList" class="btn-warm-sm back-btn">
+                        <i class="bi bi-arrow-left me-1"></i> Back to Reviews
+                    </a>
+                </div>
+
+                <!-- Main Content -->
+                <div class="row g-4">
+                    <!-- Customer Info -->
+                    <div class="col-md-6">
+                        <div class="warm-card p-3">
+                            <h6 class="text-warm mb-3">
+                                <i class="bi bi-person-circle me-2"></i>Customer Details
+                            </h6>
+                            <div class="mb-2">
+                                <span class="text-muted small">Name</span>
+                                <p class="mb-0 fw-semibold">
+                                    <i class="bi bi-person me-2 text-warm"></i>@Model.UserName
+                                </p>
+                            </div>
+                            <div class="mb-2">
+                                <span class="text-muted small">Email</span>
+                                <p class="mb-0">
+                                    <i class="bi bi-envelope me-2 text-warm"></i>
+                                    <a href="mailto:@Model.UserEmail" class="text-warm email-link">@Model.UserEmail</a>
+                                </p>
+                            </div>
+                            <div class="mt-3">
+                                <a asp-area="Admin"
+                                       asp-controller="SystemMessage"
+                                       asp-action="Create"
+                                       asp-route-userId="@Model.UserId"
+                                       class="btn-warm-sm">
+                                    <i class="bi bi-envelope-heart me-1"></i> Send Message
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Product Info -->
+                    <div class="col-md-6">
+                        <div class="warm-card p-3">
+                            <h6 class="text-warm mb-3">
+                                <i class="bi bi-cake2 me-2"></i>Product Details
+                            </h6>
+                            <div class="mb-2">
+                                <span class="text-muted small">Product</span>
+                                <p class="mb-0 fw-semibold">
+                                    <i class="bi bi-tag me-2 text-warm"></i>@Model.ProductName
+                                </p>
+                            </div>
+                            <div class="mb-2">
+                                <span class="text-muted small">Product ID</span>
+                                <p class="mb-0">
+                                    <code class="text-warm">@Model.ProductId</code>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Review Content -->
+                    <div class="col-12">
+                        <div class="warm-card p-3">
+                            <h6 class="text-warm mb-3">
+                                <i class="bi bi-star-fill me-2"></i>Review Content
+                            </h6>
+
+                            <div class="mb-3">
+                                <span class="text-muted small">Rating</span>
+                                <div class="mt-1">
+                                    @for (int i = 1; i <= 5; i++)
+                                    {
+                                        if (i <= Model.Rating)
+                                        {
+                                            <i class="bi bi-star-fill text-warning fs-4 me-1"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="bi bi-star text-muted fs-4 me-1"></i>
+                                        }
+                                    }
+                                    <span class="ms-2 honey-badge">@Model.Rating/5</span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <span class="text-muted small">Comment</span>
+                                <div class="mt-2 p-3">
+                                    <p class="mb-0" style="white-space: pre-wrap; line-height: 1.6;">
+                                        <i class="bi bi-quote text-warm me-1"></i>
+                                        @Model.Comment
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="row mt-3">
+                                <div class="col-6">
+                                    <span class="text-muted small d-block">Submitted on</span>
+                                    <span class="fw-semibold">
+                                        <i class="bi bi-calendar me-1 text-warm"></i>
+                                        @Model.CreatedAt.ToLocalTime().ToString("dd MMMM yyyy")
+                                    </span>
+                                </div>
+                                <div class="col-6">
+                                    <span class="text-muted small d-block">Time</span>
+                                    <span class="fw-semibold">
+                                        <i class="bi bi-clock me-1 text-warm"></i>
+                                        @Model.CreatedAt.ToLocalTime().ToString("hh:mm tt")
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="mt-3">
+                                <span class="text-muted small">Status</span><br>
+                                <span class="status-badge @(isActive ? "status-active" : "status-inactive") mt-1">
+                                    <i class="bi @(isActive ? "bi-check-circle-fill" : "bi-slash-circle") me-1"></i>
+                                    @(isActive ? "Published" : "Hidden")
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="d-flex gap-3 justify-content-end mt-4">
+                    <form asp-area="Admin"
+                          asp-controller="ReviewManagement"
+                          asp-action="ToggleActive"
+                          asp-route-id="@Model.Id"
+                          method="post"
+                          class="d-inline">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn-glow @(isActive ? "hide-btn" : "show-btn")"
+                                onclick="return confirm('Are you sure you want to @(isActive ? "hide" : "show") this review?');">
+                            <i class="bi @(isActive ? "bi-eye-slash" : "bi-eye") me-2"></i>
+                            @(isActive ? "Hide Review" : "Show Review")
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Decorative footer -->
+                <div class="text-center mt-4">
+                    <small class="text-muted">
+                        <i class="bi bi-heart-fill text-danger me-1" style="font-size: 0.7rem;"></i>
+                        Every review makes our bakery better
+                        <i class="bi bi-heart-fill text-danger ms-1" style="font-size: 0.7rem;"></i>
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🍰 Review Details Loaded!');
+            
+            const successMessage = '@TempData["Success"]';
+            const errorMessage = '@TempData["Error"]';
+            
+            if (successMessage && successMessage !== '') {
+                showToast(successMessage, 'success');
+            }
+            
+            if (errorMessage && errorMessage !== '') {
+                showToast(errorMessage, 'error');
+            }
+        });
+        
+        function showToast(message, type) {
+            const toast = document.createElement('div');
+            toast.className = `user-toast ${type}`;
+            toast.innerHTML = `
+                <i class="bi ${type === 'success' ? 'bi-check-circle-fill' : 'bi-exclamation-triangle-fill'}"></i>
+                <span>${message}</span>
+            `;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                    setTimeout(() => toast.remove(), 300);
+                }, 3000);
+            }, 100);
+        }
+    </script>
+}

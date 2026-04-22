@@ -130,11 +130,12 @@ public class ReviewManagementService : IReviewManagementService
             ProductName = r.Product?.Name ?? "Unknown Product"
         });
     }
+    // Gets all active reviews (not deleted)
     public async Task<IEnumerable<ReviewViewModelList>> GetAllActiveAsync()
     {
         var reviews = await _reviewRepo
             .Query()
-            .Where(r => !r.IsDeleted)
+            .Where(r => !r.IsDeleted)  
             .Include(r => r.User)
             .Include(r => r.Product)
             .Select(r => new ReviewViewModelList
@@ -155,12 +156,12 @@ public class ReviewManagementService : IReviewManagementService
 
         return reviews;
     }
-
     // Gets all reviews including deleted ones
     public async Task<IEnumerable<ReviewViewModelList>> GetAllIncludingDeletedAsync()
     {
         var reviews = await _reviewRepo
             .Query()
+            .IgnoreQueryFilters()
             .Include(r => r.User)
             .Include(r => r.Product)
             .Select(r => new ReviewViewModelList
@@ -187,6 +188,7 @@ public class ReviewManagementService : IReviewManagementService
     {
         return await _reviewRepo
             .Query()
+            .IgnoreQueryFilters()
             .Where(r => r.Id == id)
             .Include(r => r.User)
             .Include(r => r.Product)
@@ -218,14 +220,21 @@ public class ReviewManagementService : IReviewManagementService
     // Toggles the active/deleted status of a review (soft delete/restore)
     public async Task ToggleReviewAsync(Guid id)
     {
-        var review = await _reviewRepo.GetByIdIncludingDeletedAsync(id);
+        var review = await _reviewRepo
+            .Query()
+            .IgnoreQueryFilters() // Important to find deleted reviews too
+            .FirstOrDefaultAsync(r => r.Id == id);
 
         if (review == null)
         {
             throw new Exception($"Review with ID {id} not found");
         }
 
-        await _reviewRepo.ToggleReviewStatusAsync(review);
+        // Toggle the IsDeleted status
+        review.IsDeleted = !review.IsDeleted;
+        review.UpdatedAt = DateTime.UtcNow;
+
+        await _reviewRepo.UpdateAsync(review);
         await _reviewRepo.SaveChangesAsync();
     }
 

@@ -1,0 +1,221 @@
+﻿@using GruersShop.Web.ViewModels.Interactions
+@model IEnumerable<ReviewViewModelList>
+
+@{
+    ViewData["Title"] = "Customer Voices - Gruers Bakery";
+    var includeDeleted = ViewBag.IncludeDeleted ?? false;
+}
+
+<div class="container py-5">
+    <div class="warm-card p-4" data-aos="fade-up">
+        
+        <!-- Header with Bakery Magic -->
+        <div class="text-center mb-4">
+            <div class="review-header">
+                <div class="header-icon-wrapper">
+                    <i class="bi bi-chat-heart-fill display-1 text-warm"></i>
+                    <div class="flour-dust">
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                    </div>
+                </div>
+                <h1 class="display-4 mt-2 fw-bold">Customer <span class="text-warm">Voices</span></h1>
+                <div class="honey-accent mx-auto"></div>
+                <p class="text-muted">Listen to what our beloved customers say</p>
+                <div class="review-stats mt-2 d-flex gap-3 justify-content-center flex-wrap">
+                    <span class="honey-badge d-inline-flex align-items-center gap-2 px-3 py-2">
+                        <i class="bi bi-chat-heart fs-6"></i>
+                        <span class="fw-semibold">Total Reviews:</span>
+                        <strong class="text-glow fs-5">@Model.Count()</strong>
+                    </span>
+                    <span class="honey-badge d-inline-flex align-items-center gap-2 px-3 py-2">
+                        <i class="bi bi-star-fill fs-6"></i>
+                        <span class="fw-semibold">Active:</span>
+                        <strong class="text-glow fs-5">@Model.Count(r => !r.IsDeleted)</strong>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter and Back Buttons -->
+        <div class="mb-4 d-flex justify-content-between align-items-center flex-wrap gap-3">
+            <a asp-area="Admin" asp-controller="AdminDashboard" asp-action="Index" class="btn-warm-sm back-btn">
+                <i class="bi bi-arrow-left me-1"></i> Back to Bakery
+            </a>
+            
+            <div class="d-flex gap-2">
+                <a asp-area="Admin" 
+                   asp-controller="ReviewManagement" 
+                   asp-action="EditList" 
+                   asp-route-includeDeleted="false" 
+                   class="btn-warm-sm @(includeDeleted == false ? "active-filter" : "")">
+                    <i class="bi bi-eye me-1"></i> Active Only
+                </a>
+                <a asp-area="Admin" 
+                   asp-controller="ReviewManagement" 
+                   asp-action="EditList" 
+                   asp-route-includeDeleted="true" 
+                   class="btn-warm-sm @(includeDeleted == true ? "active-filter" : "")">
+                    <i class="bi bi-collection me-1"></i> Show All
+                </a>
+            </div>
+        </div>
+
+        @if (!Model.Any())
+        {
+            <div class="text-center py-5 empty-state">
+                <i class="bi bi-chat display-4 text-muted"></i>
+                <p class="mt-3">No reviews yet.</p>
+                <p class="small text-muted">When customers share their thoughts, they'll appear here.</p>
+            </div>
+        }
+        else
+        {
+            <!-- Reviews Grid -->
+            <div class="reviews-grid" id="reviewsGrid">
+                @foreach (var review in Model.OrderByDescending(r => r.CreatedAt))
+                {
+                    var isActive = !review.IsDeleted;
+                    <div class="review-card warm-card mb-3 @(review.IsDeleted ? "deleted-review" : "")" data-aos="fade-up">
+                        <div class="review-header d-flex justify-content-between align-items-start flex-wrap gap-3">
+                            <div class="d-flex gap-3 align-items-center">
+                                <div class="reviewer-avatar">
+                                    <i class="bi @(isActive ? "bi-person-circle" : "bi-person-circle text-muted") fs-1"></i>
+                                </div>
+                                <div>
+                                    <h5 class="mb-0 fw-semibold">@review.UserName</h5>
+                                    <div class="star-rating mt-1">
+                                        @for (int i = 1; i <= 5; i++)
+                                        {
+                                            if (i <= review.Rating)
+                                            {
+                                                <i class="bi bi-star-fill text-warning"></i>
+                                            }
+                                            else
+                                            {
+                                                <i class="bi bi-star text-muted"></i>
+                                            }
+                                        }
+                                        <span class="ms-2 small text-muted">@review.Rating/5</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-end">
+                                <div class="review-date">
+                                    <i class="bi bi-calendar-heart me-1 text-warm"></i>
+                                    <small>@review.CreatedAt.ToLocalTime().ToString("dd MMM yyyy · HH:mm")</small>
+                                </div>
+                                <div class="mt-1">
+                                    <span class="status-badge @(isActive ? "status-active" : "status-inactive")">
+                                        <i class="bi @(isActive ? "bi-check-circle-fill" : "bi-slash-circle") me-1"></i>
+                                        @(isActive ? "Published" : "Hidden")
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="review-product mt-3">
+                            <span class="stone-badge">
+                                <i class="bi bi-cake2 me-1"></i> @review.ProductName
+                            </span>
+                        </div>
+
+                        <div class="review-comment mt-3">
+                            <p class="text-muted mb-0" style="white-space: pre-wrap; line-height: 1.6;">
+                                <i class="bi bi-quote text-warm me-1"></i>
+                                @review.Comment
+                            </p>
+                        </div>
+
+                        <div class="review-actions mt-3 d-flex gap-2 justify-content-end">
+                            <a asp-area="Admin"
+                               asp-controller="ReviewManagement"
+                               asp-action="Details"
+                               asp-route-id="@review.Id"
+                               class="action-icon-btn details-btn"
+                               title="View Details">
+                                <i class="bi bi-eye-fill"></i>
+                            </a>
+
+                            <form asp-area="Admin"
+                                  asp-controller="ReviewManagement"
+                                  asp-action="ToggleActive"
+                                  asp-route-id="@review.Id"
+                                  method="post"
+                                  class="d-inline"
+                                  onsubmit="return confirmToggle('@review.UserName', '@(isActive ? "hide" : "show")')">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" 
+                                        class="action-icon-btn @(isActive ? "hide-btn" : "show-btn")"
+                                        title="@(isActive ? "Hide Review" : "Show Review")">
+                                    <i class="bi @(isActive ? "bi-eye-slash" : "bi-eye")"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+
+        <!-- Footer Stats -->
+        <div class="text-center mt-4">
+            <div class="honey-accent mx-auto mb-3" style="width: 50px;"></div>
+            <small class="text-muted">
+                <i class="bi bi-heart-fill text-danger me-1" style="font-size: 0.7rem;"></i> 
+                Every review helps us bake better
+                <i class="bi bi-heart-fill text-danger ms-1" style="font-size: 0.7rem;"></i>
+            </small>
+        </div>
+    </div>
+</div>
+
+
+
+
+@section Scripts {
+    <script>
+        function confirmToggle(userName, action) {
+            const isHide = action === 'hide';
+            const message = isHide 
+                ? `Are you sure you want to hide ${userName}'s review? It won't be visible to customers.`
+                : `Are you sure you want to show ${userName}'s review? It will be visible to customers.`;
+            
+            return confirm(message);
+        }
+        
+        // Check for TempData messages
+        document.addEventListener('DOMContentLoaded', function() {
+            const successMessage = '@TempData["Success"]';
+            const errorMessage = '@TempData["Error"]';
+            
+            if (successMessage && successMessage !== '') {
+                showToast(successMessage, 'success');
+            }
+            
+            if (errorMessage && errorMessage !== '') {
+                showToast(errorMessage, 'error');
+            }
+        });
+        
+        function showToast(message, type) {
+            const toast = document.createElement('div');
+            toast.className = `user-toast ${type}`;
+            toast.innerHTML = `
+                <i class="bi ${type === 'success' ? 'bi-check-circle-fill' : 'bi-exclamation-triangle-fill'}"></i>
+                <span>${message}</span>
+            `;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.classList.add('show');
+                setTimeout(() => {
+                    toast.classList.remove('show');
+                    setTimeout(() => toast.remove(), 300);
+                }, 3000);
+            }, 100);
+        }
+        
+        console.log('🍰 Review Management Loaded!');
+    </script>
+}
