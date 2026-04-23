@@ -1,12 +1,15 @@
 ﻿@model bool
 
 @using GruersShop.Data.Models.Base
+@using GruersShop.Services.Core.Service.Interfaces.Interactions
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<AppUser> SignInManager
 @inject UserManager<AppUser> UserManager
+@inject ICartService CartService
 
 @{
     string displayName = null;
+    int cartItemsCount = 0;
 
     if (Model)
     {
@@ -24,6 +27,17 @@
         {
             displayName = user?.Email;
         }
+        
+        // Get cart items count
+        try
+        {
+            var cart = CartService.GetCart();
+            cartItemsCount = cart.TotalItems;
+        }
+        catch
+        {
+            cartItemsCount = 0;
+        }
     }
 }
 
@@ -39,36 +53,71 @@
         </div>
     </li>
 
-    <!-- Profile Link -->
- 
+    <!-- Profile Link (for all logged in users) -->
+    <li>
+        <a class="dropdown-item" asp-controller="Profile" asp-action="Index">
+            <i class="bi bi-person-badge me-2 text-warm"></i> My Profile
+        </a>
+    </li>
+
+    <!-- My Orders Link (for all logged in users) -->
+    <li>
+        <a class="dropdown-item" asp-controller="Orders" asp-action="MyOrders">
+            <i class="bi bi-receipt me-2 text-warm"></i> My Orders
+        </a>
+    </li>
+
+    <!-- Cart Link with badge -->
+    <li>
+        <a class="dropdown-item d-flex justify-content-between align-items-center"
+               asp-controller="Cart" asp-action="Index">
+            <span>
+                <i class="bi bi-cart3 me-2 text-warm"></i> My Cart
+            </span>
+            @if (cartItemsCount > 0)
+            {
+                <span class="honey-badge">@cartItemsCount</span>
+            }
+        </a>
+    </li>
 
     <!-- Admin Dashboard Link (only for admins) -->
     @if (User.IsInRole("Admin"))
     {
+        <li><hr class="dropdown-divider"></li>
         <li>
-            <a class="dropdown-item" asp-area="Admin" asp-controller="Home" asp-action="Index">
+            <a class="dropdown-item" asp-area="Admin" asp-controller="AdminDashboard" asp-action="Index">
                 <i class="bi bi-shield-lock me-2 text-warm"></i> Admin Dashboard
             </a>
         </li>
         <li>
             <a class="dropdown-item" asp-area="Admin" asp-controller="AdminProfile" asp-action="Index">
-                <i class="bi bi-person-badge me-2 text-warm"></i> My Profile
+                <i class="bi bi-person-badge me-2 text-warm"></i> Admin Profile
             </a>
         </li>
         <li>
             <a class="dropdown-item" asp-area="Admin" asp-controller="UserManagement" asp-action="Index">
-                <i class="bi bi-shield-lock me-2 text-warm"></i> User Management
+                <i class="bi bi-people me-2 text-warm"></i> User Management
+            </a>
+        </li>
+    }
+
+    <!-- Manager Links -->
+    @if (User.IsInRole("Manager"))
+    {
+        <li><hr class="dropdown-divider"></li>
+        <li>
+            <a class="dropdown-item" asp-area="Manager" asp-controller="Home" asp-action="Index">
+                <i class="bi bi-clipboard-data me-2 text-warm"></i> Manager Dashboard
             </a>
         </li>
     }
 
     <li><hr class="dropdown-divider"></li>
 
-
     <!-- Logout -->
     <li class="px-3 py-2">
-        <form
-              asp-controller="Account" asp-action="Logout" method="post">
+        <form asp-controller="Account" asp-action="Logout" method="post">
             @Html.AntiForgeryToken()
             <button type="submit" class="btn-warm w-100">
                 <i class="bi bi-box-arrow-right me-2"></i> Logout

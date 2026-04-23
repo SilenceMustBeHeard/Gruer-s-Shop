@@ -19,7 +19,7 @@ public class CartService : ICartService
         _catalogService = catalogService;
     }
 
-    private ISession Session => _httpContextAccessor.HttpContext!.Session;
+    public ISession Session => _httpContextAccessor.HttpContext!.Session;
 
     public CartViewModel GetCart()
     {
@@ -38,7 +38,7 @@ public class CartService : ICartService
         return _cart;
     }
 
-    public async Task SaveCartAsync(CartViewModel cart)
+    public void SaveCart(CartViewModel cart)
     {
         _cart = cart;
         Session.SetString(CartSessionKey, JsonConvert.SerializeObject(cart));
@@ -68,7 +68,7 @@ public class CartService : ICartService
             });
         }
 
-        await SaveCartAsync(cart);
+        SaveCart(cart);
     }
 
     public async Task RemoveFromCartAsync(Guid productId)
@@ -78,7 +78,7 @@ public class CartService : ICartService
         if (item != null)
         {
             cart.Items.Remove(item);
-            await SaveCartAsync(cart);
+            SaveCart(cart);
         }
     }
 
@@ -95,7 +95,7 @@ public class CartService : ICartService
         if (item != null)
         {
             item.Quantity = quantity;
-            await SaveCartAsync(cart);
+            SaveCart(cart);
         }
     }
 

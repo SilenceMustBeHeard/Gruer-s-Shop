@@ -22,7 +22,7 @@ public class OrderService : IOrderService
         _productRepository = productRepository;
     }
 
-    public async Task<Order> CreateOrderFromCartAsync(string userId, CartViewModel cart, string? specialInstructions = null)
+    public async Task<Order> CreateOrderFromCartAsync(string userId, CartViewModel cart, string? pickupDate, string? pickupTime, string? specialInstructions = null)
     {
         var order = new Order
         {

@@ -6,7 +6,8 @@ namespace GruersShop.Services.Core.Service.Interfaces.Interactions;
 
 public interface IOrderService
 {
-    Task<Order> CreateOrderFromCartAsync(string userId, CartViewModel cart, string? specialInstructions = null);
+    
+    Task<Order> CreateOrderFromCartAsync(string userId, CartViewModel cart, string? pickupDate, string? pickupTime, string? specialInstructions = null);
     Task<Order?> GetOrderByIdAsync(Guid orderId);
     Task<IEnumerable<Order>> GetUserOrdersAsync(string userId);
     Task<Order?> GetOrderWithItemsAsync(Guid orderId);

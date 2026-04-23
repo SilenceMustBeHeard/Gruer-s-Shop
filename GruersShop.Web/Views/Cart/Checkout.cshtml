@@ -1,0 +1,99 @@
+﻿@using GruersShop.Web.ViewModels.Cart
+@model CartViewModel
+
+@{
+    ViewData["Title"] = "Checkout";
+}
+
+<div class="container py-5">
+    <div class="hero-oven text-center mb-5">
+        <i class="bi bi-credit-card display-1"></i>
+        <h1 class="display-3 mt-2">Checkout</h1>
+        <div class="honey-accent mx-auto"></div>
+        <p class="lead mt-3">Almost there! Confirm your order</p>
+    </div>
+
+    <div class="row g-4">
+        <!-- Order Items -->
+        <div class="col-lg-7">
+            <div class="warm-card p-4">
+                <h4 class="fw-bold mb-3">Your Order</h4>
+                <hr class="stone-divider">
+                
+                @foreach (var item in Model.Items)
+                {
+                    <div class="d-flex justify-content-between align-items-center mb-3 pb-2 border-bottom">
+                        <div>
+                            <h6 class="fw-bold mb-0">@item.ProductName</h6>
+                            <small class="text-muted">Quantity: @item.Quantity</small>
+                        </div>
+                        <div class="text-end">
+                            <span class="fw-bold">@item.Subtotal.ToString("C")</span>
+                        </div>
+                    </div>
+                }
+                
+                <div class="d-flex justify-content-between mt-3 pt-2">
+                    <strong>Total:</strong>
+                    <strong class="text-warm fs-5">@Model.TotalAmount.ToString("C")</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- Checkout Form -->
+        <div class="col-lg-5">
+            <div class="warm-card p-4">
+                <h4 class="fw-bold mb-3">Pickup Details</h4>
+                <hr class="stone-divider">
+                
+                <form asp-action="Checkout" method="post">
+                    @Html.AntiForgeryToken()
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Pickup Date</label>
+                        <input type="date" name="pickupDate" class="form-control warm-input"
+                               value="@DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")"
+                               min="@DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")" />
+                        <small class="text-muted">Orders are ready next day</small>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Pickup Time</label>
+                        <select name="pickupTime" class="form-select warm-input">
+                            <option value="10:00 - 12:00">10:00 - 12:00</option>
+                            <option value="12:00 - 14:00">12:00 - 14:00</option>
+                            <option value="14:00 - 16:00">14:00 - 16:00</option>
+                            <option value="16:00 - 18:00">16:00 - 18:00</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label class="form-label">Special Instructions (Optional)</label>
+                        <textarea name="specialInstructions" class="form-control warm-input" rows="3"
+                                  placeholder="Any special requests?"></textarea>
+                    </div>
+                    
+                    <hr class="stone-divider">
+                    
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="confirmOrder" required>
+                            <label class="form-check-label" for="confirmOrder">
+                                I confirm that I will pick up my order on the selected date and time
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex gap-3">
+                        <a asp-action="Index" class="btn-warm flex-fill">
+                            <i class="bi bi-arrow-left me-1"></i> Back
+                        </a>
+                        <button type="submit" class="btn-glow flex-fill">
+                            <i class="bi bi-check-circle me-2"></i> Place Order
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

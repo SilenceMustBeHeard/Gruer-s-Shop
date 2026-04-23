@@ -1,0 +1,134 @@
+﻿@using GruersShop.Data.Common.Enums
+@using GruersShop.Data.Models.Interactions
+@model IEnumerable<Order>
+
+@{
+    ViewData["Title"] = "My Orders";
+}
+
+<div class="container py-5">
+    <div class="hero-oven text-center mb-5">
+        <i class="bi bi-box-seam display-1"></i>
+        <h1 class="display-3 mt-2">My Orders</h1>
+        <div class="honey-accent mx-auto"></div>
+        <p class="lead mt-3">Track your bakery orders</p>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="text-center py-5">
+            <i class="bi bi-inbox display-1 text-muted"></i>
+            <h3 class="mt-3">No orders yet</h3>
+            <p class="text-muted">Start browsing our delicious products!</p>
+            <a asp-controller="Catalog" asp-action="Index" class="btn-glow mt-3">
+                <i class="bi bi-shop me-2"></i> Start Shopping
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="row g-4">
+            @foreach (var order in Model.OrderByDescending(o => o.OrderDate))
+            {
+                <div class="col-12">
+                    <div class="warm-card p-4 order-card">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-3">
+                            <div>
+                                <h5 class="fw-bold mb-1">Order #@order.Id.ToString().Substring(0, 8)</h5>
+                                <small class="text-muted">
+                                    <i class="bi bi-calendar3 me-1"></i> @order.OrderDate?.ToLocalTime().ToString("dd MMM yyyy HH:mm")
+                                </small>
+                            </div>
+                            <div class="d-flex gap-2 align-items-center">
+                                <span class="status-badge @GetStatusClass(order.Status)">
+                                    @GetStatusText(order.Status)
+                                </span>
+                                <a asp-action="Details" asp-route-id="@order.Id" class="btn-warm-sm">
+                                    View Details <i class="bi bi-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <hr class="stone-divider">
+                        
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="d-flex flex-wrap gap-2">
+                                    @foreach (var item in order.OrderItems.Take(3))
+                                    {
+                                        <span class="order-item-pill">
+                                            @item.Quantity× @item.Product?.Name
+                                        </span>
+                                    }
+                                    @if (order.OrderItems.Count > 3)
+                                    {
+                                        <span class="text-muted small">+@(order.OrderItems.Count - 3) more</span>
+                                    }
+                                </div>
+                            </div>
+                            <div class="col-md-4 text-md-end">
+                                <div class="fw-bold fs-5 text-warm">@order.TotalAmount.ToString("C")</div>
+                                <small class="text-muted">Order total</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+<style>
+    .order-card {
+        transition: all 0.3s ease;
+    }
+    .order-card:hover {
+        transform: translateX(5px);
+        border-color: var(--glow-amber);
+    }
+    .order-item-pill {
+        background: var(--stone-light);
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+    }
+    [data-bs-theme="dark"] .order-item-pill {
+        background: #4a3020;
+    }
+    .status-badge {
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 500;
+    }
+    .status-pending { background: #ffc10720; color: #ffc107; border: 1px solid #ffc10740; }
+    .status-confirmed { background: #17a2b820; color: #17a2b8; border: 1px solid #17a2b840; }
+    .status-baking { background: #fd7e1420; color: #fd7e14; border: 1px solid #fd7e1440; }
+    .status-ready { background: #28a74520; color: #28a745; border: 1px solid #28a74540; }
+    .status-completed { background: #6c757d20; color: #adb5bd; border: 1px solid #6c757d40; }
+    .status-cancelled { background: #dc354520; color: #dc3545; border: 1px solid #dc354540; }
+</style>
+
+@functions {
+    string GetStatusClass(OrderStatus status) => status switch
+    {
+        OrderStatus.Pending => "status-pending",
+        OrderStatus.Confirmed => "status-confirmed",
+        OrderStatus.Baking => "status-baking",
+        OrderStatus.ReadyForPickup => "status-ready",
+        OrderStatus.Completed => "status-completed",
+        OrderStatus.Cancelled => "status-cancelled",
+        _ => "status-pending"
+    };
+    
+    string GetStatusText(OrderStatus status) => status switch
+    {
+        OrderStatus.Pending => "Pending",
+        OrderStatus.Confirmed => "Confirmed",
+        OrderStatus.Baking => "Baking",
+        OrderStatus.ReadyForPickup => "Ready for Pickup",
+        OrderStatus.Completed => "Completed",
+        OrderStatus.Cancelled => "Cancelled",
+        _ => "Pending"
+    };
+}

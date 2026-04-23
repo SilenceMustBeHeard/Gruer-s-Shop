@@ -5,8 +5,10 @@ using GruersShop.Data.Repositories.Interfaces.Account;
 using GruersShop.Data.Repositories.Interfaces.CRUD;
 using GruersShop.Data.Seeding;
 using GruersShop.Services.Core.Service.Implementations.Bakery;
+using GruersShop.Services.Core.Service.Implementations.Interactions;
 using GruersShop.Services.Core.Service.Interfaces.Account;
 using GruersShop.Services.Core.Service.Interfaces.Bakery;
+using GruersShop.Services.Core.Service.Interfaces.Interactions;
 using GruersShop.Web.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -18,11 +20,9 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
     ?? throw new InvalidOperationException("Missing connection string");
 
-// DB
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-// Identity
 builder.Services.AddDefaultIdentity<AppUser>(options =>
 {
     options.SignIn.RequireConfirmedAccount = false;
@@ -34,19 +34,31 @@ builder.Services.AddDefaultIdentity<AppUser>(options =>
 .AddRoles<IdentityRole>()
 .AddEntityFrameworkStores<AppDbContext>();
 
-// Auth
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("AdminPolicy", p => p.RequireRole("Admin"));
     options.AddPolicy("ManagerPolicy", p => p.RequireRole("Manager"));
 });
 
-// DI
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+    options.Cookie.Name = "GruersShop.Session";
+});
+
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.RegisterRepositories(typeof(IAppUserRepository).Assembly);
 builder.Services.RegisterServices(typeof(IAccountService).Assembly);
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<ICategoryClientService, CategoryClientService>();
+
+builder.Services.AddScoped<ICartService, CartService>();
+builder.Services.AddScoped<IOrderService, OrderService>();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
@@ -58,7 +70,6 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 
 var app = builder.Build();
 
-// SEED
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
@@ -75,11 +86,9 @@ using (var scope = app.Services.CreateScope())
         await DbSeeder.SeedAllAsync(context);
 }
 
-// STATIC FILES
 var provider = new FileExtensionContentTypeProvider();
 provider.Mappings[".glb"] = "model/gltf-binary";
 
-// ERROR HANDLING (FIXED)
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -103,6 +112,7 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseSession();
 
 app.MapGet("/", context =>
 {

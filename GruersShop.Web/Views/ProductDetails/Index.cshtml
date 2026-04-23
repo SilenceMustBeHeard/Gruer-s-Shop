@@ -86,10 +86,24 @@
                 </div>
 
                 <!-- Action Buttons -->
-                <div class="d-flex gap-3 mb-4">
+                <div class="d-flex gap-3 mb-4 flex-wrap">
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <!-- Favorites  -->
+                        <!-- Add to Cart Form -->
+                        <form asp-controller="Cart" asp-action="AddToCart" method="post" class="d-flex gap-2 align-items-center flex-wrap">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@Model.Product.Id" />
+                            <div class="d-flex gap-2 align-items-center">
+                                <label class="small fw-bold">Quantity:</label>
+                                <input type="number" name="quantity" value="1" min="1" max="@Model.Product.StockQuantity"
+                                       class="form-control warm-input" style="width: 80px;" />
+                            </div>
+                            <button type="submit" class="btn-glow">
+                                <i class="bi bi-cart-plus me-1"></i> Add to Cart
+                            </button>
+                        </form>
+
+                        <!-- Favorites -->
                         <form asp-controller="Favorites" asp-action="Toggle" method="post" class="d-inline">
                             @Html.AntiForgeryToken()
                             <input type="hidden" name="id" value="@Model.Product.Id" />
@@ -108,10 +122,12 @@
                             </button>
                         </form>
                     }
-                    
-                    <button class="btn-glow" onclick="alert('Order functionality coming soon!')">
-                        <i class="bi bi-cart-plus me-1"></i> Order Now
-                    </button>
+                    else
+                    {
+                        <a asp-controller="Account" asp-action="Login" class="btn-glow">
+                            <i class="bi bi-box-arrow-in-right me-1"></i> Login to Order
+                        </a>
+                    }
                 </div>
 
                 <!-- Category Info -->

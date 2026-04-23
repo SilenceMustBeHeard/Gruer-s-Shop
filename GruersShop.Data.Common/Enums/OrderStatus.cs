@@ -12,5 +12,6 @@ public enum OrderStatus
     Baking = 3,      
     ReadyForPickup = 4,
     Completed = 5,      
-    Cancelled = 6       
+    Cancelled = 6,
+    Confirmed = 7
 }
