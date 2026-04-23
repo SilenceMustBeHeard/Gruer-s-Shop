@@ -1,4 +1,5 @@
-﻿using GruersShop.Data.Models.Interactions;
+﻿using GruersShop.Data.Common.Enums;
+using GruersShop.Data.Models.Interactions;
 using GruersShop.Web.ViewModels.Cart;
 
 namespace GruersShop.Services.Core.Service.Interfaces.Interactions;
