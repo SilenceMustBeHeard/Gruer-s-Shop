@@ -1145,3 +1145,169 @@ body {
     position: relative;
     display: inline-block;
 } 
+
+/*=== Product Review ==*/
+.breadcrumb {
+    background: transparent;
+    padding: 0;
+}
+
+.breadcrumb-item a {
+    text-decoration: none;
+}
+
+.product-detail-image {
+    background: var(--stone-light);
+    border-radius: 24px;
+    overflow: hidden;
+    padding: 1rem;
+}
+
+    .product-detail-image img {
+        width: 100%;
+        height: auto;
+        border-radius: 16px;
+    }
+
+.product-price-large {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--wood-medium);
+}
+
+.rating-stars-large {
+    font-size: 1.2rem;
+}
+
+.rating-stars-small {
+    font-size: 0.8rem;
+}
+
+.stock-info {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: rgba(107, 140, 66, 0.1);
+    border-radius: 40px;
+}
+
+.category-tag {
+    padding-top: 1rem;
+    border-top: 1px solid var(--stone-medium);
+    color: var(--stone-dark);
+}
+
+.review-item {
+    background: var(--warm-light);
+    border-radius: 12px;
+    padding: 1rem;
+    border: 1px solid var(--stone-light);
+}
+
+[data-bs-theme="dark"] .review-item {
+    background: #4a3020;
+    border-color: #6b4a30;
+}
+
+.rating-input {
+    display: flex;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
+.rating-star {
+    font-size: 1.5rem;
+    color: var(--stone-medium);
+    transition: all 0.2s ease;
+}
+
+    .rating-star:hover,
+    .rating-star.active {
+        color: var(--glow-gold);
+    }
+
+.add-review-section {
+    background: var(--stone-light);
+}
+
+[data-bs-theme="dark"] .add-review-section {
+    background: #3a2c24;
+}
+
+/*=== Cart styles==*/
+
+/*== order ==*/
+.order-card {
+    transition: all 0.3s ease;
+}
+
+    .order-card:hover {
+        transform: translateX(5px);
+        border-color: var(--glow-amber);
+    }
+
+.order-item-pill {
+    background: var(--stone-light);
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+}
+
+[data-bs-theme="dark"] .order-item-pill {
+    background: #4a3020;
+}
+
+.status-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.status-pending {
+    background: #ffc10720;
+    color: #ffc107;
+    border: 1px solid #ffc10740;
+}
+
+.status-confirmed {
+    background: #17a2b820;
+    color: #17a2b8;
+    border: 1px solid #17a2b840;
+}
+
+.status-baking {
+    background: #fd7e1420;
+    color: #fd7e14;
+    border: 1px solid #fd7e1440;
+}
+
+.status-ready {
+    background: #28a74520;
+    color: #28a745;
+    border: 1px solid #28a74540;
+}
+
+.status-completed {
+    background: #6c757d20;
+    color: #adb5bd;
+    border: 1px solid #6c757d40;
+}
+
+.status-cancelled {
+    background: #dc354520;
+    color: #dc3545;
+    border: 1px solid #dc354540;
+}
+
+
+/*=== My Cart == */
+.table td {
+    vertical-align: middle;
+}
+
+.form-control-sm {
+    text-align: center;
+}
+
