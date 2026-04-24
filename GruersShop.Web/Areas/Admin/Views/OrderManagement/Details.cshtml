@@ -1,0 +1,81 @@
+﻿@using GruersShop.Web.ViewModels.Orders;
+
+@using GruersShop.Data.Common.Enums
+@using GruersShop.Data.Models.Interactions
+@model Order
+
+@{
+    ViewData["Title"] = $"Order #{Model.Id.ToString().Substring(0, 8)}";
+    var stockIssues = ViewBag.StockIssues as List<StockIssue> ?? new();
+}
+
+<div class="container py-5">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <a asp-action="Index" class="btn-warm-sm mb-4">&larr; Back</a>
+
+            <div class="warm-card p-4">
+                <h3 class="fw-bold">Order #@Model.Id.ToString().Substring(0, 8)</h3>
+                <p><strong>Customer:</strong> @Model.User?.Email</p>
+                <p><strong>Date:</strong> @Model.OrderDate?.ToLocalTime()</p>
+                <p><strong>Pickup:</strong> @Model.PickupDate?.ToLocalTime().ToString("dd MMM yyyy") at @Model.PickupTime</p>
+
+                <hr />
+
+                <h5>Items</h5>
+                <table class="table">
+                    <thead>
+                        <tr><th>Product</th><th>Qty</th><th>Price</th></tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.OrderItems)
+                        {
+                            <tr>
+                                <td>@item.Product?.Name</td>
+                                <td>@item.Quantity</td>
+                                <td>@item.UnitPrice.ToString("C")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                @if (stockIssues.Any())
+                {
+                    <div class="alert alert-danger">
+                        <strong>Stock issues:</strong>
+                        <ul>@foreach (var i in stockIssues) {
+                            <li>@i.ProductName - need @i.RequestedQuantity, have @i.AvailableStock</li>
+                        }
+                    </ul>
+                </div>
+            }
+
+            <form asp-action="UpdateStatus" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="id" value="@Model.Id" />
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <label>New Status</label>
+                        <select name="newStatus" class="form-select warm-input">
+                            @foreach (var status in Enum.GetValues<OrderStatus>())
+                            {
+                                <option value="@status" selected="@(Model.Status == status)">@status</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label>Delay (days)</label>
+                        <input type="number" name="delayDays" class="form-control warm-input" value="1" min="1" />
+                    </div>
+                    <div class="col-md-5">
+                        <label>Cancel reason</label>
+                        <input type="text" name="reason" class="form-control warm-input" placeholder="Required for cancellation" />
+                    </div>
+                </div>
+                <button type="submit" class="btn-glow mt-3">Update</button>
+            </form>
+        </div>
+    </div>
+</div>
+</div>

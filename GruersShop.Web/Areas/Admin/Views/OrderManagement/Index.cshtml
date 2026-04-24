@@ -1,0 +1,66 @@
+﻿@using GruersShop.Data.Common.Enums
+@using GruersShop.Data.Models.Interactions
+@model IEnumerable<Order>
+
+@{
+    ViewData["Title"] = "Order Management";
+    var selectedStatus = ViewBag.SelectedStatus as OrderStatus?;
+}
+
+<div class="container py-5">
+    <div class="warm-card p-4">
+        <div class="text-center mb-4">
+            <i class="bi bi-receipt display-1 text-warm"></i>
+            <h1 class="display-4 mt-2">Order Management</h1>
+            <div class="honey-accent mx-auto"></div>
+        </div>
+
+        <div class="mb-4 d-flex flex-wrap gap-2">
+            <a asp-action="Index" class="btn @(selectedStatus == null ? "btn-glow-sm" : "btn-warm-sm")">All</a>
+            @foreach (var status in Enum.GetValues<OrderStatus>())
+            {
+                <a asp-action="Index" asp-route-status="@status" class="btn @(selectedStatus == status ? "btn-glow-sm" : "btn-warm-sm")">
+                    @status
+                </a>
+            }
+        </div>
+
+        @if (!Model.Any())
+        {
+            <div class="text-center py-5">
+                <i class="bi bi-inbox display-4 text-muted"></i>
+                <p class="mt-3">No orders found</p>
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table align-middle">
+                    <thead>
+                        <tr>
+                            <th>Order #</th>
+                            <th>Customer</th>
+                            <th>Date</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var order in Model)
+                        {
+                            <tr>
+                                <td><code>#@order.Id.ToString().Substring(0, 8)</code></td>
+                                <td>@order.User?.Email</td>
+                                <td>@order.OrderDate?.ToLocalTime().ToString("dd MMM yyyy")</td>
+                                <td>@order.TotalAmount.ToString("C")</td>
+                                <td><span class="badge @(order.Status == OrderStatus.Pending ? "bg-warning" : "bg-success")">@order.Status</span></td>
+                                <td><a asp-action="Details" asp-route-id="@order.Id" class="btn-warm-sm">View</a></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>
