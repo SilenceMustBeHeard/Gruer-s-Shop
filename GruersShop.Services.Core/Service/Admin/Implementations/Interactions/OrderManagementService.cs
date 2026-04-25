@@ -203,17 +203,7 @@ public class OrderManagementService : IOrderManagementService
 
     private bool IsValidStatusTransition(OrderStatus current, OrderStatus next)
     {
-        return (current, next) switch
-        {
-            (OrderStatus.Pending, OrderStatus.Confirmed) => true,
-            (OrderStatus.Pending, OrderStatus.Cancelled) => true,
-            (OrderStatus.Confirmed, OrderStatus.Baking) => true,
-            (OrderStatus.Confirmed, OrderStatus.Cancelled) => true,
-            (OrderStatus.Baking, OrderStatus.ReadyForPickup) => true,
-            (OrderStatus.Baking, OrderStatus.Cancelled) => true,
-            (OrderStatus.ReadyForPickup, OrderStatus.Completed) => true,
-            (OrderStatus.ReadyForPickup, OrderStatus.Cancelled) => true,
-            _ => false
-        };
+      
+        return current != next;
     }
 }
