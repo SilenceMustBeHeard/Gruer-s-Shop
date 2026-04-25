@@ -71,6 +71,15 @@
         transform: translateY(-4px);
         transition: transform 0.05s ease;
     }
+.ripple-effect {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(245, 197, 66, 0.4);
+    width: 10px;
+    height: 10px;
+    animation: rippleAnim 0.5s ease-out forwards;
+    pointer-events: none;
+}
 
 
     /*========= ADMIN PROFILE PAGE ==========*/

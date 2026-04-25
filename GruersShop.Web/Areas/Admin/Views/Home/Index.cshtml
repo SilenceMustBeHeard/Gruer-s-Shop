@@ -36,6 +36,24 @@
                     </a>
                 </div>
             </div>
+            <!-- SYSTEM MESSAGES -->
+            <div class="col-lg-3 col-md-6">
+                <div class="dashboard-card warm-card h-100 text-center p-4 d-flex flex-column justify-content-between">
+                    <div>
+                        <div class="card-icon">
+                            <i class="bi bi-broadcast display-4 text-warm"></i>
+                        </div>
+                        <h5 class="fw-bold mt-3">System Messages</h5>
+                        <p class="small text-muted">Send announcements & notifications</p>
+                    </div>
+                    <a asp-area="Admin"
+                           asp-controller="SystemMessage"
+                           asp-action="Index"
+                           class="btn-warm-sm mt-3 card-btn">
+                        Broadcast <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
 
             <!-- ORDERS -->
             <div class="col-lg-3 col-md-6">
@@ -164,61 +182,95 @@
 </div>
 
 <script>
-    // add ripple effect on click for cards
-    document.querySelectorAll('.dashboard-card').forEach(card => {
-        card.addEventListener('click', function(e) {
+    document.addEventListener("DOMContentLoaded", () => {
 
-            // if  click is on a link, don't create ripple
-            if (e.target.closest('a')) return;
-            
-            const ripple = document.createElement('div');
-            ripple.className = 'ripple-effect';
-            ripple.style.left = e.clientX - card.getBoundingClientRect().left + 'px';
-            ripple.style.top = e.clientY - card.getBoundingClientRect().top + 'px';
-            card.appendChild(ripple);
-            
-            setTimeout(() => ripple.remove(), 500);
+        const cards = document.querySelectorAll('.dashboard-card');
+
+        /* 
+           RIPPLE EFFECT 
+         */
+        cards.forEach(card => {
+            card.addEventListener('click', function (e) {
+
+                if (e.target.closest('a')) return;
+
+                const rect = card.getBoundingClientRect();
+
+                const ripple = document.createElement('span');
+                ripple.className = 'ripple-effect';
+
+                const size = Math.max(rect.width, rect.height);
+
+                ripple.style.width = ripple.style.height = size + 'px';
+                ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
+                ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
+
+                card.appendChild(ripple);
+
+                ripple.addEventListener('animationend', () => ripple.remove());
+            });
         });
+
+
+        /* 
+           CARD ENTRANCE ANIMATION
+         */
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    const el = entry.target;
+
+                    el.style.transition = 'all 0.6s ease';
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+
+                    observer.unobserve(el);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        cards.forEach((card, i) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(40px)';
+            card.style.transitionDelay = (i * 80) + 'ms';
+            observer.observe(card);
+        });
+
+
+        /* 
+           HERO PARALLAX 
+         */
+        const hero = document.querySelector('.hero-oven');
+
+        if (hero) {
+            let raf = null;
+
+            hero.addEventListener('mousemove', (e) => {
+
+                if (raf) cancelAnimationFrame(raf);
+
+                raf = requestAnimationFrame(() => {
+                    const rect = hero.getBoundingClientRect();
+
+                    const x = (e.clientX - rect.left) / rect.width;
+                    const y = (e.clientY - rect.top) / rect.height;
+
+                    hero.style.background = `
+                        radial-gradient(
+                            circle at ${x * 100}% ${y * 100}%,
+                            #8B4000,
+                            #2e1a0a
+                        )
+                    `;
+                });
+            });
+
+            hero.addEventListener('mouseleave', () => {
+                hero.style.transition = 'background 0.4s ease';
+                hero.style.background = '';
+            });
+        }
+
     });
-
-    // load animation for cards
-    document.querySelectorAll('.dashboard-card').forEach((card, index) => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(30px)';
-        setTimeout(() => {
-            card.style.transition = 'all 0.5s ease';
-            card.style.opacity = '1';
-            card.style.transform = 'translateY(0)';
-        }, index * 100);
-    });
-
-    // animation when hovering over the hero section
-
-    const hero = document.querySelector('.hero-oven');
-    if (hero) {
-        hero.addEventListener('mousemove', (e) => {
-            const rect = hero.getBoundingClientRect();
-            const x = (e.clientX - rect.left) / rect.width;
-            const y = (e.clientY - rect.top) / rect.height;
-            hero.style.background = `radial-gradient(circle at ${x * 100}% ${y * 100}%, #8B4000, #2e1a0a)`;
-        });
-        hero.addEventListener('mouseleave', () => {
-            hero.style.background = '';
-        });
-    }
 </script>
     
-<style>
-    .ripple-effect {
-        position: absolute;
-        border-radius: 50%;
-        background: rgba(245, 197, 66, 0.4);
-        width: 10px;
-        height: 10px;
-        animation: rippleAnim 0.5s ease-out forwards;
-        pointer-events: none;
-    }
-
-   
-    
-</style>
