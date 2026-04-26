@@ -26,19 +26,6 @@
                     <p class="text-muted">Reach out to your customers with a personal touch</p>
                 </div>
 
-                <!-- Recipient Info Alert -->
-                @if (!string.IsNullOrEmpty(Model.ReceiverName))
-                {
-                    <div class="alert-oven alert-info mb-4">
-                        <div class="d-flex align-items-center gap-2">
-                            <i class="bi bi-person-badge fs-4"></i>
-                            <div>
-                                <strong>Sending to:</strong> @Model.ReceiverName
-                            </div>
-                        </div>
-                    </div>
-                }
-
                 <!-- Form -->
                 <form asp-area="Admin" asp-controller="SystemMessage" asp-action="Create" method="post">
                     @Html.AntiForgeryToken()

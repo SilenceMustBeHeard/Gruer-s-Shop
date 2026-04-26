@@ -163,13 +163,7 @@
                         </form>
                     </div>
                 }
-                else if (User.Identity.IsAuthenticated && Model.UserHasReviewed)
-                {
-                    <div class="alert-oven alert-success mb-4">
-                        <i class="bi bi-check-circle-fill me-2"></i>
-                        Thank you for your review!
-                    </div>
-                }
+           
 
                 <!-- Reviews List -->
                 @if (Model.Product.Reviews.Any())

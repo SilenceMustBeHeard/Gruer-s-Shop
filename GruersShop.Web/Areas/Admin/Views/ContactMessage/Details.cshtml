@@ -25,21 +25,6 @@
             </a>
         </div>
 
-        <!-- Success Message -->
-        @if (TempData["Success"] != null)
-        {
-            <div class="alert-oven alert-success mb-4 success-alert">
-                <i class="bi bi-cake2 me-2"></i> @TempData["Success"]
-            </div>
-        }
-
-        <!-- Info Message for already responded -->
-        @if (hasResponse && TempData["Success"] == null)
-        {
-            <div class="alert-oven alert-info mb-4">
-                <i class="bi bi-cookie me-2"></i> You have already responded to this message.
-            </div>
-        }
 
         <!-- Subject & Status -->
         <div class="d-flex justify-content-between align-items-start mb-4 flex-wrap gap-3">
