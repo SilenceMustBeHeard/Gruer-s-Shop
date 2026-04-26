@@ -73,24 +73,8 @@
                 </div>
             </div>
         </nav>
-
-        <!-- Oven Glow Alert Messages -->
-        <div class="container mt-3">
-            @if (TempData["Success"] != null)
-            {
-                <div class="alert-oven alert-success" role="alert">
-                    <i class="bi bi-fire me-2"></i> @TempData["Success"]
-                    <button type="button" class="btn-close-oven" data-dismiss="alert"></button>
-                </div>
-            }
-
-            @if (TempData["Error"] != null)
-            {
-                <div class="alert-oven alert-danger" role="alert">
-                    <i class="bi bi-emoji-frown me-2"></i> @TempData["Error"]
-                    <button type="button" class="btn-close-oven" data-dismiss="alert"></button>
-                </div>
-            }
+        <!-- Toast Container for notifications -->
+        <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1100">
         </div>
     </header>
 
@@ -109,12 +93,19 @@
         </div>
     </footer>
 
+    <!--hidden fields for TempData -->
+    <input type="hidden" id="tempDataSuccess" value="@TempData["Success"]" />
+    <input type="hidden" id="tempDataError" value="@TempData["Error"]" />
+    <input type="hidden" id="tempDataWarning" value="@TempData["Warning"]" />
+    <input type="hidden" id="tempDataInfo" value="@TempData["Info"]" />
+
     <!-- Scripts -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/oven.js" asp-append-version="true"></script>
     <script src="~/js/notifications.js" asp-append-version="true"></script>
+    <script src="~/js/toast-notifications.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

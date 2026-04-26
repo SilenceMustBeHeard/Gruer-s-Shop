@@ -110,28 +110,10 @@
             </div>
         </nav>
 
-        <!-- Alert Messages -->
-        <div class="container mt-3">
-            <div id="alertContainer">
-                @if (TempData["Success"] != null)
-                {
-                    <div class="alert-oven alert-success animate-alert" role="alert">
-                        <i class="bi bi-fire me-2"></i> 
-                        <span>@TempData["Success"]</span>
-                        <button type="button" class="btn-close-oven" data-dismiss="alert"></button>
-                    </div>
-                }
-
-                @if (TempData["Error"] != null)
-                {
-                    <div class="alert-oven alert-danger animate-alert" role="alert">
-                        <i class="bi bi-emoji-frown me-2"></i> 
-                        <span>@TempData["Error"]</span>
-                        <button type="button" class="btn-close-oven" data-dismiss="alert"></button>
-                    </div>
-                }
-            </div>
+        <!-- Toast Container for notifications -->
+        <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1100">
         </div>
+
     </header>
 
     <!-- Main Content -->
@@ -179,6 +161,11 @@
             </div>
         </div>
     </footer>
+    <!--hidden fields for TempData -->
+    <input type="hidden" id="tempDataSuccess" value="@TempData["Success"]" />
+    <input type="hidden" id="tempDataError" value="@TempData["Error"]" />
+    <input type="hidden" id="tempDataWarning" value="@TempData["Warning"]" />
+    <input type="hidden" id="tempDataInfo" value="@TempData["Info"]" />
 
     <!-- Scripts -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -187,6 +174,7 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/oven.js" asp-append-version="true"></script>
     <script src="~/js/notifications.js" asp-append-version="true"></script>
+    <script src="~/js/toast-notifications.js" asp-append-version="true"></script>
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {

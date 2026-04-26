@@ -15,6 +15,14 @@ public abstract class BaseAdminController : Controller
     {
         _userManager = userManager;
     }
+    
+    protected void SetToastMessage(string message, string type = "success")
+    {
+        Response.Headers.Add("X-Toast-Message", message);
+        Response.Headers.Add("X-Toast-Type", type);
+    }
+
+  
 
     protected bool IsUserAdmin() => User.IsInRole("Admin");
 

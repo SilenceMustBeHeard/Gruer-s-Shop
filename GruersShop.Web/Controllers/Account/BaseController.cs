@@ -37,4 +37,14 @@ public abstract class BaseController : Controller
         return await _userManager.GetUserAsync(User);
     }
 
+    // В BaseController или директно в контролера
+    protected void SetToastMessage(string message, string type = "success")
+    {
+        Response.Headers.Add("X-Toast-Message", message);
+        Response.Headers.Add("X-Toast-Type", type);
+    }
+
+   
+   
+
 }
