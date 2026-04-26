@@ -21,6 +21,7 @@ public class Order : BaseDeletableEntity
 
     public string? SpecialInstructions { get; set; }
     public string? PickupTime { get; set; }
+    public DateTime? UpdatedAt { get; set; }
 
     // Navigation
     public virtual ICollection<OrderItem> OrderItems { get; set; } = new HashSet<OrderItem>();

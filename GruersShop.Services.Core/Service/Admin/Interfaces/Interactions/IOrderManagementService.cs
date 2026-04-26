@@ -13,4 +13,7 @@ public interface IOrderManagementService
     Task<OrderUpdateResult> ConfirmOrderAsync(Guid orderId);
     Task<OrderUpdateResult> UpdateOrderStatusAsync(Guid orderId, OrderStatus newStatus, int? daysDelay = null);
     Task<OrderUpdateResult> CancelOrderAsync(Guid orderId, string reason);
+
+     Task<bool> HasRecentUpdatesAsync(string userId, DateTime since);
+ 
 }

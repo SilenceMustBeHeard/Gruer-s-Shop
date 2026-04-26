@@ -144,6 +144,8 @@ public class OrderManagementService : IOrderManagementService
         }
 
         order.Status = newStatus;
+        order.UpdatedAt = DateTime.UtcNow;  
+
         await _orderRepository.UpdateAsync(order);
         await _orderRepository.SaveChangesAsync();
 
@@ -205,5 +207,12 @@ public class OrderManagementService : IOrderManagementService
     {
       
         return current != next;
+    }
+    public async Task<bool> HasRecentUpdatesAsync(string userId, DateTime since)
+    {
+        return await _orderRepository
+            .Query()
+            .Where(o => o.UserId == userId && o.UpdatedAt > since)
+            .AnyAsync();
     }
 }
