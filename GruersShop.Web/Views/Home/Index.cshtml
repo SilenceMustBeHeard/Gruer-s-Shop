@@ -1,4 +1,7 @@
-﻿@{
+﻿@using GruersShop.Data.Common.Enums
+@model GruersShop.Web.ViewModels.Home.HomeViewModel
+
+@{
     ViewData["Title"] = "Gruer's Artisanal Bakery";
 }
 
@@ -27,58 +30,39 @@
     <h2 class="text-center mb-4">Fresh from the Oven</h2>
     <div class="honey-accent mx-auto mb-5"></div>
     
-    <div class="row g-4">
-        <!-- Product 1 -->
-        <div class="col-md-4">
-            <div class="product-card">
-                <div class="product-card-image">
-                    <i class="bi bi-cup-hot display-1 text-white-50"></i>
-                </div>
-                <div class="product-card-content">
-                    <h3 class="product-card-title">Signature Sourdough</h3>
-                    <p class="text-muted">Crusted with golden perfection, soft and chewy inside. Made with night planet flour and love.</p>
-                    <div class="d-flex justify-content-between align-items-center mt-3">
-                        <span class="text-warm fw-bold fs-5">$8.50</span>
-                        <button class="btn-glow-sm">Order</button>
+    @if (Model.TopRatedProducts.Any())
+    {
+        <div class="row g-4">
+            @foreach (var product in Model.TopRatedProducts)
+            {
+                <div class="col-md-4">
+                    <div class="product-card h-100">
+                        <div class="product-card-image">
+                            @if (!string.IsNullOrEmpty(product.ImageUrl))
+                            {
+                                <img src="@product.ImageUrl" alt="@product.Name" style="width: 100%; height: 400px; object-fit: cover; border-radius: 9px 9px 0 0;" />
+                            }
+                            else
+                            {
+                                <i class="bi bi-cup-hot display-1 text-white-50"></i>
+                            }
+                        </div>
+                        <div class="product-card-content">
+                            <h3 class="product-card-title mb-2">@product.Name</h3>
+                            <p class="text-muted small">@(product.Description?.Length > 100 ? product.Description.Substring(0, 100) + "..." : product.Description)</p>
+                        </div>
                     </div>
                 </div>
-            </div>
+            }
         </div>
-        
-        <!-- Product 2 -->
-        <div class="col-md-4">
-            <div class="product-card">
-                <div class="product-card-image">
-                    <i class="bi bi-egg-fried display-1 text-white-50"></i>
-                </div>
-                <div class="product-card-content">
-                    <h3 class="product-card-title">Firefly Honey Croissant</h3>
-                    <p class="text-muted">Layered with honey that glows with magical sweetness. Butter from Grandhar's finest cream.</p>
-                    <div class="d-flex justify-content-between align-items-center mt-3">
-                        <span class="text-warm fw-bold fs-5">$6.25</span>
-                        <button class="btn-glow-sm">Order</button>
-                    </div>
-                </div>
-            </div>
+    }
+    else
+    {
+        <div class="text-center py-5">
+            <i class="bi bi-egg-fried display-2 text-muted"></i>
+            <p class="mt-3">No products available yet. Check back soon!</p>
         </div>
-        
-        <!-- Product 3 -->
-        <div class="col-md-4">
-            <div class="product-card">
-                <div class="product-card-image">
-                    <i class="bi bi-gem display-1 text-white-50"></i>
-                </div>
-                <div class="product-card-content">
-                    <h3 class="product-card-title">Night Planet Tart</h3>
-                    <p class="text-muted">Berries from distant worlds in a buttery crust. Scented with Vulcan cinnamon.</p>
-                    <div class="d-flex justify-content-between align-items-center mt-3">
-                        <span class="text-warm fw-bold fs-5">$9.75</span>
-                        <button class="btn-glow-sm">Order</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    }
 </div>
 
 <!-- Gruer's Story Quote -->
@@ -99,36 +83,30 @@
     <h2 class="text-center mb-4">Our Specialties</h2>
     <div class="honey-accent mx-auto mb-5"></div>
     
-    <div class="row g-4 text-center">
-        <div class="col-md-3">
-            <div class="warm-card p-3">
-                <i class="bi bi-bread display-4 text-warm"></i>
-                <h4 class="mt-2">Artisan Breads</h4>
-                <small class="text-muted">Sourdough, Baguettes, Focaccia</small>
-            </div>
+    @if (Model.Categories.Any())
+    {
+        <div class="row g-4 text-center">
+            @foreach (var category in Model.Categories)
+            {
+                <div class="col-md-3">
+                    <div class="warm-card p-3 h-100">
+                        <i class="bi display-4 text-warm category-icon" data-category="@category.Name"></i>
+                        <h4 class="mt-2">@category.Name</h4>
+                        @if (!string.IsNullOrEmpty(category.Description))
+                        {
+                            <small class="text-muted">@(category.Description.Length > 40 ? category.Description.Substring(0, 40) + "..." : category.Description)</small>
+                        }
+                    </div>
+                </div>
+            }
         </div>
-        <div class="col-md-3">
-            <div class="warm-card p-3">
-                <i class="bi bi-cake2 display-4 text-warm"></i>
-                <h4 class="mt-2">Pastries</h4>
-                <small class="text-muted">Croissants, Danishes, Tarts</small>
-            </div>
+    }
+    else
+    {
+        <div class="text-center py-4">
+            <p class="text-muted">Categories coming soon...</p>
         </div>
-        <div class="col-md-3">
-            <div class="warm-card p-3">
-                <i class="bi bi-cup-straw display-4 text-warm"></i>
-                <h4 class="mt-2">Magical Drinks</h4>
-                <small class="text-muted">Glow Coffee, Firefly Tea</small>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="warm-card p-3">
-                <i class="bi bi-gem display-4 text-warm"></i>
-                <h4 class="mt-2">Seasonal Specials</h4>
-                <small class="text-muted">Limited Edition Treats</small>
-            </div>
-        </div>
-    </div>
+    }
 </div>
 
 <!-- Call to Action -->
@@ -143,3 +121,33 @@
     </div>
 </div>
 
+
+
+<script>
+    // function to determine icon class based on category name
+    function getCategoryIcon(categoryName) {
+        const name = categoryName?.toLowerCase() || '';
+        
+        if (name.includes('bread')) return 'bi-bread';
+        if (name.includes('pastry') || name.includes('croissant')) return 'bi-cake2';
+        if (name.includes('drink') || name.includes('coffee') || name.includes('tea')) return 'bi-cup-straw';
+        if (name.includes('cake') || name.includes('tart')) return 'bi-cake';
+        if (name.includes('cookie')) return 'bi-egg-fried';
+        if (name.includes('seasonal') || name.includes('special')) return 'bi-gem';
+        
+        return 'bi-shop';
+    }
+    
+    // load icons after DOM is ready
+    document.addEventListener('DOMContentLoaded', function() {
+        const categoryIcons = document.querySelectorAll('.category-icon');
+        
+        categoryIcons.forEach(icon => {
+            const categoryName = icon.getAttribute('data-category');
+            const iconClass = getCategoryIcon(categoryName);
+            icon.className = `bi ${iconClass} display-4 text-warm category-icon`;
+        });
+        
+        console.log('🍰 Home page loaded - static display only');
+    });
+</script>

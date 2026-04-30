@@ -1445,3 +1445,43 @@ body {
         opacity: 0.8;
     }
 }
+
+
+/*=== Home Page ===*/
+.product-card {
+    transition: all 0.3s ease;
+    background: var(--stone-dark);
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+    .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    }
+
+.product-card-image {
+    height: 400px;
+    overflow: hidden;
+    background: linear-gradient(135deg, #3a2a1a, #2a1a0a);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.product-card-content {
+    padding: 1.5rem;
+}
+
+.product-card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.warm-card {
+    transition: all 0.3s ease;
+}
+
+    .warm-card:hover {
+        transform: translateY(-3px);
+    }
