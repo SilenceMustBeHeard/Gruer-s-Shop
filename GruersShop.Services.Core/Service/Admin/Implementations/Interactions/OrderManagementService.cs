@@ -7,9 +7,12 @@ using GruersShop.Data.Repositories.Interfaces.Bakery;
 using GruersShop.Data.Repositories.Interfaces.Interactions;
 using GruersShop.Services.Core.Service.Admin.Interfaces.Message;
 using GruersShop.Services.Core.Service.Interfaces.Interactions;
+using GruersShop.Web.ViewModels.Interactions;
 using GruersShop.Web.ViewModels.Orders;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Net.NetworkInformation;
 
 namespace GruersShop.Services.Core.Service.Implementations.Interactions;
 
@@ -214,5 +217,63 @@ public class OrderManagementService : IOrderManagementService
             .Query()
             .Where(o => o.UserId == userId && o.UpdatedAt > since)
             .AnyAsync();
+    }
+    public async Task<OrderViewModel?> GetByIdAsync(Guid id)
+    {
+        return await _orderRepository
+            .Query()
+            .IgnoreQueryFilters()
+            .Where(r => r.Id == id)
+            .Include(r => r.User)
+            .Include(r => r.OrderItems)
+                .ThenInclude(oi => oi.Product)
+            .Select(r => new OrderViewModel
+            {
+                Id = r.Id,
+                UserId = r.UserId,
+                UserName = r.User != null ? r.User.UserName ?? "Unknown" : "Unknown",
+                UserEmail = r.User != null ? r.User.Email ?? "Unknown" : "Unknown",
+                UserFullName = r.User != null ? $"{r.User.FirstName} {r.User.LastName}".Trim() : null,
+                TotalAmount = r.TotalAmount,
+                Status = r.Status,
+                OrderDate = r.OrderDate,
+                PickupDate = r.PickupDate,
+                PickupTime = r.PickupTime,
+                SpecialInstructions = r.SpecialInstructions,
+                CreatedAt = r.CreatedAt,
+                UpdatedAt = r.UpdatedAt,
+                IsDeleted = r.IsDeleted,
+                Items = r.OrderItems.Select(oi => new OrderItemViewModel
+                {
+                    ProductId = oi.ProductId,
+                    ProductName = oi.Product.Name,
+                    ProductImageUrl = oi.Product.ImageUrl,
+                    Quantity = oi.Quantity,
+                    UnitPrice = oi.UnitPrice,
+                    TotalPrice = oi.UnitPrice * oi.Quantity
+                }).ToList()
+            })
+            .FirstOrDefaultAsync();
+    }
+
+    // Toggles the active / deleted status of a order(soft delete/restore)
+    public async Task ToggleOrderAsync(Guid orderId)
+    {
+        var order = await _orderRepository
+            .Query()
+            .IgnoreQueryFilters() // Important to find deleted orders too
+            .FirstOrDefaultAsync(r => r.Id == orderId);
+
+        if (order == null)
+        {
+            throw new Exception($"Order with ID {orderId} not found");
+        }
+
+        // Toggle the IsDeleted status
+        order.IsDeleted = !order.IsDeleted;
+        order.UpdatedAt = DateTime.UtcNow;
+
+        await _orderRepository.UpdateAsync(order);
+        await _orderRepository.SaveChangesAsync();
     }
 }

@@ -55,4 +55,49 @@ public class OrderManagementController : Controller
 
         return RedirectToAction(nameof(Details), new { id });
     }
+
+
+
+
+
+
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+   
+    public async Task<IActionResult> ToggleActive(Guid orderId)
+    {
+        try
+        {
+
+            await _orderManagementService.ToggleOrderAsync(orderId);
+
+
+            var order = await _orderManagementService.GetByIdAsync(orderId);
+
+            if (order != null)
+            {
+                TempData["Success"] = order.IsDeleted
+                    ? "🔒 Order has been hidden from customers!"
+                    : "✨ Order is now visible to customers!";   
+            }
+            else
+            {
+                TempData["Success"] = "Order status changed successfully!";
+            }
+        }
+        catch (Exception ex)
+        {
+            TempData["Error"] = "Error toggling order status: " + ex.Message;
+        }
+
+        return RedirectToAction("Index");
+    }
+
+
+
+
+
+
+
 }
