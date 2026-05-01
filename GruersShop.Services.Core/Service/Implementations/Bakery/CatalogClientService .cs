@@ -19,8 +19,9 @@ public class CatalogClientService : ICatalogClientService
     }
 
 
-
     // Get all active products for catalog page
+    // For guests, show top 3 products by rating and recency
+    // For logged-in users, show paginated products with favorite status
     public async Task<IEnumerable<ProductViewModel>> GetPublicCatalogAsync(
         string? userId,
         int page,
@@ -36,10 +37,29 @@ public class CatalogClientService : ICatalogClientService
 
         if (isGuest)
         {
-            page = 1;
-            pageSize = 3;
+            
+            return await query
+                .OrderByDescending(p => p.AverageRating)  
+                .ThenByDescending(p => p.CreatedAt)       
+                .Take(3)
+                .Select(p => new ProductViewModel
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Description = p.Description.Length > 100 ? p.Description.Substring(0, 100) + "..." : p.Description,
+                    ImageUrl = p.ImageUrl,
+                    Price = p.Price,
+                    CategoryId = p.CategoryId,
+                    CategoryName = p.Category.Name,
+                    IsFavorited = false,
+                    AverageRating = p.AverageRating,
+                    ReviewCount = p.Reviews.Count,
+                    StockQuantity = p.StockQuantity
+                })
+                .ToListAsync();
         }
 
+        
         return await query
             .OrderByDescending(p => p.CreatedAt)
             .Skip((page - 1) * pageSize)
@@ -48,7 +68,7 @@ public class CatalogClientService : ICatalogClientService
             {
                 Id = p.Id,
                 Name = p.Name,
-                Description = p.Description,
+                Description = p.Description.Length > 100 ? p.Description.Substring(0, 100) + "..." : p.Description,
                 ImageUrl = p.ImageUrl,
                 Price = p.Price,
                 CategoryId = p.CategoryId,
