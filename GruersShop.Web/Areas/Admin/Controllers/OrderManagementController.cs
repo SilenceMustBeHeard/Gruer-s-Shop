@@ -1,6 +1,7 @@
-﻿using GruersShop.Web.ViewModels.Orders;
-using GruersShop.Data.Common.Enums;
+﻿using GruersShop.Data.Common.Enums;
 using GruersShop.Services.Core.Service.Interfaces.Interactions;
+using GruersShop.Web.ViewModels.Interactions;
+using GruersShop.Web.ViewModels.Orders;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,10 +18,17 @@ public class OrderManagementController : Controller
         _orderManagementService = orderManagementService;
     }
 
-    public async Task<IActionResult> Index(OrderStatus? status = null)
+    public async Task<IActionResult> Index(OrderStatus? status = null, bool includeDeleted = false)
     {
         var orders = await _orderManagementService.GetAllOrdersAsync(status);
+
+        if (!includeDeleted)
+        {
+            orders = orders.Where(o => !o.IsDeleted);
+        }
+
         ViewBag.SelectedStatus = status;
+        ViewBag.IncludeDeleted = includeDeleted;
         return View(orders);
     }
 
@@ -58,7 +66,7 @@ public class OrderManagementController : Controller
 
 
 
-
+  
 
 
 

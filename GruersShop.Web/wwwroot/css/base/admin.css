@@ -2765,3 +2765,42 @@ textarea.warm-input {
     background: linear-gradient(135deg, rgba(245, 197, 66, 0.15), rgba(245, 197, 66, 0.05));
     color: var(--honey-gold);
 }
+
+
+/*toggle order (soft delete) button styles */
+.deleted-order {
+    opacity: 0.85;
+    background: linear-gradient(135deg, #2a1f1a, #1a1410);
+    border-left: 4px solid #dc3545;
+}
+
+.btn-outline-danger {
+    background: transparent;
+    border: 1px solid #dc3545;
+    color: #dc3545;
+    padding: 8px 20px;
+    border-radius: 25px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+    .btn-outline-danger:hover {
+        background: #dc3545;
+        color: white;
+        transform: translateY(-2px);
+    }
+
+.btn-success {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 25px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+    .btn-success:hover {
+        background: #218838;
+        transform: translateY(-2px);
+    }

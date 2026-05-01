@@ -1,5 +1,4 @@
-﻿
-using GruersShop.Data.Common.Enums;
+﻿using GruersShop.Data.Common.Enums;
 using GruersShop.Data.Models.Base;
 using GruersShop.Data.Models.Interactions;
 using GruersShop.Data.Models.Messages;
@@ -147,7 +146,7 @@ public class OrderManagementService : IOrderManagementService
         }
 
         order.Status = newStatus;
-        order.UpdatedAt = DateTime.UtcNow;  
+        order.UpdatedAt = DateTime.UtcNow;
 
         await _orderRepository.UpdateAsync(order);
         await _orderRepository.SaveChangesAsync();
@@ -184,7 +183,6 @@ public class OrderManagementService : IOrderManagementService
 
         var adminUser = (await _userManager.GetUsersInRoleAsync("Admin")).FirstOrDefault();
 
-
         if (customer == null
             || adminUser == null) return;
 
@@ -208,9 +206,9 @@ public class OrderManagementService : IOrderManagementService
 
     private bool IsValidStatusTransition(OrderStatus current, OrderStatus next)
     {
-      
         return current != next;
     }
+
     public async Task<bool> HasRecentUpdatesAsync(string userId, DateTime since)
     {
         return await _orderRepository
@@ -218,6 +216,7 @@ public class OrderManagementService : IOrderManagementService
             .Where(o => o.UserId == userId && o.UpdatedAt > since)
             .AnyAsync();
     }
+
     public async Task<OrderViewModel?> GetByIdAsync(Guid id)
     {
         return await _orderRepository
