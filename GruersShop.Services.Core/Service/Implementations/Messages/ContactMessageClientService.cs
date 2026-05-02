@@ -114,7 +114,7 @@ public class ContactMessageClientService : IContactMessageClientService
             SenderName = message.Sender!.FullName ?? "Unknown",
             SenderEmail = message.Sender!.Email ?? string.Empty,
             ReceiverName = message.Receiver!.FullName ?? "Admin",
-            ReceiverEmail = message.Receiver!.Email ?? string.Empty,  
+            ReceiverEmail = message.Receiver!.Email ?? string.Empty,
             IsRead = message.IsRead,
             IsReadByAdmin = message.IsReadByAdmin,
             CreatedOn = message.CreatedAt,
@@ -131,5 +131,31 @@ public class ContactMessageClientService : IContactMessageClientService
             .CountAsync(m => m.SenderId == userId
                 && !string.IsNullOrEmpty(m.Response)
                 && !m.IsRead);
+    }
+
+
+    public async Task<bool?> MarkAsReadAsync(Guid messageId, string userId)
+    {
+
+
+
+
+
+        var message = await _messageRepository
+            .Query()
+            .Include(m => m.Sender)
+            .Include(m => m.Receiver)
+            .Include(m => m.RespondedBy)
+            .FirstOrDefaultAsync(m => m.Id == messageId && m.SenderId == userId);
+        if (message == null) return null;
+        if (!string.IsNullOrEmpty(message.Response) && !message.IsRead)
+        {
+            message.IsRead = true;
+            await _messageRepository.UpdateAsync(message);
+            await _messageRepository.SaveChangesAsync();
+            return true;
+        }
+        return false;
+     
     }
 }

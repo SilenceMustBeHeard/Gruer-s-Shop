@@ -87,17 +87,22 @@ public class ProfileController : Controller
             return RedirectToAction("Login", "Account");
         }
 
+        
+        await _contactMessageClientService.MarkAsReadAsync(id, user.Id);
 
-        var viewModel = await _contactMessageClientService.GetMessageDetailsAsync(id, user.Id);
+      
+        var message = await _contactMessageClientService.GetMessageDetailsAsync(id, user.Id);
 
-        if (viewModel == null)
+        if (message == null)
         {
             TempData["Error"] = "Message not found or you do not have permission to view it.";
             return NotFound();
         }
 
-        return View(viewModel);
+        return View(message);
     }
+ 
 
-   
+
+
 }

@@ -13,6 +13,7 @@ namespace GruersShop.Services.Core.Service.Interfaces.Messages
         Task<List<ContactMessageDetailsViewModel>> GetUserMessagesAsync(string userId);
         Task<ContactMessageDetailsViewModel?> GetMessageDetailsAsync(Guid messageId, string userId);
         Task<int> GetUserUnreadResponsesCountAsync(string userId);
+        Task<bool?> MarkAsReadAsync(Guid messageId, string userId);
 
     }
 }
