@@ -20,13 +20,16 @@
                         <h5 class="mt-2">Your Letter</h5>
                         <div class="honey-accent mx-auto" style="width: 40px;"></div>
                     </div>
-                    <div class="story-text" style="background: var(--stone-light); padding: 1.5rem; border-radius: 16px;">
+
+
+                    <div class="story-text" style="background: rgba(107, 140, 66, 0.1); border-left: 4px solid var(--leaf-green);">
                         <h3 class="fw-bold mb-3">@Model.Subject</h3>
                         <p class="mb-0" style="white-space: pre-wrap;">@Model.Message</p>
                         <p class="text-muted small mt-3">
                             <i class="bi bi-clock me-1"></i> Sent on @Model.CreatedOn.ToLocalTime().ToString("dd MMM yyyy · hh:mm tt")
                         </p>
                     </div>
+
                 </div>
 
                 <!-- Reply from Bakery -->
