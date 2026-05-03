@@ -21,13 +21,16 @@ public class CatalogController : Controller
         _categoryClientService = categoryClientService;
     }
 
+    [HttpGet("")]
+    [HttpGet("Index")]
+    [HttpGet("page/{page}")]
     public async Task<IActionResult> Index(int page = 1, int pageSize = 12, Guid? categoryId = null)
     {
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
         var isGuest = !User.Identity?.IsAuthenticated ?? true;
 
-        var products = await _catalogClientService.GetPublicCatalogAsync(userId, page, pageSize, isGuest);
-        var totalProducts = await _catalogClientService.GetTotalActiveProductsAsync();
+        var products = await _catalogClientService.GetPublicCatalogAsync(userId, page, pageSize, isGuest, categoryId);
+        var totalProducts = await _catalogClientService.GetTotalActiveProductsAsync(categoryId);
         var categories = await _categoryClientService.GetAllActiveCategoriesAsync();
 
         var viewModel = new CatalogIndexViewModel

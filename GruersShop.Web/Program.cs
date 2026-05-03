@@ -113,7 +113,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseSession();
-app.MapControllers();
+//app.MapControllers();
 
 app.MapGet("/", context =>
 {

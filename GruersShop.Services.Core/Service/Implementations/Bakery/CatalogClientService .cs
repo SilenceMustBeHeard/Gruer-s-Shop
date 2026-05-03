@@ -23,30 +23,36 @@ public class CatalogClientService : ICatalogClientService
     // For guests, show top 3 products by rating and recency
     // For logged-in users, show paginated products with favorite status
     public async Task<IEnumerable<ProductViewModel>> GetPublicCatalogAsync(
-        string? userId,
-        int page,
-        int pageSize,
-        bool isGuest)
+     string? userId,
+     int page,
+     int pageSize,
+     bool isGuest,
+     Guid? categoryId)
     {
-        var query = _uow.Repository<Product, Guid>()
+        IQueryable<Product> query = _uow.Repository<Product, Guid>()
             .Query()
-            .Where(p => p.IsAvailable && !p.IsDeleted)
-            .Include(p => p.Category)
-            .Include(p => p.Reviews)
-            .Include(p => p.FavoritedBy);
+            .Where(p => p.IsAvailable && !p.IsDeleted);
 
+      
+        if (categoryId.HasValue)
+        {
+            query = query.Where(p => p.CategoryId == categoryId.Value);
+        }
+
+      
         if (isGuest)
         {
-            
             return await query
-                .OrderByDescending(p => p.AverageRating)  
-                .ThenByDescending(p => p.CreatedAt)       
+                .OrderByDescending(p => p.AverageRating)
+                .ThenByDescending(p => p.CreatedAt)
                 .Take(3)
                 .Select(p => new ProductViewModel
                 {
                     Id = p.Id,
                     Name = p.Name,
-                    Description = p.Description.Length > 100 ? p.Description.Substring(0, 100) + "..." : p.Description,
+                    Description = p.Description.Length > 100
+                        ? p.Description.Substring(0, 100) + "..."
+                        : p.Description,
                     ImageUrl = p.ImageUrl,
                     Price = p.Price,
                     CategoryId = p.CategoryId,
@@ -59,7 +65,7 @@ public class CatalogClientService : ICatalogClientService
                 .ToListAsync();
         }
 
-        
+    
         return await query
             .OrderByDescending(p => p.CreatedAt)
             .Skip((page - 1) * pageSize)
@@ -68,12 +74,15 @@ public class CatalogClientService : ICatalogClientService
             {
                 Id = p.Id,
                 Name = p.Name,
-                Description = p.Description.Length > 100 ? p.Description.Substring(0, 100) + "..." : p.Description,
+                Description = p.Description.Length > 100
+                    ? p.Description.Substring(0, 100) + "..."
+                    : p.Description,
                 ImageUrl = p.ImageUrl,
                 Price = p.Price,
                 CategoryId = p.CategoryId,
                 CategoryName = p.Category.Name,
-                IsFavorited = userId != null && p.FavoritedBy.Any(f => f.UserId == userId && !f.IsDeleted),
+                IsFavorited = userId != null &&
+                              p.FavoritedBy.Any(f => f.UserId == userId && !f.IsDeleted),
                 AverageRating = p.AverageRating,
                 ReviewCount = p.Reviews.Count,
                 StockQuantity = p.StockQuantity
@@ -81,40 +90,7 @@ public class CatalogClientService : ICatalogClientService
             .ToListAsync();
     }
 
-    // Get single product details
-    public async Task<ProductViewModel?> GetProductDetailsAsync(Guid id, string? userId)
-    {
-        return await _uow.Repository<Product, Guid>()
-            .Query()
-            .Where(p => p.Id == id && p.IsAvailable && !p.IsDeleted)
-            .Include(p => p.Category)
-            .Include(p => p.Reviews)
-                .ThenInclude(r => r.User)
-            .Include(p => p.FavoritedBy)
-            .Select(p => new ProductViewModel
-            {
-                Id = p.Id,
-                Name = p.Name,
-                Description = p.Description,
-                ImageUrl = p.ImageUrl,
-                Price = p.Price,
-                
-                CategoryName = p.Category.Name,
-                IsFavorited = userId != null && p.FavoritedBy.Any(f => f.UserId == userId && !f.IsDeleted),
-                AverageRating = p.Reviews.Any() ? p.Reviews.Average(r => r.Rating) : 0,
-                ReviewCount = p.Reviews.Count,
-                StockQuantity = p.StockQuantity,
-                Reviews = p.Reviews.Select(r => new ReviewViewModel
-                {
-                    Id = r.Id,
-                    UserName = r.User.FullName,
-                    Rating = r.Rating,
-                    Comment = r.Comment,
-                    CreatedAt = r.CreatedAt
-                }).ToList()
-            })
-            .FirstOrDefaultAsync();
-    }
+
 
     // Get products by category
     public async Task<IEnumerable<ProductViewModel>> GetProductsByCategoryAsync(
@@ -142,16 +118,57 @@ public class CatalogClientService : ICatalogClientService
             })
             .ToListAsync();
     }
-
-    // Get total active products count
-    public async Task<int> GetTotalActiveProductsAsync()
+    public async Task<ProductViewModel?> GetProductDetailsAsync(Guid id, string? userId)
     {
         return await _uow.Repository<Product, Guid>()
             .Query()
-            .Where(p => p.IsAvailable && !p.IsDeleted)
-            .CountAsync();
-    }
+            .Where(p => p.Id == id && p.IsAvailable && !p.IsDeleted)
+            .Select(p => new ProductViewModel
+            {
+                Id = p.Id,
+                Name = p.Name,
+                Description = p.Description,
+                ImageUrl = p.ImageUrl,
+                Price = p.Price,
+                CategoryId = p.CategoryId,
+                CategoryName = p.Category.Name,
 
+                IsFavorited = userId != null &&
+                              p.FavoritedBy.Any(f => f.UserId == userId && !f.IsDeleted),
+
+                AverageRating = p.Reviews.Any()
+                    ? p.Reviews.Average(r => r.Rating)
+                    : 0,
+
+                ReviewCount = p.Reviews.Count,
+
+                StockQuantity = p.StockQuantity,
+
+                Reviews = p.Reviews.Select(r => new ReviewViewModel
+                {
+                    Id = r.Id,
+                    UserName = r.User.FullName,
+                    Rating = r.Rating,
+                    Comment = r.Comment,
+                    CreatedAt = r.CreatedAt
+                }).ToList()
+            })
+            .FirstOrDefaultAsync();
+    }
+    // Get total active products count
+    public async Task<int> GetTotalActiveProductsAsync(Guid? categoryId)
+    {
+        IQueryable<Product> query = _uow.Repository<Product, Guid>()
+            .Query()
+            .Where(p => p.IsAvailable && !p.IsDeleted);
+
+        if (categoryId.HasValue)
+        {
+            query = query.Where(p => p.CategoryId == categoryId.Value);
+        }
+
+        return await query.CountAsync();
+    }
     // Get all categories for navigation
     public async Task<IEnumerable<CategoryNavViewModel>> GetCategoriesForNavAsync()
     {

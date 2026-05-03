@@ -1,5 +1,6 @@
 ﻿using GruersShop.Data.Models.Products;
 using GruersShop.Data.Repositories.Interfaces.Bakery;
+using GruersShop.Data.Repositories.Interfaces.CRUD;
 using GruersShop.Services.Core.Service.Admin.Interfaces.Catalog;
 using GruersShop.Services.Core.Service.Admin.Interfaces.Product;
 using GruersShop.Web.ViewModels.Admin.Category;
@@ -15,12 +16,15 @@ public class ProductManagementService : IProductManagementService
 {
     private readonly IProductRepository _productRepository;
     private readonly ICategoryManagementService _categoryService;
+    private readonly IUnitOfWork _uow;
 
     public ProductManagementService(ICategoryManagementService categoryService,
-        IProductRepository productRepository)
+        IProductRepository productRepository,
+        IUnitOfWork uow)
     {
         _productRepository = productRepository;
         _categoryService = categoryService;
+        _uow = uow;
     }
 
 
@@ -144,7 +148,6 @@ public class ProductManagementService : IProductManagementService
             }).ToList()
         };
     }
-
 
     // retrieves detailed information about a specific product by its ID, including related reviews, category information,
     public async Task<ProductDetailsViewModel?> GetProductDetailsViewModelAsync(Guid id, string? userId)
@@ -278,29 +281,56 @@ public class ProductManagementService : IProductManagementService
         });
     }
 
-    public async Task<IEnumerable<ProductViewModel>> GetPublicCatalogAsync(string? userId, int page, int pageSize, bool isGuest)
+    public async Task<IEnumerable<ProductViewModel>> GetPublicCatalogAsync(
+     string? userId,
+     int page,
+     int pageSize,
+     bool isGuest,
+     Guid? categoryId)
     {
-        var products = await _productRepository.GetPagedActiveProductsAsync(page, pageSize);
+        IQueryable<Product> query = _uow.Repository<Product, Guid>()
+            .Query()
+            .Where(p => p.IsAvailable && !p.IsDeleted);
 
-        return products.Select(p => new ProductViewModel
+        if (categoryId.HasValue)
         {
-            Id = p.Id,
-            Name = p.Name,
-            Description = p.Description,
-            Price = p.Price,
-            ImageUrl = p.ImageUrl,
-            CategoryId = p.CategoryId,
-            CategoryName = p.Category?.Name ?? "Uncategorized",
-            AverageRating = p.AverageRating,
-            StockQuantity = p.StockQuantity,
-            IsFavorited = false,
-            ReviewCount = p.Reviews.Count
-        });
+            query = query.Where(p => p.CategoryId == categoryId.Value);
+        }
+
+        return await query
+            .OrderByDescending(p => p.CreatedAt)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .Select(p => new ProductViewModel
+            {
+                Id = p.Id,
+                Name = p.Name,
+                Description = p.Description,
+                Price = p.Price,
+                ImageUrl = p.ImageUrl,
+                CategoryId = p.CategoryId,
+                CategoryName = p.Category.Name,
+                AverageRating = p.AverageRating,
+                StockQuantity = p.StockQuantity,
+                IsFavorited = false,
+                ReviewCount = p.Reviews.Count
+            })
+            .ToListAsync();
     }
 
-    public async Task<int> GetTotalActiveProductsAsync()
+
+    public async Task<int> GetTotalActiveProductsAsync(Guid? categoryId)
     {
-        return await _productRepository.CountActiveAsync();
+        IQueryable<Product> query = _uow.Repository<Product, Guid>()
+            .Query()
+            .Where(p => p.IsAvailable && !p.IsDeleted);
+
+        if (categoryId.HasValue)
+        {
+            query = query.Where(p => p.CategoryId == categoryId.Value);
+        }
+
+        return await query.CountAsync();
     }
 
     public async Task ToggleProductAsync(Guid id)
