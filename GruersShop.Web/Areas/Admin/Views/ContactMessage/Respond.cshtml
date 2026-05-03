@@ -8,62 +8,61 @@
 <div class="container py-5">
     <div class="row justify-content-center">
         <div class="col-lg-8">
-            <div class="warm-card p-4 response-container">
-                <!-- Header with animated icon -->
+            <div class="warm-card p-4">
+                <!-- Header -->
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h2 class="fw-bold mb-0">
-                        <i class="bi bi-reply-all-fill text-warm icon-pulse me-2"></i>
+                        <i class="bi bi-reply-all-fill text-warm me-2"></i>
                         Respond to Customer
                     </h2>
-                    <a href="/Admin/ContactMessage/Details/@Model.Id" class="btn-warm-sm back-btn">
+                    <a href="/Admin/ContactMessage/Details/@Model.Id" class="btn-warm-sm">
                         <i class="bi bi-arrow-left me-1"></i> Back
                     </a>
                 </div>
 
                 <!-- Original Message Card -->
-                <div class="warm-card mb-4 p-3 original-message-card">
+                <div class="warm-card p-3 mb-4">
                     <div class="d-flex align-items-center gap-2 mb-3">
                         <i class="bi bi-envelope-paper-fill text-warm"></i>
                         <h6 class="text-warm mb-0">Original Message</h6>
                     </div>
                     
-                    <div class="message-details">
-                        <div class="row mb-2">
-                            <div class="col-md-6">
-                                <small class="text-muted">From</small>
-                                <p class="fw-bold mb-0">
-                                    <i class="bi bi-person me-1"></i> @Model.SenderName
-                                </p>
-                            </div>
-                            <div class="col-md-6">
-                                <small class="text-muted">Email</small>
-                                <p class="mb-0">
-                                    <i class="bi bi-envelope me-1"></i> 
-                                    <a href="mailto:@Model.SenderEmail" class="text-warm">@Model.SenderEmail</a>
-                                </p>
-                            </div>
-                        </div>
-                        <div class="mb-2">
-                            <small class="text-muted">Subject</small>
+                    <div class="row mb-2">
+                        <div class="col-md-6">
+                            <small class="text-muted">From</small>
                             <p class="fw-bold mb-0">
-                                <i class="bi bi-chat-heart me-1"></i> @Model.Subject
+                                <i class="bi bi-person me-1"></i> @Model.SenderName
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            <small class="text-muted">Email</small>
+                            <p class="mb-0">
+                                <i class="bi bi-envelope me-1"></i>
+                                <a href="mailto:@Model.SenderEmail" class="text-warm text-decoration-none">@Model.SenderEmail</a>
                             </p>
                         </div>
                     </div>
                     
-                    <hr class="stone-divider my-3">
+                    <div class="mb-3">
+                        <small class="text-muted">Subject</small>
+                        <p class="fw-bold mb-0">
+                            <i class="bi bi-chat-heart me-1"></i> @Model.Subject
+                        </p>
+                    </div>
                     
-                    <div class="original-message-content p-3 rounded-3" style="background: var(--stone-light);">
+                    <hr class="my-3">
+                    
+                    <div class="p-3 rounded-3" style="background: var(--auto);">
                         <div class="d-flex gap-2 mb-2">
                             <i class="bi bi-quote text-warm"></i>
                             <small class="text-muted">Customer wrote:</small>
                         </div>
-                        <p class="mb-0" style="white-space: pre-wrap;">@Model.OriginalMessage</p>
+                        <p class="mb-0" style="white-space: pre-wrap; word-wrap: break-word;">@Model.OriginalMessage</p>
                     </div>
                 </div>
 
                 <!-- Response Form -->
-                <form id="responseForm" action="/Admin/ContactMessage/Respond" method="post">
+                <form id="responseForm" asp-action="Respond" method="post">
                     @Html.AntiForgeryToken()
                     <input type="hidden" name="Id" value="@Model.Id" />
                     <input type="hidden" name="Subject" value="@Model.Subject" />
@@ -76,14 +75,15 @@
                             <i class="bi bi-pencil-square me-1 text-warm"></i>
                             Your Response
                         </label>
-                        <div class="response-editor-container">
-                            <textarea asp-for="Response" 
-                                      name="Response" 
-                                      class="form-control warm-input response-textarea" 
-                                      rows="8" 
-                                      placeholder="Type your response here..."
-                                      id="responseText"></textarea>
-                            <div class="response-tools mt-2 d-flex gap-2">
+                        <textarea asp-for="Response"
+                                  name="Response"
+                                  class="form-control warm-input"
+                                  rows="8"
+                                  placeholder="Type your response here..."
+                                  id="responseText"
+                                  style="resize: vertical;"></textarea>
+                        <div class="d-flex justify-content-between align-items-center mt-2">
+                            <div class="d-flex gap-2">
                                 <button type="button" class="tool-btn" data-action="bold" title="Bold">
                                     <i class="bi bi-type-bold"></i>
                                 </button>
@@ -96,15 +96,13 @@
                                 <button type="button" class="tool-btn" data-action="insertClosing" title="Insert Closing">
                                     <i class="bi bi-suit-heart"></i>
                                 </button>
-                                <div class="ms-auto">
-                                    <span class="badge bg-light text-dark" id="charCount">0 characters</span>
-                                </div>
                             </div>
+                            <span class="text-muted small" id="charCount">0 characters</span>
                         </div>
                         <span asp-validation-for="Response" class="text-danger"></span>
                         <small class="text-muted mt-2 d-block">
-                            <i class="bi bi-info-circle me-1"></i> 
-                            Your response will be sent to the customer's email address. A copy will be saved in your sent folder.
+                            <i class="bi bi-info-circle me-1"></i>
+                            Your response will be sent to the customer's email address.
                         </small>
                     </div>
 
@@ -131,10 +129,10 @@
                     </div>
 
                     <div class="d-flex justify-content-end gap-2 mt-4">
-                        <a href="/Admin/ContactMessage/Details/@Model.Id" class="btn-warm cancel-btn">
+                        <a href="/Admin/ContactMessage/Details/@Model.Id" class="btn-warm-sm">
                             <i class="bi bi-x-circle me-2"></i> Cancel
                         </a>
-                        <button type="submit" class="btn-glow send-btn" id="sendBtn">
+                        <button type="submit" class="btn-glow" id="sendBtn">
                             <i class="bi bi-send me-2"></i> Send Response
                         </button>
                     </div>
@@ -145,120 +143,46 @@
 </div>
 
 <style>
-    .response-container {
-        animation: slideUp 0.4s ease;
-    }
-    
-    @@keyframes slideUp {
-        from {
-            opacity: 0;
-            transform: translateY(30px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-    
-    .original-message-card {
-        transition: all 0.3s ease;
-    }
-    
-    .original-message-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-    }
-    
-    .original-message-content {
-        border-left: 3px solid var(--honey-gold);
-        transition: all 0.3s ease;
-    }
-    
-    .response-textarea {
-        transition: all 0.3s ease;
-        resize: vertical;
-    }
-    
-    .response-textarea:focus {
-        box-shadow: 0 0 0 3px rgba(212, 163, 115, 0.2);
-        border-color: var(--honey-gold);
-    }
-    
     .tool-btn {
-        background: var(--stone-light);
+        background: var(--auto);
         border: 1px solid var(--stone-medium);
         border-radius: 6px;
-        padding: 6px 12px;
+        padding: 4px 10px;
         cursor: pointer;
         transition: all 0.2s ease;
         font-size: 14px;
+        color: var(--text-color);
     }
     
-    .tool-btn:hover {
-        background: var(--honey-gold);
-        color: white;
-        border-color: var(--honey-gold);
-        transform: translateY(-1px);
-    }
+        .tool-btn:hover {
+            background: var(--honey-gold);
+            color: # chocolate;
+            border-color: var(--honey-gold);
+        }
     
     .template-btn {
-        background: white;
+        background: var(--auto);
         border: 1px solid var(--stone-medium);
         border-radius: 20px;
-        padding: 6px 14px;
-        font-size: 13px;
+        padding: 5px 14px;
+        font-size: 12px;
         cursor: pointer;
         transition: all 0.2s ease;
+        color: var(--text-color);
     }
     
-    .template-btn:hover {
-        background: var(--honey-gold);
-        color: white;
-        border-color: var(--honey-gold);
-        transform: translateY(-1px);
+        .template-btn:hover {
+            background: var(--honey-gold);
+            color: # chocolate;
+            border-color: var(--honey-gold);
+        }
+    
+    .text-warm {
+        color: var(--honey-gold);
     }
     
-    .send-btn {
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .send-btn.sending {
-        opacity: 0.7;
-        cursor: not-allowed;
-    }
-    
-    .send-btn.sending::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-        animation: shimmer 1.5s infinite;
-    }
-    
-    @@keyframes shimmer {
-        0% { left: -100%; }
-        100% { left: 100%; }
-    }
-    
-    .cancel-btn, .back-btn {
-        transition: all 0.2s ease;
-    }
-    
-    .cancel-btn:hover, .back-btn:hover {
-        transform: translateX(-2px);
-    }
-    
-    .icon-pulse {
-        animation: pulse 2s infinite;
-    }
-    
-    @@keyframes pulse {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.7; }
+    .bg-light {
+        background: var(--auto);
     }
 </style>
 
@@ -274,15 +198,12 @@
             const length = responseTextarea.value.length;
             charCountSpan.textContent = `${length} characters`;
             
-            if (length > 500) {
-                charCountSpan.classList.add('text-warning');
-            } else {
-                charCountSpan.classList.remove('text-warning');
-            }
             if (length > 1000) {
-                charCountSpan.classList.add('text-danger');
+                charCountSpan.style.color = '#dc3545';
+            } else if (length > 500) {
+                charCountSpan.style.color = '#fd7e14';
             } else {
-                charCountSpan.classList.remove('text-danger');
+                charCountSpan.style.color = '';
             }
         }
         
@@ -327,7 +248,7 @@
                         insertAtCursor('\n\nDear ' + '@Model.SenderName'.split(' ')[0] + ',\n\nThank you for reaching out to us. ');
                         break;
                     case 'insertClosing':
-                        insertAtCursor('\n\nBest regards,\n' + 'Admin Team\nGruersShop');
+                        insertAtCursor('\n\nBest regards,\nAdmin Team\nGruer\'s Shop');
                         break;
                 }
             });
@@ -343,7 +264,8 @@
         
         document.querySelectorAll('.template-btn').forEach(btn => {
             btn.addEventListener('click', () => {
-                const template = templates[btn.dataset.template];
+                const templateKey = btn.dataset.template;
+                const template = templates[templateKey];
                 if (template && responseTextarea.value.trim() === '') {
                     responseTextarea.value = template;
                 } else if (template) {
@@ -354,71 +276,13 @@
             });
         });
         
-        // Form submission with animation
-        form.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            if (!responseTextarea.value.trim()) {
-                showToast('Please enter a response message', 'error');
-                responseTextarea.focus();
-                responseTextarea.style.animation = 'shake 0.3s ease';
-                setTimeout(() => {
-                    responseTextarea.style.animation = '';
-                }, 300);
-                return;
-            }
-            
-            // Show sending state
-            sendBtn.classList.add('sending');
-            const originalText = sendBtn.innerHTML;
-            sendBtn.innerHTML = '<i class="bi bi-hourglass-split me-2"></i> Sending...';
-            sendBtn.disabled = true;
-            
-            // Simulate sending animation
-            await new Promise(resolve => setTimeout(resolve, 500));
-            
-            // Submit the form
-            form.submit();
-        });
-        
-        // Shake animation
-        const style = document.createElement('style');
-        style.textContent = `
-            @@keyframes shake {
-                0%, 100% { transform: translateX(0); }
-                25% { transform: translateX(-5px); }
-                75% { transform: translateX(5px); }
-            }
-        `;
-        document.head.appendChild(style);
-        
-        // Toast function
-        function showToast(message, type) {
-            const toast = document.createElement('div');
-            toast.className = `toast-notification ${type}`;
-            toast.innerHTML = `
-                <i class="bi ${type === 'error' ? 'bi-exclamation-circle' : 'bi-info-circle'} me-2"></i>
-                ${message}
-            `;
-            document.body.appendChild(toast);
-            
-            setTimeout(() => {
-                toast.classList.add('show');
-                setTimeout(() => {
-                    toast.classList.remove('show');
-                    setTimeout(() => toast.remove(), 300);
-                }, 3000);
-            }, 100);
-        }
-        
         // Auto-save draft to localStorage
-        const DRAFT_KEY = `response_draft_${@Model.Id}`;
+        const DRAFT_KEY = `response_draft_@Model.Id`;
         
         function saveDraft() {
             const content = responseTextarea.value;
             if (content.trim()) {
                 localStorage.setItem(DRAFT_KEY, content);
-                showDraftSaved();
             }
         }
         
@@ -427,19 +291,10 @@
             if (saved && !responseTextarea.value.trim()) {
                 responseTextarea.value = saved;
                 updateCharCount();
-                showToast('Draft loaded', 'info');
             }
         }
         
-        function showDraftSaved() {
-            const indicator = document.createElement('div');
-            indicator.className = 'draft-indicator';
-            indicator.innerHTML = '<i class="bi bi-check-circle-fill text-success"></i> Draft saved';
-            document.querySelector('.response-editor-container').appendChild(indicator);
-            setTimeout(() => indicator.remove(), 2000);
-        }
-        
-        // Auto-save every 30 seconds
+        // Auto-save every 10 seconds
         let saveTimeout;
         responseTextarea.addEventListener('input', () => {
             clearTimeout(saveTimeout);
@@ -449,20 +304,14 @@
         // Load draft on page load
         loadDraft();
         
-        // Clear draft on successful send (will be handled by server redirect)
+        // Clear draft on successful submit
         window.addEventListener('beforeunload', () => {
-            if (form.querySelector('.sending')) {
-                localStorage.removeItem(DRAFT_KEY);
-            }
+            localStorage.removeItem(DRAFT_KEY);
         });
         
-        console.log('📝 Response form ready - Draft auto-save enabled');
+        console.log('📝 Response form ready');
     });
 </script>
-
-<style>
- 
-</style>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
