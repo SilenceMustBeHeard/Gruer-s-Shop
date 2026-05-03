@@ -133,14 +133,8 @@ public class ContactMessageClientService : IContactMessageClientService
                 && !m.IsRead);
     }
 
-
     public async Task<bool?> MarkAsReadAsync(Guid messageId, string userId)
     {
-
-
-
-
-
         var message = await _messageRepository
             .Query()
             .Include(m => m.Sender)
@@ -156,6 +150,5 @@ public class ContactMessageClientService : IContactMessageClientService
             return true;
         }
         return false;
-     
     }
 }

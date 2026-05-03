@@ -153,7 +153,7 @@
                 @if (User.Identity.IsAuthenticated && !Model.UserHasReviewed)
                 {
                     <!-- Reviews  -->
-                    <div class="add-review-section mb-4 p-4" style="background: var(--stone-light); border-radius: 16px;">
+                    <div class="add-review-section mb-4 p-4" style="background: auto; border-radius: 17px; border: 1px dashed rgba(107, 140, 66, 0.5);">
                         <h5>Write a Review</h5>
                         <form asp-controller="Reviews" asp-action="Add" method="post">
                             @Html.AntiForgeryToken()

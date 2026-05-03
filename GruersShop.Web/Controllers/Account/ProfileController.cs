@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace GruersShop.Web.Controllers.Account;
 
 [Authorize]
-
 public class ProfileController : Controller
 {
     private readonly IProfileService _profileService;
@@ -24,8 +23,6 @@ public class ProfileController : Controller
         IProfileService profileService,
         UserManager<AppUser> userManager
         )
-        
-
 
     {
         _contactMessageClientService = contactMessageClientService;
@@ -42,19 +39,11 @@ public class ProfileController : Controller
         {
             TempData["Error"] = "You must be logged in to perform this action.";
             return RedirectToAction("Login", "Account");
-
         }
 
         var model = await _profileService.GetProfileAsync(user.Id);
         return View(model);
     }
-
-  
-
-   
-    
-
-
 
     [HttpGet]
     public async Task<IActionResult> SystemMessageDetails(Guid id)
@@ -87,10 +76,8 @@ public class ProfileController : Controller
             return RedirectToAction("Login", "Account");
         }
 
-        
         await _contactMessageClientService.MarkAsReadAsync(id, user.Id);
 
-      
         var message = await _contactMessageClientService.GetMessageDetailsAsync(id, user.Id);
 
         if (message == null)
@@ -101,8 +88,4 @@ public class ProfileController : Controller
 
         return View(message);
     }
- 
-
-
-
 }
