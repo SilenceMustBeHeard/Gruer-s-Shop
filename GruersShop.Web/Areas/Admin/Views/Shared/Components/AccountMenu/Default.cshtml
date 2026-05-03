@@ -53,6 +53,9 @@
         </div>
     </li>
 
+    @if (!User.IsInRole("Admin") && !User.IsInRole("Manager"))
+    {
+
     <!-- Profile Link (for all logged in users) -->
     <li>
         <a class="dropdown-item" asp-controller="Profile" asp-action="Index">
@@ -80,7 +83,7 @@
             }
         </a>
     </li>
-
+    }
     <!-- Admin Dashboard Link (only for admins) -->
     @if (User.IsInRole("Admin"))
     {

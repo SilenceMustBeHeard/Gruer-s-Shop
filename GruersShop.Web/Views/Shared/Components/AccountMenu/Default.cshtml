@@ -53,34 +53,37 @@
         </div>
     </li>
 
-    <!-- Profile Link (for all logged in users) -->
-    <li>
-        <a class="dropdown-item" asp-controller="Profile" asp-action="Index">
-            <i class="bi bi-person-badge me-2 text-warm"></i> My Profile
-        </a>
-    </li>
+    @if (!User.IsInRole("Admin") && !User.IsInRole("Manager"))
+    {
 
-    <!-- My Orders Link (for all logged in users) -->
-    <li>
-        <a class="dropdown-item" asp-controller="Orders" asp-action="MyOrders">
-            <i class="bi bi-receipt me-2 text-warm"></i> My Orders
-        </a>
-    </li>
+        <!-- Profile Link (for all logged in users) -->
+        <li>
+            <a class="dropdown-item" asp-controller="Profile" asp-action="Index">
+                <i class="bi bi-person-badge me-2 text-warm"></i> My Profile
+            </a>
+        </li>
 
-    <!-- Cart Link with badge -->
-    <li>
-        <a class="dropdown-item d-flex justify-content-between align-items-center"
-               asp-controller="Cart" asp-action="Index">
-            <span>
-                <i class="bi bi-cart3 me-2 text-warm"></i> My Cart
-            </span>
-            @if (cartItemsCount > 0)
-            {
-                <span class="honey-badge">@cartItemsCount</span>
-            }
-        </a>
-    </li>
+        <!-- My Orders Link (for all logged in users) -->
+        <li>
+            <a class="dropdown-item" asp-controller="Orders" asp-action="MyOrders">
+                <i class="bi bi-receipt me-2 text-warm"></i> My Orders
+            </a>
+        </li>
 
+        <!-- Cart Link with badge -->
+        <li>
+            <a class="dropdown-item d-flex justify-content-between align-items-center"
+                   asp-controller="Cart" asp-action="Index">
+                <span>
+                    <i class="bi bi-cart3 me-2 text-warm"></i> My Cart
+                </span>
+                @if (cartItemsCount > 0)
+                {
+                    <span class="honey-badge">@cartItemsCount</span>
+                }
+            </a>
+        </li>
+    }
     <!-- Admin Dashboard Link (only for admins) -->
     @if (User.IsInRole("Admin"))
     {
