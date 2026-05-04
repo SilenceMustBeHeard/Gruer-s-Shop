@@ -118,7 +118,37 @@ Floating spark animations
 
 Smooth card hover effects
 
-Dark/light mode toggle
+SCREENSHOTS : 
+
+🔐 Login Page
+<img width="1890" height="910" alt="login" src="https://github.com/user-attachments/assets/020d6a83-abc2-4c9e-b90a-d04018f5ff56" />
+
+
+
+
+📝 Contact MEssage 
+<img width="1868" height="902" alt="contact" src="https://github.com/user-attachments/assets/db014191-a0e3-4160-8c27-9f9a94c1c781" />
+
+
+
+
+
+🛠 Admin Panel
+<img width="1890" height="900" alt="admin panel" src="https://github.com/user-attachments/assets/b5fc691c-6708-4b84-8a13-d5dfc0b1b145" />
+
+
+
+📝 Catalog page 
+<img width="1896" height="914" alt="catalog" src="https://github.com/user-attachments/assets/5abc01a6-23f0-4272-94a3-522074dee2ab" />
+<img width="1890" height="902" alt="catalog 2" src="https://github.com/user-attachments/assets/4ae30aef-0997-4350-94be-6c3b2769ee42" />
+
+
+📝 Product Details + Order + review
+<img width="1874" height="914" alt="details + review" src="https://github.com/user-attachments/assets/cf095df7-f1e1-4c56-b3e9-764bf18950b5" />
+
+
+
+
 
 🤝 Contributing
 Fork the repository
