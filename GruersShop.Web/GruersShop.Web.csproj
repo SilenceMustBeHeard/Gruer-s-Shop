@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <ItemGroup>
     <ProjectReference Include="..\GruersShop.Data\GruersShop.Data.csproj" />
@@ -28,6 +28,7 @@
     <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>04edf3cb-002e-4b88-a497-f2f37f4c3b0d</UserSecretsId>
   </PropertyGroup>
 
 </Project>

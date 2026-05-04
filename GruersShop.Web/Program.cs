@@ -4,6 +4,7 @@ using GruersShop.Data.Repositories.Implementations.UnitOfWork;
 using GruersShop.Data.Repositories.Interfaces.Account;
 using GruersShop.Data.Repositories.Interfaces.CRUD;
 using GruersShop.Data.Seeding;
+using GruersShop.Services.Core.Service.Implementations.Account;
 using GruersShop.Services.Core.Service.Implementations.Bakery;
 using GruersShop.Services.Core.Service.Implementations.Interactions;
 using GruersShop.Services.Core.Service.Interfaces.Account;
@@ -14,6 +15,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
+using SendGrid;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -59,6 +61,25 @@ builder.Services.AddScoped<ICategoryClientService, CategoryClientService>();
 
 builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
+builder.Services.AddSingleton(sp =>
+{
+    var apiKey = builder.Configuration["SendGrid:ApiKey"];
+    if (string.IsNullOrEmpty(apiKey))
+    {
+      
+        apiKey = builder.Configuration.GetValue<string>("SendGrid:ApiKey");
+    }
+
+    if (string.IsNullOrEmpty(apiKey))
+    {
+        throw new InvalidOperationException("SendGrid API Key is missing. Add it via: dotnet user-secrets set \"SendGrid:ApiKey\" \"YOUR_KEY\"");
+    }
+
+    return new SendGridClient(apiKey);
+});
+
+
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
