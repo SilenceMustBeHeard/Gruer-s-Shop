@@ -17,7 +17,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <Folder Include="Controllers\Areas\Admin\" />
+    <Folder Include="Controllers\Areas\Manager\" />
     <Folder Include="NewFolder\" />
   </ItemGroup>
 

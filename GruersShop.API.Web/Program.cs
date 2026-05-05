@@ -1,4 +1,9 @@
 
+using GruersShop.Data;
+using GruersShop.Data.Models.Base;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+
 namespace GruersShop.API.Web
 {
     public class Program
@@ -7,15 +12,45 @@ namespace GruersShop.API.Web
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            // Connection string
+
+            var connectionString = builder.Configuration
+                .GetConnectionString("DefaultConnection")
+          ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+
+            // DbContext
+            builder.Services.AddDbContext<AppDbContext>(options =>
+                options.UseSqlServer(connectionString));
+
+
+
+            // Identity (Cookie based – same as MVC)
+
+            builder.Services
+                .AddIdentityCore<AppUser>(options =>
+                {
+                    options.SignIn.RequireConfirmedAccount = false;
+                })
+                .AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<AppDbContext>()
+                .AddSignInManager();
+
+
+            // Authentication + Authorization
+
+            builder.Services.AddAuthentication(IdentityConstants.ApplicationScheme)
+                .AddIdentityCookies();
+
+            builder.Services.AddAuthorization();
+
+            // Controllers + OpenAPI
 
             builder.Services.AddControllers();
-            // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
+            // HTTP pipeline
             if (app.Environment.IsDevelopment())
             {
                 app.MapOpenApi();
@@ -23,8 +58,9 @@ namespace GruersShop.API.Web
 
             app.UseHttpsRedirection();
 
-            app.UseAuthorization();
 
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.MapControllers();
 
