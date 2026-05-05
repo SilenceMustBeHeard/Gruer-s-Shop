@@ -1,5 +1,4 @@
 ﻿using GruersShop.Data.Models.Base;
-using GruersShop.Data.Repositories.Implementations.Account;
 using GruersShop.Data.Repositories.Interfaces.Account;
 using GruersShop.Services.Core.Service.Admin.Interfaces.Message;
 using GruersShop.Services.Core.Service.Interfaces.Account;
@@ -14,25 +13,26 @@ namespace GruersShop.Services.Core.Service.Implementations.Account;
 
 public class ProfileService : IProfileService
 {
-    private readonly IAppUserRepository _userRepository;  
+    private readonly IAppUserRepository _userRepository;
     private readonly UserManager<AppUser> _userManager;
-    private readonly ISystemInboxMessageService _systemInboxMessageService;
+    private readonly ISystemInboxClientService _systemInboxClientService; 
     private readonly IContactMessageClientService _contactMessageClientService;
     private readonly IContactMessageService _contactMessageService;
 
     public ProfileService(
-        IAppUserRepository userRepository,  
+        IAppUserRepository userRepository,
         UserManager<AppUser> userManager,
-        ISystemInboxMessageService systemInboxMessageService,
+        ISystemInboxClientService systemInboxClientService, 
         IContactMessageClientService contactMessageClientService,
         IContactMessageService contactMessageService)
     {
         _userRepository = userRepository;
         _userManager = userManager;
-        _systemInboxMessageService = systemInboxMessageService;
+        _systemInboxClientService = systemInboxClientService;
         _contactMessageClientService = contactMessageClientService;
         _contactMessageService = contactMessageService;
     }
+
     public async Task<ProfileViewModel?> GetProfileAsync(string userId)
     {
         var user = await _userRepository
@@ -42,8 +42,7 @@ public class ProfileService : IProfileService
         if (user == null)
             return null;
 
-      
-        var systemMessages = await _systemInboxMessageService.GetUserMessagesAsync(userId);
+        var systemMessages = await _systemInboxClientService.GetUserMessagesAsync(userId);
 
         var roles = await _userManager.GetRolesAsync(user);
         var isAdmin = roles.Contains("Admin");
@@ -53,15 +52,12 @@ public class ProfileService : IProfileService
 
         if (isAdmin)
         {
-
             contactMessages = await _contactMessageService.GetAdminMessagesAsync(userId);
         }
         else if (!isManager)
         {
-
             contactMessages = await _contactMessageClientService.GetUserMessagesAsync(userId);
         }
-
 
         return new ProfileViewModel
         {
@@ -70,7 +66,6 @@ public class ProfileService : IProfileService
             FirstName = user.FirstName,
             LastName = user.LastName,
             Address = user.Address,
-         
             SystemInbox = systemMessages?.ToList() ?? new List<SystemInboxMessageViewModel>(),
             ContactMessages = contactMessages ?? new List<ContactMessageDetailsViewModel>()
         };

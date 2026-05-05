@@ -1,5 +1,6 @@
 ﻿using GruersShop.Data.Models.Base;
 using GruersShop.Services.Core.Service.Admin.Interfaces.Message;
+using GruersShop.Services.Core.Service.Implementations.Messages;
 using GruersShop.Services.Core.Service.Interfaces.Account;
 using GruersShop.Services.Core.Service.Interfaces.Messages;
 using Microsoft.AspNetCore.Authorization;
@@ -13,20 +14,20 @@ public class ProfileController : Controller
 {
     private readonly IProfileService _profileService;
     private readonly UserManager<AppUser> _userManager;
-
-    private readonly ISystemInboxMessageService _systemInboxMessageService;
+    private readonly ISystemInboxClientService _systemInboxClientService;
     private readonly IContactMessageClientService _contactMessageClientService;
+
 
     public ProfileController(
         IContactMessageClientService contactMessageClientService,
-        ISystemInboxMessageService systemInboxMessageService,
+        ISystemInboxClientService systemInboxClientService,
         IProfileService profileService,
         UserManager<AppUser> userManager
         )
 
     {
         _contactMessageClientService = contactMessageClientService;
-        _systemInboxMessageService = systemInboxMessageService;
+        _systemInboxClientService = systemInboxClientService;
         _profileService = profileService;
         _userManager = userManager;
     }
@@ -55,7 +56,7 @@ public class ProfileController : Controller
             return RedirectToAction("Login", "Account");
         }
 
-        var viewModel = await _systemInboxMessageService.GetMessageDetailsAsync(id, user.Id);
+        var viewModel = await _systemInboxClientService.GetMessageDetailsAsync(id, user.Id);
 
         if (viewModel == null)
         {

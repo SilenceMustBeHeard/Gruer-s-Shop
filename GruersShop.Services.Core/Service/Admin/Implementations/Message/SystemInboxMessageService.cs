@@ -61,6 +61,7 @@ public class SystemInboxMessageService : ISystemInboxMessageService
 
         message.IsRead = true;
         await _messageRepository.UpdateAsync(message);
+        await _messageRepository.SaveChangesAsync();
 
         return new SystemInboxMessageViewModel
         {
@@ -76,6 +77,7 @@ public class SystemInboxMessageService : ISystemInboxMessageService
     public async Task CreateMessageAsync(SystemInboxMessage message)
     {
         await _messageRepository.AddAsync(message);
+        await _messageRepository.SaveChangesAsync();
     }
 
     public async Task<List<SystemInboxMessageViewModel>> GetUserMessagesAsync(string userId)
