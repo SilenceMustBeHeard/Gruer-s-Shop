@@ -15,7 +15,7 @@
   <Folder Name="/Tests/">
     <Project Path="GruersShop.Tests.Integration/GruersShop.Tests.Integration.csproj" Id="06fb5d7f-2368-4007-b980-177a663731f1" />
     <Project Path="GruersShop.Tests.Web/GruersShop.Tests.Web.csproj" Id="a7561735-89cb-4a5a-99cf-c77bbd0f4268" />
-    <Project Path="GruersShop.Tests/GruersShop.Tests.Services.csproj" />
+    <Project Path="GruersShop.Tests/GruersShop.Unit.Tests.Services.csproj" />
   </Folder>
   <Folder Name="/Web/">
     <Project Path="GruersShop.Web.Infrastructure/GruersShop.Web.Infrastructure.csproj" Id="5802efad-c274-4a47-93fb-21b379aa34f4" />
