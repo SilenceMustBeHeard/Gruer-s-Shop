@@ -58,7 +58,7 @@ public class ReviewControllerApi : ControllerBase
     }
 
     [HttpGet("product/{productId}")]
-    [AllowAnonymous]
+
     public async Task<IActionResult> GetProductReviews(Guid productId)
     {
         var reviews = await _reviewService.GetReviewsByProductIdAsync(productId);
