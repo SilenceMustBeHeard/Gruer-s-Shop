@@ -33,4 +33,15 @@ public class ReviewRepository :
             .Where(r => r.ProductId == productId)
             .ToListAsync();
     }
+
+    // Get all reviews made by a specific user
+
+    public async Task<IEnumerable<Review>> GetUserReviewsAsync(string userId)
+    {
+        return await _dbSet
+            .Include(r => r.User)
+            .ThenInclude(u => u.Reviews)
+            .Where(r => r.UserId == userId)
+            .ToListAsync();
+    }
 }

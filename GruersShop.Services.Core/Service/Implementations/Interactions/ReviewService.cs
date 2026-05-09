@@ -103,14 +103,11 @@ public class ReviewService : IReviewService
     }
 
 
+  
     public async Task<IEnumerable<ReviewViewModel>> GetUserReviewsAsync(string userId)
     {
-        var reviews = await _reviewRepo
-            .Query()
-            .Where(r => r.UserId == userId && !r.IsDeleted)
-            .Include(r => r.Product)
-            .OrderByDescending(r => r.CreatedAt)
-            .ToListAsync();
+     
+        var reviews = await _reviewRepo.GetUserReviewsAsync(userId);
 
         return reviews.Select(r => new ReviewViewModel
         {

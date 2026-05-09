@@ -9,4 +9,6 @@ public interface IReviewRepository
     Task<bool> HasUserReviewedAsync(string userId, Guid productId);
 
     Task<IEnumerable<Review>> GetReviewsByProductIdAsync(Guid productId);
+
+    Task<IEnumerable<Review>> GetUserReviewsAsync(string userId);
 }
