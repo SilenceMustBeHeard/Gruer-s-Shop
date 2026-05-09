@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace GruersShop.Web.Areas.Admin.Controllers;
 
 [Area("Admin")]
-[Authorize(Roles = "Admin,Manager")]
+[Authorize(Roles = "Admin")]
 public class OrderManagementController : Controller
 {
     private readonly IOrderManagementService _orderManagementService;
