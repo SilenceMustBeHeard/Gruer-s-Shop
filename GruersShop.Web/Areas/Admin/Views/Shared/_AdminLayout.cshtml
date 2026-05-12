@@ -82,10 +82,7 @@
                             <span id="bakeryTime">--:--</span>
                         </div>
                         
-                        <!-- Theme Toggle Button -->
-                        <button class="theme-toggle" id="themeToggleBtn" title="Toggle theme">
-                            <i class="bi bi-moon-stars" id="themeIcon"></i>
-                        </button>
+                   
 
                         <!-- Account Dropdown with highest z-index -->
                         <div class="dropdown" id="accountDropdown">
@@ -240,35 +237,7 @@
             updateBakeryTime();
             setInterval(updateBakeryTime, 1000);
             
-            // Theme Toggle
-            const themeToggle = document.getElementById('themeToggleBtn');
-            const themeIcon = document.getElementById('themeIcon');
-            const htmlElement = document.documentElement;
-            
-            function setTheme(theme) {
-                htmlElement.setAttribute('data-bs-theme', theme);
-                localStorage.setItem('bakery-theme', theme);
-                if (theme === 'dark') {
-                    themeIcon.className = 'bi bi-moon-stars';
-                } else {
-                    themeIcon.className = 'bi bi-sun';
-                }
-            }
-            
-            const savedTheme = localStorage.getItem('bakery-theme') || 'dark';
-            setTheme(savedTheme);
-            
-            if (themeToggle) {
-                themeToggle.addEventListener('click', () => {
-                    const currentTheme = htmlElement.getAttribute('data-bs-theme');
-                    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-                    setTheme(newTheme);
-                    themeToggle.style.transform = 'scale(1.1)';
-                    setTimeout(() => {
-                        themeToggle.style.transform = 'scale(1)';
-                    }, 200);
-                });
-            }
+        
             
             // Create floating bakery items
             const bakeryItems = ['🍪', '🥐', '🍰', '🧁', '🥖', '🍞', '🥨', '🧀'];
