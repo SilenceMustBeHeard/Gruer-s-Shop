@@ -41,8 +41,4 @@
     <ProjectReference Include="..\GruersShop.Services.Core\GruersShop.Services.Core.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Admin\" />
-  </ItemGroup>
-
 </Project>
