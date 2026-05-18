@@ -46,6 +46,7 @@ public class SystemInboxClientService : ISystemInboxClientService
         {
             message.IsRead = true;
             await _messageRepository.UpdateAsync(message);
+            await _messageRepository.SaveChangesAsync();
         }
 
         return new SystemInboxMessageViewModel

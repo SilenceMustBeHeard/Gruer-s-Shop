@@ -68,7 +68,7 @@
                 <div class="d-flex gap-3 border-bottom pb-3 mb-4">
                     <button class="btn-warm-sm active-tab px-3 py-2" id="systemTabBtn">
                         <i class="bi bi-megaphone me-1"></i> News & Updates
-                        @if (Model.SystemInbox?.Count(x => !x.IsRead) > 0)
+                        @if (Model.SystemInbox.Count(x => !x.IsRead) > 0)
                         {
                             <span class="honey-badge ms-1">@Model.SystemInbox.Count(x => !x.IsRead)</span>
                         }

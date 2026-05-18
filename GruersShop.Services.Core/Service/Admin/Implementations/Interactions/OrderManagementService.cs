@@ -6,12 +6,9 @@ using GruersShop.Data.Repositories.Interfaces.Bakery;
 using GruersShop.Data.Repositories.Interfaces.Interactions;
 using GruersShop.Services.Core.Service.Admin.Interfaces.Message;
 using GruersShop.Services.Core.Service.Interfaces.Interactions;
-using GruersShop.Web.ViewModels.Interactions;
 using GruersShop.Web.ViewModels.Orders;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System.Net.NetworkInformation;
 
 namespace GruersShop.Services.Core.Service.Implementations.Interactions;
 
