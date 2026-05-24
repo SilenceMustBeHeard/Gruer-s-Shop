@@ -6,7 +6,7 @@
 }
 
 <div class="container py-5">
-    <!-- Welcome Banner - Like a warm greeting at the counter -->
+    <!-- Welcome Banner -->
     <div class="hero-oven text-center mb-5">
         <div class="d-flex align-items-center justify-content-center gap-3 mb-3">
             <i class="bi bi-cup-hot display-4"></i>
@@ -19,7 +19,7 @@
     </div>
 
     <div class="row g-5">
-        <!-- Recipe Card - User Info (Like a handwritten recipe card) -->
+        <!-- User Info -->
         <div class="col-lg-4">
             <div class="warm-card text-center p-4">
                 <div class="mb-4">
@@ -34,15 +34,15 @@
                 </div>
                 <h3 class="fw-bold">@Model.FirstName @Model.LastName</h3>
                 <div class="honey-accent mx-auto" style="width: 40px;"></div>
-                
-                <div class="mt-4 text-start">
+
+                <div class="mt-4 text-start" style="word-wrap: break-word; overflow-wrap: break-word;">
                     <div class="mb-3">
                         <small class="text-muted">Email</small>
-                        <p class="mb-0"><i class="bi bi-envelope me-2 text-warm"></i> @Model.Email</p>
+                        <p class="mb-0" style="word-wrap: break-word; overflow-wrap: break-word;"><i class="bi bi-envelope me-2 text-warm"></i> @Model.Email</p>
                     </div>
                     <div class="mb-3">
                         <small class="text-muted">Location</small>
-                        <p class="mb-0"><i class="bi bi-geo-alt me-2 text-warm"></i> @(string.IsNullOrEmpty(Model.Address) ? "Not shared yet" : Model.Address)</p>
+                        <p class="mb-0" style="word-wrap: break-word; overflow-wrap: break-word;"><i class="bi bi-geo-alt me-2 text-warm"></i> @(string.IsNullOrEmpty(Model.Address) ? "Not shared yet" : Model.Address)</p>
                     </div>
                     <div>
                         <small class="text-muted">Member since</small>
@@ -62,7 +62,7 @@
             </div>
         </div>
 
-        <!-- Letters Section - Like a tray of letters -->
+        <!-- Letters Section  -->
         <div class="col-lg-8">
             <div class="warm-card p-4">
                 <div class="d-flex gap-3 border-bottom pb-3 mb-4">
@@ -82,7 +82,7 @@
                     </button>
                 </div>
 
-                <!-- System Messages - Like community announcements -->
+                <!-- System Messages  -->
                 <div id="systemMessagesPanel">
                     @if (Model.SystemInbox == null || !Model.SystemInbox.Any())
                     {
@@ -112,7 +112,7 @@
                                                 <span class="honey-badge">Fresh</span>
                                             }
                                         </div>
-                                        <p class="mt-2 mb-0 small text-muted">@(message.Description.Length > 100 ? message.Description.Substring(0, 100) + "..." : message.Description)</p>
+                                        <p class="mt-2 mb-0 small text-muted" style="word-wrap: break-word; overflow-wrap: break-word;">@(message.Description.Length > 100 ? message.Description.Substring(0, 100) + "..." : message.Description)</p>
                                         <div class="mt-2">
                                             <span class="read-more-link">Read letter <i class="bi bi-arrow-right"></i></span>
                                         </div>
@@ -123,7 +123,7 @@
                     }
                 </div>
 
-                <!-- Contact Messages - Like letters from customers -->
+                <!-- Contact Messages -->
                 <div id="contactMessagesPanel" style="display: none;">
                     @if (Model.ContactMessages == null || !Model.ContactMessages.Any())
                     {
@@ -160,7 +160,7 @@
                                                 <span class="honey-badge">Waiting</span>
                                             }
                                         </div>
-                                        <p class="mt-2 mb-0 small text-muted">@(message.Message.Length > 100 ? message.Message.Substring(0, 100) + "..." : message.Message)</p>
+                                        <p class="mt-2 mb-0 small text-muted" style="word-wrap: break-word; overflow-wrap: break-word;">@(message.Message.Length > 100 ? message.Message.Substring(0, 100) + "..." : message.Message)</p>
                                         <div class="mt-2">
                                             <span class="read-more-link">Read letter <i class="bi bi-arrow-right"></i></span>
                                         </div>
@@ -182,7 +182,7 @@
         const contactTab = document.getElementById('contactTabBtn');
         const systemPanel = document.getElementById('systemMessagesPanel');
         const contactPanel = document.getElementById('contactMessagesPanel');
-        
+
         // System tab click handler
         systemTab.onclick = function() {
             systemTab.className = 'btn-warm-sm active-tab px-3 py-2';
@@ -190,7 +190,7 @@
             systemPanel.style.display = 'block';
             contactPanel.style.display = 'none';
         };
-        
+
         // Contact tab click handler
         contactTab.onclick = function() {
             contactTab.className = 'btn-warm-sm active-tab px-3 py-2';
@@ -198,7 +198,7 @@
             systemPanel.style.display = 'none';
             contactPanel.style.display = 'block';
         };
-        
+
         // Set initial state
         systemTab.className = 'btn-warm-sm active-tab px-3 py-2';
         contactTab.className = 'btn-stone-sm px-3 py-2';

@@ -91,7 +91,7 @@
 
 /* Response Card for Contact Messages */
 .response-card {
-    border-radius: 16px;
+    border-radius: 20px;
     background: var(--warm-light);
     border: 1px solid var(--stone-light);
     padding: 1rem;
