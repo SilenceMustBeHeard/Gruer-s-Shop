@@ -41,4 +41,13 @@ public class OrderRepository
             await _context.SaveChangesAsync();
         }
     }
+
+    public async Task<Order?> GetOrderWithDetailsAsync(Guid orderId)
+    {
+        return await _dbSet
+            .Include(o => o.User)
+            .Include(o => o.OrderItems)
+                .ThenInclude(oi => oi.Product)
+            .FirstOrDefaultAsync(o => o.Id == orderId);
+    }
 }
