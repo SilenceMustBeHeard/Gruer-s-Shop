@@ -52,6 +52,7 @@ public class OrderManagementService : IOrderManagementService
         return await _orderRepository
             .Query()
             .Include(o => o.User)
+
             .Include(o => o.OrderItems)
                 .ThenInclude(oi => oi.Product)
             .FirstOrDefaultAsync(o => o.Id == orderId);
@@ -59,7 +60,8 @@ public class OrderManagementService : IOrderManagementService
 
     public async Task<StockCheckResult> CheckStockAvailabilityAsync(Order order)
     {
-        var result = new StockCheckResult { IsAvailable = true };
+        var result = new StockCheckResult
+        { IsAvailable = true };
 
         foreach (var item in order.OrderItems)
         {
