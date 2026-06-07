@@ -8,7 +8,8 @@ using System.Text;
 
 namespace GruersShop.Data.Repositories.Implementations.Messages;
 
-public class SystemInboxMessageRepository : RepositoryAsync<SystemInboxMessage, Guid>, ISystemInboxMessageRepository
+public class SystemInboxMessageRepository 
+    : RepositoryAsync<SystemInboxMessage, Guid>, ISystemInboxMessageRepository
 {
     public SystemInboxMessageRepository(AppDbContext context) : base(context)
     {

@@ -6,18 +6,17 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace GruersShop.Data.Repositories.Implementations.Account
-{
-    public class AppUserRepository : RepositoryAsync<AppUser, string>, IAppUserRepository
-    {
-        public AppUserRepository(AppDbContext context) : base(context)
-        {
-        }
+namespace GruersShop.Data.Repositories.Implementations.Account;
 
-        // Add AppUser-specific methods here if needed, e.g.:
-        public async Task<AppUser?> GetByEmailAsync(string email)
-        {
-            return await _dbSet.FirstOrDefaultAsync(u => u.Email == email);
-        }
+public class AppUserRepository : RepositoryAsync<AppUser, string>, IAppUserRepository
+{
+    public AppUserRepository(AppDbContext context) : base(context)
+    {
+    }
+
+   
+    public async Task<AppUser?> GetByEmailAsync(string email)
+    {
+        return await _dbSet.FirstOrDefaultAsync(u => u.Email == email);
     }
 }

@@ -4,10 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace GruersShop.Data.Repositories.Interfaces.Messages
+namespace GruersShop.Data.Repositories.Interfaces.Messages;
+
+public interface ISystemInboxMessageRepository 
+    : IFullRepositoryAsync<SystemInboxMessage, Guid>
 {
-    public interface ISystemInboxMessageRepository : IFullRepositoryAsync<SystemInboxMessage, Guid>
-    {
-       
-    }
+   
 }

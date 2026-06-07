@@ -67,7 +67,7 @@ public class ContactMessageService : IContactMessageService
             .Include(m => m.Sender)
             .Include(m => m.Receiver)
             .Include(m => m.RespondedBy)
-            .FirstOrDefaultAsync(m => m.Id == messageId && m.ReceiverId == adminId);  // <- ТРЯБВА ДА Е ReceiverId
+            .FirstOrDefaultAsync(m => m.Id == messageId && m.ReceiverId == adminId); 
 
         if (message == null) return null;
 
