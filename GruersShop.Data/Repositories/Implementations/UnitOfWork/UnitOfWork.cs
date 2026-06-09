@@ -5,58 +5,57 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using System.Text;
 
-namespace GruersShop.Data.Repositories.Implementations.UnitOfWork
+namespace GruersShop.Data.Repositories.Implementations.UnitOfWork;
+
+public class UnitOfWork : IUnitOfWork
 {
-    public class UnitOfWork : IUnitOfWork
+    private readonly AppDbContext _context;
+    private readonly Dictionary<Type, object> _repositories;
+    private bool _disposed;
+
+    public UnitOfWork(AppDbContext context)
     {
-        private readonly AppDbContext _context;
-        private readonly Dictionary<Type, object> _repositories;
-        private bool _disposed;
+        _context = context;
+        _repositories = new Dictionary<Type, object>();
+    }
 
-        public UnitOfWork(AppDbContext context)
+    public IFullRepositoryAsync<TEntity, TKey> Repository<TEntity, TKey>() where TEntity : class
+    {
+        var type = typeof(TEntity);
+        if (!_repositories.ContainsKey(type))
         {
-            _context = context;
-            _repositories = new Dictionary<Type, object>();
+            _repositories[type] = new RepositoryAsync<TEntity, TKey>(_context);
         }
+        return (IFullRepositoryAsync<TEntity, TKey>)_repositories[type];
+    }
 
-        public IFullRepositoryAsync<TEntity, TKey> Repository<TEntity, TKey>() where TEntity : class
-        {
-            var type = typeof(TEntity);
-            if (!_repositories.ContainsKey(type))
-            {
-                _repositories[type] = new RepositoryAsync<TEntity, TKey>(_context);
-            }
-            return (IFullRepositoryAsync<TEntity, TKey>)_repositories[type];
-        }
+    public async Task BeginTransactionAsync()
+    {
+        await _context.Database.BeginTransactionAsync();
+    }
 
-        public async Task BeginTransactionAsync()
-        {
-            await _context.Database.BeginTransactionAsync();
-        }
+    public async Task<int> CommitAsync()
+    {
+        return await _context.SaveChangesAsync();
+    }
 
-        public async Task<int> CommitAsync()
-        {
-            return await _context.SaveChangesAsync();
-        }
+    public async Task RollbackAsync()
+    {
+        await _context.Database.RollbackTransactionAsync();
+    }
 
-        public async Task RollbackAsync()
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!_disposed && disposing)
         {
-            await _context.Database.RollbackTransactionAsync();
+            _context.Dispose();
         }
+        _disposed = true;
+    }
 
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!_disposed && disposing)
-            {
-                _context.Dispose();
-            }
-            _disposed = true;
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
+    public void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
     }
 }

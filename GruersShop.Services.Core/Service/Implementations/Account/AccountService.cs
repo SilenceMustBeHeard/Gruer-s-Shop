@@ -1,15 +1,9 @@
 ﻿using GruersShop.Data.Models.Base;
 using GruersShop.Services.Core.Service.Interfaces.Account;
-using GruersShop.Web.ViewModels.Account;
 using GruersShop.Web.ViewModels.Account.Profile;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.AspNetCore.Mvc.Razor;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
 
 namespace GruersShop.Services.Core.Service.Implementations.Account;
