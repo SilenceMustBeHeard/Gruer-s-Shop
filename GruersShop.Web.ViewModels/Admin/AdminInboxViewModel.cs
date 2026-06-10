@@ -2,11 +2,10 @@
 using GruersShop.Web.ViewModels.Admin.Message;
 using System.Collections.Generic;
 
-namespace GruersShop.Web.ViewModels.Admin
+namespace GruersShop.Web.ViewModels.Admin;
+
+public class AdminInboxViewModel
 {
-    public class AdminInboxViewModel
-    {
- 
-        public List<ContactMessageDetailsViewModel> ContactMessages { get; set; } = new();
-    }
+
+    public List<ContactMessageDetailsViewModel> ContactMessages { get; set; } = new();
 }
