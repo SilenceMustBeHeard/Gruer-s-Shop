@@ -2,7 +2,6 @@
 using GruersShop.Data.Models.Messages;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
-
 namespace GruersShop.Data.Models.Base;
 
 public class AppUser : IdentityUser
