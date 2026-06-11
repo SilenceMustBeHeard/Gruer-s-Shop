@@ -15,7 +15,7 @@ public class AppUser : IdentityUser
 
     [EmailAddress(ErrorMessage = "Invalid email address")]
     public string? AlternateEmail { get; set; }
-
+    public bool IsActive { get; set; } = true;
 
     // Navigation properties for messages
     public virtual ICollection<SystemInboxMessage> ReceivedSystemMessages { get; set; }
