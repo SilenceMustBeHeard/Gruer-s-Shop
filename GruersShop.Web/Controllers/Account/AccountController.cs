@@ -12,18 +12,15 @@ public class AccountController : Controller
 {
     private readonly IAccountService _accountService;
     private readonly UserManager<AppUser> _userManager;
-    private readonly SignInManager<AppUser> _signInManager;
     private readonly IEmailService _emailService;
 
     public AccountController(
         IAccountService accountService,
         UserManager<AppUser> userManager,
-        SignInManager<AppUser> signInManager,
         IEmailService emailService)
     {
         _accountService = accountService;
         _userManager = userManager;
-        _signInManager = signInManager;
         _emailService = emailService;
     }
 
@@ -36,68 +33,56 @@ public class AccountController : Controller
     {
         if (!ModelState.IsValid) return View(model);
 
-        var user = new AppUser
+        var result = await _accountService.RegisterAsync(model);
+
+        if (!result.Success)
         {
-            UserName = model.Email,
-            Email = model.Email,
-            FirstName = model.FirstName,
-            LastName = model.LastName
-        };
-
-        var result = await _userManager.CreateAsync(user, model.Password);
-
-        if (result.Succeeded)
-        {
-
-            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            var confirmationLink = Url.Action("ConfirmEmail", "Account",
-                new { userId = user.Id, token = token }, Request.Scheme);
-
-
-            await _emailService.SendEmailAsync(
-                user.Email,
-                "Confirm your email address",
-                $"Please confirm your email by clicking this link: <a href='{confirmationLink}'>Confirm</a>"
-            );
-
-
-            return RedirectToAction("RegistrationConfirmation");
+            foreach (var error in result.Errors)
+                ModelState.AddModelError("", error);
+            return View(model);
         }
 
-        foreach (var error in result.Errors)
-            ModelState.AddModelError("", error.Description);
+    
+        var user = await _userManager.FindByEmailAsync(model.Email);
 
-        return View(model);
-    }
+      
+        var (tokenSuccess, tokenError, token) = await _accountService.GenerateEmailConfirmationAsync(user!);
 
-    [HttpGet]
-    public IActionResult RegistrationConfirmation()
-    {
-        return View();
-    }
-    [HttpGet]
-    public async Task<IActionResult> ConfirmEmail(string userId, string token)
-    {
-        if (userId == null || token == null)
-            return BadRequest("Invalid confirmation link");
-
-        var user = await _userManager.FindByIdAsync(userId);
-        if (user == null)
-            return NotFound("User not found");
-
-        var result = await _userManager.ConfirmEmailAsync(user, token);
-
-        if (result.Succeeded)
+        if (!tokenSuccess)
         {
-            await _signInManager.SignInAsync(user, isPersistent: false);
-            TempData["Success"] = "Email confirmed successfully!";
+            TempData["Error"] = tokenError ?? "Failed to send confirmation email";
             return RedirectToAction("Index", "Home");
         }
 
-        TempData["Error"] = "Email confirmation failed";
-        return RedirectToAction("Index", "Home");
+        var confirmationLink = Url.Action("ConfirmEmail", "Account",
+            new { userId = user!.Id, token = token }, Request.Scheme);
+
+        await _emailService.SendEmailAsync(
+            user.Email!,
+            "Confirm your email address",
+            $"Please confirm your email by clicking this link: <a href='{confirmationLink}'>Confirm</a>"
+        );
+
+        return RedirectToAction("RegistrationConfirmation");
     }
 
+    [HttpGet]
+    public IActionResult RegistrationConfirmation() => View();
+
+    [HttpGet]
+    public async Task<IActionResult> ConfirmEmail(string userId, string token)
+    {
+        var result = await _accountService.ConfirmEmailAsync(userId, token);
+
+        if (!result.Success)
+        {
+            TempData["Error"] = result.Error;
+            return RedirectToAction("Index", "Home");
+        }
+
+        TempData["Success"] = "Email confirmed successfully!";
+        return RedirectToAction("Index", "Home");
+    }
     [HttpGet]
     public IActionResult Login() => View();
 
@@ -144,6 +129,8 @@ public class AccountController : Controller
             return View(model);
 
         var resetLink = Url.Action("ResetPassword", "Account", null, Request.Scheme);
+
+     
         await _accountService.ForgotPasswordAsync(model.Email, resetLink);
 
         TempData["Success"] = "If an account exists with this email, you will receive a password reset link.";
