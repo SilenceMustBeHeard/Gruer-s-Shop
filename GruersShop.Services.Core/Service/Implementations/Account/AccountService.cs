@@ -30,7 +30,6 @@ public class AccountService : IAccountService
         _logger = logger;
     }
 
-
     // Returns a tuple indicating success and any error messages
     // registers a new user, assigns them the "User" ( by default) role, and signs them in
     public async Task<(bool Success, string[] Errors)> RegisterAsync(RegisterViewModel model)
@@ -57,7 +56,6 @@ public class AccountService : IAccountService
         return (false, result.Errors.Select(e => e.Description).ToArray());
     }
 
-
     // Attempts to sign in a user with the provided credentials and returns whether the login was successful
     public async Task<bool> LoginAsync(LoginViewModel model)
     {
@@ -72,10 +70,9 @@ public class AccountService : IAccountService
         await _signInManager.SignOutAsync();
     }
 
-
     // Handles the forgot password process by generating a reset token
     // creating a reset link, rendering an email template, and sending the email to the user
-    // 
+    //
     public async Task<bool> ForgotPasswordAsync(string email, string resetLink)
     {
         var user = await _userManager.FindByEmailAsync(email);
@@ -84,7 +81,6 @@ public class AccountService : IAccountService
         var token = await _userManager.GeneratePasswordResetTokenAsync(user);
         var fullResetLink = $"{resetLink}?token={Uri.EscapeDataString(token)}&email={Uri.EscapeDataString(email)}";
 
-
         var viewData = new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary());
         viewData["ResetLink"] = fullResetLink;
 
@@ -92,7 +88,6 @@ public class AccountService : IAccountService
 
         return await _emailService.SendEmailAsync(email, "Password Reset Request", emailBody);
     }
-
 
     // Resets the user's password using the provided token and new password,
     // returning success status and any error messages
@@ -114,5 +109,45 @@ public class AccountService : IAccountService
         }
 
         return (false, result.Errors.Select(e => e.Description).ToArray());
+    }
+
+    public async Task<(bool Success, string? Error, string? ConfirmationLink)> GenerateEmailConfirmationAsync(AppUser user)
+    {
+        try
+        {
+            var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            return (true, null, token);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to generate email confirmation token for user {UserId}", user.Id);
+            return (false, "Failed to generate confirmation token", null);
+        }
+    }
+
+    // Confirms the user's email using the provided user ID and token,
+    // returning success status, any error messages, and the user object if successful
+    public async Task<(bool Success, string? Error, AppUser? User)> ConfirmEmailAsync(string userId, string token)
+    {
+        if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(token))
+            return (false, "Invalid confirmation link", null);
+
+        var user = await _userManager.FindByIdAsync(userId);
+        if (user == null)
+            return (false, "User not found", null);
+
+        var result = await _userManager.ConfirmEmailAsync(user, token);
+
+        if (result.Succeeded)
+        {
+            // Optionally sign in the user after confirming their email
+            await _signInManager.SignInAsync(user, isPersistent: false);
+            _logger.LogInformation("Email confirmed for user {UserId}", userId);
+            return (true, null, user);
+        }
+
+        var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+        _logger.LogWarning("Email confirmation failed for user {UserId}: {Errors}", userId, errors);
+        return (false, "Email confirmation failed", null);
     }
 }
