@@ -132,6 +132,11 @@ public class AccountController : Controller
 
      
         await _accountService.ForgotPasswordAsync(model.Email, resetLink);
+        if (resetLink == null)
+        {
+            TempData["Error"] = "Failed to generate reset link.";
+            return RedirectToAction(nameof(ForgotPassword));
+        }
 
         TempData["Success"] = "If an account exists with this email, you will receive a password reset link.";
         return RedirectToAction(nameof(ForgotPasswordConfirmation));
