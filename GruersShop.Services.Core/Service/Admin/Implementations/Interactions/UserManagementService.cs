@@ -3,10 +3,6 @@ using GruersShop.Services.Core.Service.Admin.Interfaces.Interactions;
 using GruersShop.Web.ViewModels.Admin;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace GruersShop.Services.Core.Service.Admin.Implementations.Interactions;
 
@@ -41,12 +37,10 @@ public class UserManagementService : IUserManagementService
                 Roles = roles,
                 LockoutEnd = user.LockoutEnd
             });
-
         }
 
         return result;
     }
-
 
     // Change user role (starts from "User")
     public async Task<(bool Failed, string ErrorMessage)> ChangeUserRoleAsync(

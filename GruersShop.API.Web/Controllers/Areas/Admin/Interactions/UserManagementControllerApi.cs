@@ -27,7 +27,6 @@ public class UserManagementControllerApi : ControllerBase
     [HttpGet("users")]
     public async Task<IActionResult> GetUsers()
     {
-       
         var currentUserId = GetCurrentUserId();
         if (currentUserId == null)
         {
@@ -82,7 +81,6 @@ public class UserManagementControllerApi : ControllerBase
     [HttpPost("disable/{userId}")]
     public async Task<IActionResult> DisableUser(string userId)
     {
-       
         if (string.IsNullOrEmpty(userId))
         {
             return BadRequest(new { error = "User ID is required" });

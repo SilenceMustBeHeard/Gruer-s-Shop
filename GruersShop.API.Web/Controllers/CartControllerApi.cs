@@ -1,6 +1,5 @@
 ﻿using GruersShop.Services.Core.Service.Interfaces.Interactions;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -14,7 +13,7 @@ public class CartControllerApi : ControllerBase
     private readonly ICartService _cartService;
     private readonly IOrderService _orderService;
 
-    public CartControllerApi(ICartService cartService, 
+    public CartControllerApi(ICartService cartService,
         IOrderService orderService)
     {
         _cartService = cartService;
@@ -29,11 +28,10 @@ public class CartControllerApi : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> AddToCart(Guid id,[FromQuery] int quantity = 1)
+    public async Task<IActionResult> AddToCart(Guid id, [FromQuery] int quantity = 1)
     {
         await _cartService.AddToCartAsync(id, quantity);
         return Ok(new { success = "Product added to cart!" });
-      
     }
 
     [HttpPut("update")]
@@ -48,7 +46,6 @@ public class CartControllerApi : ControllerBase
     {
         await _cartService.RemoveFromCartAsync(productId);
         return Ok(new { success = "Product removed from cart!" });
-       
     }
 
     [HttpGet("checkout")]
@@ -57,25 +54,22 @@ public class CartControllerApi : ControllerBase
         var cart = _cartService.GetCart();
         if (!cart.Items.Any())
         {
-          
             return BadRequest(new { error = "Your cart is empty" });
         }
-       return Ok(cart);
+        return Ok(cart);
     }
 
     [HttpPost("checkout")]
-
     public async Task<IActionResult> PostCheckout([FromBody] CheckoutRequest request)
     {
         var cart = _cartService.GetCart();
         if (!cart.Items.Any())
         {
-
             return BadRequest(new { error = "Your cart is empty" });
         }
 
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier)!;
-        if(userId == null)
+        if (userId == null)
         {
             return Unauthorized(new { error = "User not authenticated" });
         }
@@ -103,7 +97,6 @@ public class CartControllerApi : ControllerBase
             return BadRequest(new { error = ex.Message });
         }
     }
-
 
     public class UpdateCartRequest
     {

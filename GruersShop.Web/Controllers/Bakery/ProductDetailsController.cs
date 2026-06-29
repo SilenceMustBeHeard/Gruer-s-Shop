@@ -1,5 +1,4 @@
 ﻿using GruersShop.Services.Core.Service.Interfaces.Bakery;
-using GruersShop.Web.ViewModels.Products;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;

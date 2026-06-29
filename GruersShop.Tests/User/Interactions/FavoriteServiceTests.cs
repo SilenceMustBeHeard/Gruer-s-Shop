@@ -4,11 +4,10 @@ using GruersShop.Data.Models.Products;
 using GruersShop.Data.Repositories.Interfaces.Bakery;
 using GruersShop.Data.Repositories.Interfaces.Interactions;
 using GruersShop.Services.Core.Service.Implementations.Interactions;
-using GruersShop.Services.Core.Service.Interfaces.Interactions;
+using MockQueryable.Moq;
 using Moq;
 using NUnit.Framework;
 using Assert = NUnit.Framework.Assert;
-using MockQueryable.Moq;
 
 namespace GruersShop.Unit.Tests.Services.User.Interactions;
 
@@ -18,7 +17,6 @@ public class FavoriteServiceTests
     private Mock<IFavoriteRepository> _favoriteRepoMock;
     private Mock<IProductRepository> _productRepoMock;
     private FavoriteService _favoriteService;
-
 
     private string _testUserId;
     private string _otherUserId;
@@ -30,8 +28,6 @@ public class FavoriteServiceTests
     private List<Favorite> _testFavorites;
     private List<Product> _testProducts;
 
-
-
     [SetUp]
     public void SetUp()
     {
@@ -41,7 +37,6 @@ public class FavoriteServiceTests
         SeedTestData();
     }
 
-
     private void SeedTestData()
     {
         _testUserId = "test-user-123";
@@ -49,7 +44,6 @@ public class FavoriteServiceTests
         _testProductId = Guid.NewGuid();
         _otherProductId = Guid.NewGuid();
 
-   
         var testCategory = new Category
         {
             Id = Guid.NewGuid(),
@@ -69,9 +63,9 @@ public class FavoriteServiceTests
             IsDeleted = false,
             IsAvailable = true,
             CategoryId = testCategory.Id,
-            Category = testCategory,           
+            Category = testCategory,
             AverageRating = 4.5,
-            Reviews = new List<Review>()      
+            Reviews = new List<Review>()
         };
 
         _existingFavorite = new Favorite()
@@ -81,7 +75,7 @@ public class FavoriteServiceTests
             ProductId = _testProductId,
             CreatedAt = DateTime.UtcNow.AddDays(-1),
             IsDeleted = false,
-            Product = _testProduct            
+            Product = _testProduct
         };
 
         _otherUserFavorite = new Favorite
@@ -98,14 +92,11 @@ public class FavoriteServiceTests
         _testProducts = new List<Product> { _testProduct };
     }
 
-
     #region ToggleFavoriteAsync Tests
-
 
     [Test]
     public async Task ToggleFavoriteAsync_ShouldAddFavorite_WhenNotExisting()
     {
-
         _favoriteRepoMock.Setup(r => r.GetByCompositeKeyAsync(_testUserId, _testProductId))
             .ReturnsAsync((Favorite?)null);
 
@@ -115,9 +106,7 @@ public class FavoriteServiceTests
         _favoriteRepoMock.Setup(r => r.SaveChangesAsync())
             .Returns(Task.CompletedTask);
 
-
         var result = await _favoriteService.ToggleFavoriteAsync(_testUserId, _testProductId);
-
 
         Assert.IsTrue(result);
 
@@ -139,7 +128,6 @@ public class FavoriteServiceTests
         _favoriteRepoMock.Setup(r => r.SaveChangesAsync())
             .Returns(Task.CompletedTask);
 
-
         var result = await _favoriteService.ToggleFavoriteAsync(_testUserId, _testProductId);
 
         Assert.IsFalse(result);
@@ -150,57 +138,31 @@ public class FavoriteServiceTests
             f.ProductId == _testProductId &&
             f.IsDeleted)), Times.Once);
         _favoriteRepoMock.Verify(r => r.SaveChangesAsync(), Times.Once);
-
-
-
-
-
-
     }
 
-    #endregion
-
+    #endregion ToggleFavoriteAsync Tests
 
     #region GetUserFavoritesAsync Tests
 
+    [Test]
+    public async Task GetUserFavoritesAsync_ShouldReturnFavorites_ForUser()
+    {
+        var mockDbSet = _testFavorites.BuildMockDbSet();
 
-  
+        _favoriteRepoMock.Setup(r => r.Query())
+            .Returns(mockDbSet.Object);
 
+        var result = await _favoriteService.GetUserFavoritesAsync(_testUserId);
+        var favoritesList = result.ToList();
 
-
-
-
-[Test]
-public async Task GetUserFavoritesAsync_ShouldReturnFavorites_ForUser()
-{
-
-    var mockDbSet = _testFavorites.BuildMockDbSet();
-
-    _favoriteRepoMock.Setup(r => r.Query())
-        .Returns(mockDbSet.Object);
-
-
-    var result = await _favoriteService.GetUserFavoritesAsync(_testUserId);
-    var favoritesList = result.ToList();
-
- 
-    Assert.That(result, Is.Not.Null);
-    Assert.That(favoritesList.Count, Is.EqualTo(1));
-    Assert.That(favoritesList[0].Id, Is.EqualTo(_testProductId));
-    Assert.That(favoritesList[0].Name, Is.EqualTo("Test Product"));
-    Assert.That(favoritesList[0].CategoryName, Is.EqualTo("Test Category"));
-}
-
-
-
-
-
-
-
-
+        Assert.That(result, Is.Not.Null);
+        Assert.That(favoritesList.Count, Is.EqualTo(1));
+        Assert.That(favoritesList[0].Id, Is.EqualTo(_testProductId));
+        Assert.That(favoritesList[0].Name, Is.EqualTo("Test Product"));
+        Assert.That(favoritesList[0].CategoryName, Is.EqualTo("Test Category"));
+    }
 
     [Test]
-
 
     public async Task GetUserFavoritesAsync_ShouldReturnEmpty_WhenNoFavorites()
     {
@@ -214,14 +176,11 @@ public async Task GetUserFavoritesAsync_ShouldReturnFavorites_ForUser()
         Assert.That(favoritesList, Is.Empty);
     }
 
-    #endregion
+    #endregion GetUserFavoritesAsync Tests
 
     #region IsFavoriteAsync Tests
 
-
-
     [Test]
-
     public async Task IsFavoriteAsync_ShouldReturnTrue_WhenFavoriteExists()
     {
         _favoriteRepoMock.Setup(r => r.ExistsAsync(_testUserId, _testProductId))
@@ -237,40 +196,7 @@ public async Task GetUserFavoritesAsync_ShouldReturnFavorites_ForUser()
             .ReturnsAsync(false);
         var result = await _favoriteService.IsFavoriteAsync(_testUserId, _testProductId);
         Assert.IsFalse(result);
-    } 
-    
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-    #endregion
-
-
-
-
-
-
-
-
-
-
-
-
+    #endregion IsFavoriteAsync Tests
 }
-
-
-
-
-
-
-

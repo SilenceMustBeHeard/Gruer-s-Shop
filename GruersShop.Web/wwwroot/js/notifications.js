@@ -33,7 +33,7 @@ $(document).ready(function () {
 
         // Show toast
         $('.order-toast').remove();
-       
+
         const toast = `
     <div class="order-toast position-fixed bottom-0 end-0 p-3" style="z-index: 9999">
         <div class="toast show" role="alert" style="background: linear-gradient(135deg, #2a1f1a 0%, #1a1410 100%); border-left: 4px solid #ff6b35; border-radius: 12px;">

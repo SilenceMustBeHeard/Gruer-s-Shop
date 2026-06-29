@@ -1,7 +1,5 @@
 ﻿using GruersShop.Data.Models.Base;
 using GruersShop.Services.Common;
-using GruersShop.Services.Core.Service.Interfaces.Account;
-using GruersShop.Services.Core.Service.Interfaces.Interactions;
 using GruersShop.Services.Core.Service.Interfaces.Messages;
 using GruersShop.Web.ViewModels.Account.Profile;
 using Microsoft.AspNetCore.Identity;

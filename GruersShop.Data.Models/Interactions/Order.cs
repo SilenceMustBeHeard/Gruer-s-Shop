@@ -1,14 +1,14 @@
-﻿using GruersShop.Data.Models.Base;
+﻿using GruersShop.Data.Common.Enums;
+using GruersShop.Data.Models.Base;
 using System.ComponentModel.DataAnnotations;
-using GruersShop.Data.Common.Enums;
 
 namespace GruersShop.Data.Models.Interactions;
-
 
 public class Order : BaseDeletableEntity
 {
     [Required]
     public string UserId { get; set; } = null!;
+
     public virtual AppUser User { get; set; } = null!;
 
     public DateTime? OrderDate { get; set; } = DateTime.UtcNow;

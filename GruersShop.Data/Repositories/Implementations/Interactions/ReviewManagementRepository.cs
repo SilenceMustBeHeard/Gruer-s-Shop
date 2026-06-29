@@ -1,9 +1,6 @@
 ﻿using GruersShop.Data.Models.Interactions;
 using GruersShop.Data.Repositories.Interfaces.Interactions;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace GruersShop.Data.Repositories.Implementations.Interactions;
 

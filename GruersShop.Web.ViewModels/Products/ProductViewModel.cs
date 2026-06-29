@@ -1,7 +1,4 @@
 ﻿using GruersShop.Web.ViewModels.Interactions;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace GruersShop.Web.ViewModels.Products;
 

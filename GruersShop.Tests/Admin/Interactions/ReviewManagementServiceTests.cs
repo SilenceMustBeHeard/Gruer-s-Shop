@@ -736,16 +736,10 @@ public class ReviewManagementServiceTests
 
     #endregion GetReviewsByUserIdAsync Tests
 
-
-
-
-
-
     #region GetDetailedReviewsByProductIdAsync Tests
 
-
     [Test]
-public async Task GetDetailedReviewsByProductIdAsync_ShouldReturnDetailedReviews_WhenReviewsExist()
+    public async Task GetDetailedReviewsByProductIdAsync_ShouldReturnDetailedReviews_WhenReviewsExist()
     {
         var reviews = new List<Review> { _existingReview, _otherUserReview };
 
@@ -760,9 +754,6 @@ public async Task GetDetailedReviewsByProductIdAsync_ShouldReturnDetailedReviews
         Assert.IsNotNull(result);
         Assert.AreEqual(2, result.Count());
         Assert.That(_testProduct.Reviews, Has.All.Matches<Review>(r => r.ProductId == _testProductId));
-     
-
-
     }
 
     [Test]
@@ -779,16 +770,15 @@ public async Task GetDetailedReviewsByProductIdAsync_ShouldReturnDetailedReviews
     [Test]
     public async Task GetDetailedReviewsByProductIdAsync_ShouldReturnEmpty_WhenNoReviewsForProductExist()
     {
-        var otherProductReviews = new List<Review> ();
+        var otherProductReviews = new List<Review>();
         var mockDbSet = otherProductReviews.BuildMockDbSet();
         _reviewRepoMock.Setup(x => x.Query()).Returns(mockDbSet.Object);
         var result = await _reviewService.GetDetailedReviewsByProductIdAsync(_testProductId);
         Assert.IsNotNull(result);
         Assert.AreEqual(0, result.Count());
     }
-    #endregion
 
-
+    #endregion GetDetailedReviewsByProductIdAsync Tests
 
     #region GetAverageRatingForProductAsync Tests
 
@@ -803,8 +793,6 @@ public async Task GetDetailedReviewsByProductIdAsync_ShouldReturnDetailedReviews
         Assert.AreEqual(4.5, result, 0.1);
     }
 
-
-
     [Test]
     public async Task GetAverageRatingForProductAsync_ShouldReturnZero_WhenNoReviewsExist()
     {
@@ -816,14 +804,9 @@ public async Task GetDetailedReviewsByProductIdAsync_ShouldReturnDetailedReviews
         Assert.AreEqual(0.0, result, 0.0);
     }
 
-
-    #endregion
-
+    #endregion GetAverageRatingForProductAsync Tests
 
     #region GetReviewCountForProductAsync Tests
-
-
-
 
     [Test]
     public async Task GetReviewCountForProductAsync_ShouldReturnCorrectCount_WhenReviewsExist()
@@ -836,7 +819,6 @@ public async Task GetDetailedReviewsByProductIdAsync_ShouldReturnDetailedReviews
         Assert.AreEqual(2, result);
     }
 
-
     [Test]
     public async Task GetReviewCountForProductAsync_ShouldReturnZero_WhenNoReviewsExist()
     {
@@ -848,5 +830,5 @@ public async Task GetDetailedReviewsByProductIdAsync_ShouldReturnDetailedReviews
         Assert.AreEqual(0, result);
     }
 
-    #endregion
+    #endregion GetReviewCountForProductAsync Tests
 }

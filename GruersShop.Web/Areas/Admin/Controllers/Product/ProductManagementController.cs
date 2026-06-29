@@ -1,11 +1,9 @@
 ﻿using GruersShop.Services.Core.Service.Admin.Interfaces.Catalog;
 using GruersShop.Services.Core.Service.Admin.Interfaces.Product;
-using GruersShop.Services.Core.Service.Interfaces.Bakery;
 using GruersShop.Web.ViewModels.Admin.Category;
 using GruersShop.Web.ViewModels.Admin.Products;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Security.Claims;
 
 namespace GruersShop.Web.Areas.Admin.Controllers.Product;

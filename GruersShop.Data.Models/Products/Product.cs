@@ -41,6 +41,6 @@ public class Product : BaseDeletableEntity
     public virtual ICollection<Review> Reviews { get; set; }
         = new HashSet<Review>();
 
-    public virtual ICollection<OrderItem> OrderItems { get; set; } 
+    public virtual ICollection<OrderItem> OrderItems { get; set; }
         = new HashSet<OrderItem>();
 }

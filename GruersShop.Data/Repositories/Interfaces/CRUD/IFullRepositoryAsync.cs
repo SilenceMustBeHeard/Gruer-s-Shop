@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace GruersShop.Data.Repositories.Interfaces.CRUD;
-
+﻿namespace GruersShop.Data.Repositories.Interfaces.CRUD;
 
 //  combines all the CRUD operations into a single interface for convenience
 public interface IFullRepositoryAsync<TEntity, TKey> :
@@ -16,5 +11,4 @@ public interface IFullRepositoryAsync<TEntity, TKey> :
   IFindRepository<TEntity, TKey>
   where TEntity : class
 {
-    
 }

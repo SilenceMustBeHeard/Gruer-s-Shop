@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace GruersShop.Web.ViewModels.Account.Profile;
 
@@ -11,16 +8,17 @@ public class RegisterViewModel
     [EmailAddress(ErrorMessage = "Invalid email address.")]
     public string Email { get; set; } = null!;
 
-
     [RegularExpression(@"^[a-zA-Z0-9\s\-]+$", ErrorMessage = "First name can only contain letters, numbers, spaces, and hyphens.")]
     public string? FirstName { get; set; }    // Personalization Purposes
+
     [RegularExpression(@"^[a-zA-Z0-9\s\-]+$", ErrorMessage = "Last name can only contain letters, numbers, spaces, and hyphens.")]
     public string? LastName { get; set; }     // by choice
+
     [RegularExpression(@"^[a-zA-Z0-9\s\-]+$", ErrorMessage = "Address can only contain letters, numbers, spaces, and hyphens.")]
     public string? Address { get; set; }     // by choice
 
     [EmailAddress(ErrorMessage = "Invalid email address.")]
-    public string? AlternateEmail { get; set; }  
+    public string? AlternateEmail { get; set; }
 
     [Required]
     [DataType(DataType.Password)]

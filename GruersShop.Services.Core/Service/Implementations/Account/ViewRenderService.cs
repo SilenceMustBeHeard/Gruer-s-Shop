@@ -7,15 +7,12 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Routing;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace GruersShop.Services.Core.Service.Implementations.Account;
 
-     //This service is used to render Razor views to strings
-    // which can be useful for generating email content or other dynamic HTML content.
-    public class ViewRenderService : IViewRenderService
+//This service is used to render Razor views to strings
+// which can be useful for generating email content or other dynamic HTML content.
+public class ViewRenderService : IViewRenderService
 {
     private readonly IRazorViewEngine _razorViewEngine;
     private readonly ITempDataProvider _tempDataProvider;
@@ -31,10 +28,8 @@ namespace GruersShop.Services.Core.Service.Implementations.Account;
         _serviceProvider = serviceProvider;
     }
 
-
     public async Task<string> RenderToStringAsync(string viewName, object model, ViewDataDictionary? viewData = null)
     {
-
         // Create a fake ActionContext to render the view outside of a controller
         var httpContext = new DefaultHttpContext { RequestServices = _serviceProvider };
 
@@ -42,7 +37,6 @@ namespace GruersShop.Services.Core.Service.Implementations.Account;
         var actionContext = new ActionContext(httpContext, new RouteData(), new ActionDescriptor());
 
         using var stringWriter = new StringWriter();
-
 
         // Find the view using the Razor view engine
         var viewResult = _razorViewEngine.FindView(actionContext, viewName, false);
@@ -52,11 +46,9 @@ namespace GruersShop.Services.Core.Service.Implementations.Account;
             throw new ArgumentNullException($"{viewName} view not found.");
         }
 
-
         // Create a ViewDataDictionary to pass the model and any additional data to the view
         var viewDictionary = viewData ?? new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary());
         viewDictionary.Model = model;
-
 
         // Create a TempDataDictionary to pass temporary data to the view
         var tempData = new TempDataDictionary(httpContext, _tempDataProvider);

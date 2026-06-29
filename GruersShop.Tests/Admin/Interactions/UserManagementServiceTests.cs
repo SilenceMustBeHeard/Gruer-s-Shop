@@ -5,9 +5,6 @@ using Microsoft.AspNetCore.Identity;
 using MockQueryable.Moq;
 using Moq;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Assert = NUnit.Framework.Assert;
 
 namespace GruersShop.Unit.Tests.Services.Admin.Interactions;

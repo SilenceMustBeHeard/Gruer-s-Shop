@@ -1,7 +1,6 @@
 ﻿using GruersShop.Data.Models.Base;
 using GruersShop.Services.Core.Service.Implementations.Account;
 using GruersShop.Services.Core.Service.Interfaces.Account;
-using GruersShop.Web.ViewModels.Account;
 using GruersShop.Web.ViewModels.Account.Profile;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -147,7 +146,7 @@ public class AccountServiceTests
         _userManagerMock.Verify(x => x.AddToRoleAsync(It.IsAny<AppUser>(), "User"), Times.Never);
     }
 
-    #endregion
+    #endregion RegisterAsync Tests
 
     #region LoginAsync Tests
 
@@ -189,7 +188,7 @@ public class AccountServiceTests
         Assert.That(result, Is.False);
     }
 
-    #endregion
+    #endregion LoginAsync Tests
 
     #region LogoutAsync Tests
 
@@ -204,7 +203,7 @@ public class AccountServiceTests
         _signInManagerMock.Verify(x => x.SignOutAsync(), Times.Once);
     }
 
-    #endregion
+    #endregion LogoutAsync Tests
 
     #region ForgotPasswordAsync Tests
 
@@ -251,7 +250,7 @@ public class AccountServiceTests
         _emailServiceMock.Verify(x => x.SendEmailAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()), Times.Never);
     }
 
-    #endregion
+    #endregion ForgotPasswordAsync Tests
 
     #region ResetPasswordAsync Tests
 
@@ -323,5 +322,5 @@ public class AccountServiceTests
         Assert.That(errors[0], Is.EqualTo("User not found."));
     }
 
-    #endregion
+    #endregion ResetPasswordAsync Tests
 }

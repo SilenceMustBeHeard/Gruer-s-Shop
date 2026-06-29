@@ -1,6 +1,5 @@
 ﻿using GruersShop.Services.Core.Service.Interfaces.Account;
 using GruersShop.Web.ViewModels.Account.Profile;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GruersShop.API.Web.Controllers.Areas.User.Account;

@@ -134,7 +134,6 @@ public class SystemMessageControllerApi : ControllerBase
             return NotFound(new { error = "Message not found or you don't have permission to view it." });
         }
 
-     
         var sender = await _userManager.FindByIdAsync(message.SenderId ?? "");
         var receiver = await _userManager.FindByIdAsync(message.ReceiverId ?? "");
 
@@ -149,7 +148,7 @@ public class SystemMessageControllerApi : ControllerBase
     {
         var users = await _userRepository
             .Query()
-          //  .Where(u => !u.IsDeleted)
+            //  .Where(u => !u.IsDeleted)
             .Select(u => new UserSelectViewModel
             {
                 Id = u.Id,

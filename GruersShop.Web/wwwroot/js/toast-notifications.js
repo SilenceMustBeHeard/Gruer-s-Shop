@@ -1,5 +1,4 @@
-﻿
-$(document).ready(function () {
+﻿$(document).ready(function () {
     function showToast(title, message, type = 'success') {
         //if toast container doesn't exist, create it
         let toastContainer = $('.toast-container');
@@ -54,7 +53,7 @@ $(document).ready(function () {
 
     if (success && success !== '' && success !== 'null') {
         showToast('🍞 Success!', success, 'success');
-        $('#tempDataSuccess').val(''); 
+        $('#tempDataSuccess').val('');
     }
     if (error && error !== '' && error !== 'null') {
         showToast('❌ Error!', error, 'error');

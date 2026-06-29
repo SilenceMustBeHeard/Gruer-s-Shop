@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace GruersShop.API.Web.Controllers.Areas.User.Account;
 
@@ -7,7 +6,6 @@ namespace GruersShop.API.Web.Controllers.Areas.User.Account;
 [ApiController]
 public class ErrorControllerApi : ControllerBase
 {
-
     [HttpGet("{statusCode}")]
     public IActionResult Index(int statusCode)
     {
@@ -21,7 +19,6 @@ public class ErrorControllerApi : ControllerBase
             _ => StatusCode(500, new { error = "Internal Server Error", statusCode = 500 })
         };
     }
-
 
     public static IActionResult ReturnError(int statusCode, string message)
     {

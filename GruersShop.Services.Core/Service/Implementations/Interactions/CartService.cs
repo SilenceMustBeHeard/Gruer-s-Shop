@@ -101,7 +101,7 @@ public class CartService : ICartService
 
     public async Task ClearCartAsync()
     {
-         await Task.Run(() => Session.Remove(CartSessionKey));
+        await Task.Run(() => Session.Remove(CartSessionKey));
         _cart = null;
     }
 

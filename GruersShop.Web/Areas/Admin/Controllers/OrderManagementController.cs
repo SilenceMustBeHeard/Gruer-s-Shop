@@ -1,6 +1,5 @@
 ﻿using GruersShop.Data.Common.Enums;
 using GruersShop.Services.Core.Service.Interfaces.Interactions;
-using GruersShop.Web.ViewModels.Interactions;
 using GruersShop.Web.ViewModels.Orders;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -64,22 +63,13 @@ public class OrderManagementController : Controller
         return RedirectToAction(nameof(Details), new { id });
     }
 
-
-
-  
-
-
-
     [HttpPost]
     [ValidateAntiForgeryToken]
-   
     public async Task<IActionResult> ToggleActive(Guid orderId)
     {
         try
         {
-
             await _orderManagementService.ToggleOrderAsync(orderId);
-
 
             var order = await _orderManagementService.GetByIdAsync(orderId);
 
@@ -87,7 +77,7 @@ public class OrderManagementController : Controller
             {
                 TempData["Success"] = order.IsDeleted
                     ? "🔒 Order has been hidden from customers!"
-                    : "✨ Order is now visible to customers!";   
+                    : "✨ Order is now visible to customers!";
             }
             else
             {
@@ -101,11 +91,4 @@ public class OrderManagementController : Controller
 
         return RedirectToAction("Index");
     }
-
-
-
-
-
-
-
 }

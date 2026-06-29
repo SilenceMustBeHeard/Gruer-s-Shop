@@ -34,7 +34,6 @@ public class ContactMessageControllerApi : ControllerBase
 
         var messages = await _contactMessageService.GetAdminMessagesAsync(adminId);
 
-      
         return Ok(messages ?? new List<ContactMessageDetailsViewModel>());
     }
 
@@ -88,7 +87,7 @@ public class ContactMessageControllerApi : ControllerBase
         {
             Id = message.Id,
             Subject = message.Subject,
-            SenderName = message.SenderName,        
+            SenderName = message.SenderName,
             SenderEmail = message.SenderEmail,
             OriginalMessage = message.Message,
             Response = string.Empty
@@ -131,7 +130,6 @@ public class ContactMessageControllerApi : ControllerBase
 
         var unreadCount = await _contactMessageService.GetUnreadCountAsync(adminId);
 
-        
         return Ok(new { unreadCount });
     }
 
@@ -140,7 +138,6 @@ public class ContactMessageControllerApi : ControllerBase
     {
         var adminId = _userManager.GetUserId(User);
 
-       
         if (string.IsNullOrEmpty(adminId))
         {
             return Unauthorized(new { message = "You must be logged in." });

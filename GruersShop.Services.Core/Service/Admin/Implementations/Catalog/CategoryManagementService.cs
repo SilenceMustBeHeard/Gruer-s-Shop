@@ -1,22 +1,16 @@
 ﻿using GruersShop.Data.Models.Catalog;
 using GruersShop.Data.Repositories.Interfaces.Bakery;
 using GruersShop.Services.Core.Service.Admin.Interfaces.Catalog;
-using GruersShop.Services.Core.Service.Interfaces.Bakery;
 using GruersShop.Web.ViewModels.Admin.Category;
 using GruersShop.Web.ViewModels.Bakery;
 using GruersShop.Web.ViewModels.Interactions;
 using GruersShop.Web.ViewModels.Products;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace GruersShop.Services.Core.Service.Admin.Implementations.Catalog;
 
 public class CategoryManagementService : ICategoryManagementService
 {
-
     private readonly ICategoryRepository _categoryRepository;
-
 
     public CategoryManagementService(ICategoryRepository categoryRepository)
     {
@@ -25,7 +19,6 @@ public class CategoryManagementService : ICategoryManagementService
 
     public async Task AddCategoryAsync(CategoryViewModelCreate model)
     {
-        
         var defaultCatalog = await _categoryRepository.GetDefaultCatalogAsync();
 
         var category = new Category
@@ -36,7 +29,7 @@ public class CategoryManagementService : ICategoryManagementService
             IsDeleted = false,
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow,
-            CatalogId = defaultCatalog.Id, 
+            CatalogId = defaultCatalog.Id,
             DisplayOrder = 0
         };
 
@@ -53,7 +46,6 @@ public class CategoryManagementService : ICategoryManagementService
         category.Description = model.Description;
         category.IsDeleted = model.IsDeleted;
         category.UpdatedAt = DateTime.UtcNow;
-      
 
         await _categoryRepository.UpdateAsync(category);
         await _categoryRepository.SaveChangesAsync();
@@ -111,7 +103,6 @@ public class CategoryManagementService : ICategoryManagementService
 
     public async Task<CategoryNavViewModel?> GetCategoryByIdAsync(Guid id)
     {
-
         var category = await _categoryRepository.GetByIdAsync(id);
         if (category == null)
             return null;
@@ -123,7 +114,6 @@ public class CategoryManagementService : ICategoryManagementService
             IconClass = c.IconClass,
             ProductCount = c.Products.Count
         } : null;
-
     }
 
     public async Task<CategoryViewModelEdit?> GetCategoryForEditByIdAsync(Guid id)
@@ -158,11 +148,8 @@ public class CategoryManagementService : ICategoryManagementService
                 Name = p.Name,
                 Price = p.Price,
                 ImageUrl = p.ImageUrl
-
-
             }).ToList(),
             TotalProducts = category.Products.Count
-
         };
     }
 

@@ -5,7 +5,7 @@ using System.Text.Json;
 namespace GruersShop.Data.Models.Products;
 
 [Table("Ingredients")]
-public class Ingredient 
+public class Ingredient
 {
     [Key]
     public Guid Id { get; set; } = Guid.NewGuid();
@@ -16,11 +16,13 @@ public class Ingredient
 
     // Basic info
     public string? Description { get; set; }
+
     public string? Supplier { get; set; }
     public string? Origin { get; set; } // "Local", "Imported", etc.
 
     // Quality flags
     public bool IsOrganic { get; set; }
+
     public bool IsNonGMO { get; set; }
     public bool IsSustainable { get; set; }
 
@@ -46,16 +48,14 @@ public class Ingredient
     [Range(0, 100)]
     public double SugarPer100g { get; set; }
 
-
     // Allergens
     public bool ContainsGluten { get; set; }
+
     public bool ContainsDairy { get; set; }
     public bool ContainsEggs { get; set; }
     public bool ContainsNuts { get; set; }
     public bool ContainsSoy { get; set; }
     public bool ContainsSesame { get; set; }
-
-
 
     // Store additional vitamins/minerals as JSON (flexible)
     [Column(TypeName = "nvarchar(max)")]

@@ -1,10 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
-using GruersShop.Data.Models.Base;
+﻿using GruersShop.Data.Models.Base;
 using GruersShop.Data.Models.Catalog;
 using GruersShop.Data.Models.Interactions;
 using GruersShop.Data.Models.Messages;
 using GruersShop.Data.Models.Products;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace GruersShop.Data;
 
@@ -14,8 +14,6 @@ public class AppDbContext : IdentityDbContext<AppUser>
         : base(options)
     {
     }
-
-
 
     public virtual DbSet<Catalog> Catalogs { get; set; } = null!;
     public virtual DbSet<Product> Products { get; set; } = null!;

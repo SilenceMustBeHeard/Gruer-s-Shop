@@ -41,7 +41,6 @@ h3 {
     color: antiquewhite;
 }
 
-
     .story-text p {
         margin-bottom: 1.25rem;
         color: var(--text-color);
@@ -54,4 +53,3 @@ h3 {
 .text-warm {
     color: var(--honey-gold);
 }
-    

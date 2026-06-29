@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GruersShop.Web.Areas.Admin.Controllers.Interactions;
 
-
 [Area("Admin")]
 [Authorize(Roles = "Admin")]
 public class UserManagementController : BaseAdminController
@@ -21,9 +20,6 @@ public class UserManagementController : BaseAdminController
     {
         _userService = userService;
     }
-
-
-
 
     // gets all users with their roles except the  admin
     [HttpGet]
@@ -56,10 +52,6 @@ public class UserManagementController : BaseAdminController
         return RedirectToAction("Index");
     }
 
-
-
-
-
     // Ban user (soft delete)
     [HttpPost]
     [ValidateAntiForgeryToken]
@@ -74,12 +66,4 @@ public class UserManagementController : BaseAdminController
 
         return RedirectToAction(nameof(Index));
     }
-
-
-
-
-
-
-
-
 }

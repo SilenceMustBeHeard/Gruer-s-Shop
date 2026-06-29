@@ -1,6 +1,5 @@
 ﻿using GruersShop.Data.Repositories.Interfaces.Messages;
 using GruersShop.Services.Core.Service.Admin.Interfaces.Message;
-using GruersShop.Web.ViewModels.Account.Messages;
 using GruersShop.Web.ViewModels.Admin.Message;
 using Microsoft.EntityFrameworkCore;
 
@@ -67,7 +66,7 @@ public class ContactMessageService : IContactMessageService
             .Include(m => m.Sender)
             .Include(m => m.Receiver)
             .Include(m => m.RespondedBy)
-            .FirstOrDefaultAsync(m => m.Id == messageId && m.ReceiverId == adminId); 
+            .FirstOrDefaultAsync(m => m.Id == messageId && m.ReceiverId == adminId);
 
         if (message == null) return null;
 
@@ -75,7 +74,7 @@ public class ContactMessageService : IContactMessageService
         {
             message.IsReadByAdmin = true;
             await _messageRepository.UpdateAsync(message);
-                await _messageRepository.SaveChangesAsync();
+            await _messageRepository.SaveChangesAsync();
         }
 
         return new ContactMessageDetailsViewModel
@@ -102,6 +101,7 @@ public class ContactMessageService : IContactMessageService
             .GetAllAttachedAsync()
             .CountAsync(m => m.ReceiverId == adminId && !m.IsReadByAdmin);
     }
+
     public async Task MarkAllMessagesAsReadAsync(string adminId)
     {
         var messages = await _messageRepository
@@ -131,5 +131,4 @@ public class ContactMessageService : IContactMessageService
             await _messageRepository.SaveChangesAsync();
         }
     }
-
 }

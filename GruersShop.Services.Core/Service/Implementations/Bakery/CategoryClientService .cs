@@ -5,12 +5,8 @@ using GruersShop.Web.ViewModels.Bakery;
 using GruersShop.Web.ViewModels.Interactions;
 using GruersShop.Web.ViewModels.Products;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace GruersShop.Services.Core.Service.Implementations.Bakery;
-
 
 public class CategoryClientService : ICategoryClientService
 {

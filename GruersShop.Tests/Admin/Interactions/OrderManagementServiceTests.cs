@@ -345,11 +345,6 @@ public class OrderManagementServiceTests
 
     #endregion GetOrderWithDetailsAsync Tests
 
-
-
-
-
-
     #region CheckStockAvailabilityAsync Tests
 
     [Test]
@@ -449,10 +444,7 @@ public class OrderManagementServiceTests
                 StockQuantity = 0
             });
 
-
         var result = await _orderService.CheckStockAvailabilityAsync(order);
-
-
 
         Assert.IsNotNull(result);
         Assert.IsFalse(result.IsAvailable);
@@ -462,8 +454,6 @@ public class OrderManagementServiceTests
         _productRepoMock.Verify(repo => repo.GetByIdAsync(_testProductId), Times.Once);
         _productRepoMock.Verify(repo => repo.GetByIdAsync(_otherProductId), Times.Once);
     }
-
-
 
     [Test]
     public async Task CheckStockAvailabilityAsync_ShouldReturnAvailable_WhenStockIsSufficient()
@@ -519,21 +509,9 @@ public class OrderManagementServiceTests
         _productRepoMock.Verify(repo => repo.GetByIdAsync(productId), Times.Once);
     }
 
+    #endregion CheckStockAvailabilityAsync Tests
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-    #endregion  
 
     #region ConfirmOrderAsync Tests
 
@@ -609,19 +587,9 @@ public class OrderManagementServiceTests
         Assert.AreEqual(0, result.Issues.Count);
     }
 
-    #endregion
-
-
-
-
-
-
-
-
-
+    #endregion ConfirmOrderAsync Tests
 
     #region UpdateOrderStatusAsync Tests
-
 
     [Test]
     public async Task UpdateOrderStatusAsync_ShouldReturnFailure_WhenOrderNotFound()
@@ -638,6 +606,7 @@ public class OrderManagementServiceTests
         Assert.IsFalse(result.Success);
         Assert.AreEqual("Order not found.", result.Message);
     }
+
     [Test]
     public async Task UpdateOrderStatusAsync_ShouldUpdateStatus_FromConfirmedToBaking()
     {
@@ -659,29 +628,7 @@ public class OrderManagementServiceTests
 
         Assert.IsTrue(result.Success);
         Assert.AreEqual(OrderStatus.Baking, order.Status);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
-
-
-
-
-
-
-
 
     [Test]
     public async Task UpdateOrderStatusAsync_ShouldUpdateStatus_FromBakingToCompleted()
@@ -700,7 +647,8 @@ public class OrderManagementServiceTests
         Assert.IsTrue(result.Success);
         Assert.AreEqual(OrderStatus.Completed, order.Status);
     }
-    #endregion
+
+    #endregion UpdateOrderStatusAsync Tests
 
     #region CancelOrderAsync Tests
 
@@ -775,10 +723,6 @@ public class OrderManagementServiceTests
             o.Id == order.Id && o.Status == OrderStatus.Cancelled)), Times.Once);
     }
 
-
-
-
-
     [Test]
     public async Task CancelOrderAsync_ShouldHandleNullOrder_WhenCancelling()
     {
@@ -794,29 +738,9 @@ public class OrderManagementServiceTests
         _orderRepoMock.Verify(repo => repo.Query(), Times.Once);
     }
 
-
-
-
-
-
-
-    #endregion
-
-
-
-
-
-
-
-
-
-
-
-
-
+    #endregion CancelOrderAsync Tests
 
     #region RestoreStockAsync Tests
-
 
     [Test]
     public async Task RestoreStockAsync_ShouldRestoreStock_WhenCalledDirectly()
@@ -847,16 +771,7 @@ public class OrderManagementServiceTests
 
         _productRepoMock.Verify(repo => repo.UpdateAsync(It.Is<Product>(p =>
             p.StockQuantity == initialStock + orderedQuantity)), Times.Once);
-
-
-
     }
-
-
-
-
-
-
 
     [Test]
     public async Task RestoreStockAsync_ShouldHandleNullProduct_WhenRestoringStock()
@@ -877,26 +792,7 @@ public class OrderManagementServiceTests
             .GetMethod("RestoreStockAsync", BindingFlags.NonPublic | BindingFlags.Instance);
         await (Task)methodInfo.Invoke(_orderService, new object[] { order });
         _productRepoMock.Verify(repo => repo.UpdateAsync(It.IsAny<Product>()), Times.Never);
-
-
-
-
-
-
-
-
     }
-
-
-
-
-
-
-
-
-
-
-
 
     [Test]
     public async Task RestoreStockAsync_ShouldHandleEmptyOrderItems_WhenRestoringStock()
@@ -917,10 +813,8 @@ public class OrderManagementServiceTests
         await (Task)methodInfo.Invoke(_orderService, new object[] { order });
         _productRepoMock.Verify(repo => repo.UpdateAsync(It.IsAny<Product>()), Times.Never);
     }
-    #endregion
 
-
-
+    #endregion RestoreStockAsync Tests
 
     #region NotifyCustomerAsync Tests
 
@@ -971,8 +865,6 @@ public class OrderManagementServiceTests
 
         _systemMessageServiceMock.Verify(x => x.CreateMessageAsync(It.IsAny<SystemInboxMessage>()), Times.Once);
     }
-
-
 
     [Test]
     public async Task NotifyCustomerAsync_ShouldNotCreateMessage_WhenAdminIsNull()
@@ -1044,17 +936,9 @@ public class OrderManagementServiceTests
         Assert.AreEqual(customer.Id, capturedMessage.Receiver.Id);
     }
 
-
-    #endregion
-
-
-
-
-
-
+    #endregion NotifyCustomerAsync Tests
 
     #region GetByIdAsync Tests
-
 
     public async Task GetByIdAsync_ShouldReturnOrder_WhenOrderExists()
     {
@@ -1069,8 +953,6 @@ public class OrderManagementServiceTests
         _orderRepoMock.Verify(repo => repo.Query(), Times.Once);
     }
 
-
-
     [Test]
     public async Task GetByIdAsync_ShouldReturnNull_WhenOrderDoesNotExist()
     {
@@ -1082,14 +964,6 @@ public class OrderManagementServiceTests
         var result = await _orderService.GetByIdAsync(nonExistentId);
         Assert.IsNull(result);
         _orderRepoMock.Verify(repo => repo.Query(), Times.Once);
-
-
-
-
-
-
-
-
     }
 
     [Test]
@@ -1137,9 +1011,5 @@ public class OrderManagementServiceTests
         _orderRepoMock.Verify(repo => repo.Query(), Times.Once);
     }
 
-    #endregion
-
-
-
-
+    #endregion GetByIdAsync Tests
 }

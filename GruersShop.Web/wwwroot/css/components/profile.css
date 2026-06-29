@@ -18,9 +18,9 @@
     cursor: pointer;
 }
 
-.btn-stone-sm:hover {
-    background: var(--stone-medium);
-}
+    .btn-stone-sm:hover {
+        background: var(--stone-medium);
+    }
 
 /* Letters Stack Container */
 .letters-stack {
@@ -29,19 +29,19 @@
     padding-right: 0.5rem;
 }
 
-.letters-stack::-webkit-scrollbar {
-    width: 6px;
-}
+    .letters-stack::-webkit-scrollbar {
+        width: 6px;
+    }
 
-.letters-stack::-webkit-scrollbar-track {
-    background: var(--stone-light);
-    border-radius: 10px;
-}
+    .letters-stack::-webkit-scrollbar-track {
+        background: var(--stone-light);
+        border-radius: 10px;
+    }
 
-.letters-stack::-webkit-scrollbar-thumb {
-    background: var(--wood-medium);
-    border-radius: 10px;
-}
+    .letters-stack::-webkit-scrollbar-thumb {
+        background: var(--wood-medium);
+        border-radius: 10px;
+    }
 
 /* Individual Letter Items */
 .letter-item {
@@ -75,9 +75,9 @@
     transition: all 0.3s ease;
 }
 
-.read-more-link:hover {
-    color: var(--glow-amber);
-}
+    .read-more-link:hover {
+        color: var(--glow-amber);
+    }
 
 /* Stone Badge */
 .stone-badge {
@@ -117,5 +117,3 @@
 .letter-footer {
     font-family: var(--font-serif);
 }
-
-

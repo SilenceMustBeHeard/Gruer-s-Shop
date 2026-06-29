@@ -1,6 +1,5 @@
 ﻿using GruersShop.Data.Models.Base;
 using GruersShop.Data.Models.Messages;
-using GruersShop.Data.Repositories.Implementations.Account;
 using GruersShop.Data.Repositories.Interfaces.Account;
 using GruersShop.Data.Repositories.Interfaces.Messages;
 using GruersShop.Services.Core.Service.Admin.Interfaces.Message;
@@ -120,7 +119,6 @@ public class SystemInboxMessageService : ISystemInboxMessageService
         SystemInboxMessageCreateViewModel model,
         string adminId)
     {
-
         if (string.IsNullOrEmpty(model.ReceiverId))
         {
             return (false, "Please select a receiver.");
@@ -150,6 +148,7 @@ public class SystemInboxMessageService : ISystemInboxMessageService
 
         return (true, string.Empty);
     }
+
     public async Task MarkMessageAsReadAsync(Guid messageId, string userId)
     {
         var message = await _messageRepository

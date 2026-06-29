@@ -1,10 +1,5 @@
 ﻿using GruersShop.Data.Models.Interactions;
 
-using System;
-using System.Collections.Generic;
-
-using System.Text;
-
 namespace GruersShop.Web.ViewModels.Orders;
 
 public class OrderUpdateResult

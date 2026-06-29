@@ -4,7 +4,6 @@ using GruersShop.Data.Repositories.Interfaces.Interactions;
 using GruersShop.Services.Core.Service.Interfaces.Interactions;
 using GruersShop.Web.ViewModels.Interactions;
 using GruersShop.Web.ViewModels.Products;
-using Microsoft.EntityFrameworkCore;
 
 namespace GruersShop.Services.Core.Service.Implementations.Interactions;
 
@@ -102,11 +101,8 @@ public class ReviewService : IReviewService
         };
     }
 
-
-  
     public async Task<IEnumerable<ReviewViewModel>> GetUserReviewsAsync(string userId)
     {
-     
         var reviews = await _reviewRepo.GetUserReviewsAsync(userId);
 
         return reviews.Select(r => new ReviewViewModel

@@ -15,12 +15,9 @@ public class HomeController : BaseAdminController
     {
     }
 
-
     public IActionResult Index() => View();
 
-
     public IActionResult About() => View();
-
 
     public IActionResult Privacy() => View();
 

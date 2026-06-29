@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace GruersShop.Web.ViewModels.Admin.Category;
+﻿namespace GruersShop.Web.ViewModels.Admin.Category;
 
 public class CategoryViewModelList
 {

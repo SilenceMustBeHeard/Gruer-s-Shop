@@ -12,13 +12,12 @@ public abstract class BaseController : Controller
     {
         _userManager = userManager;
     }
+
     // Helper methods for user information and role checks
     protected bool IsUserAdmin() => User.IsInRole("Admin");
 
     // Checks if the user is authenticated
     protected bool IsUserAuthenticated() => User.Identity?.IsAuthenticated ?? false;
-
-
 
     private readonly UserManager<AppUser> _userManager;
 
@@ -43,8 +42,4 @@ public abstract class BaseController : Controller
         Response.Headers.Add("X-Toast-Message", message);
         Response.Headers.Add("X-Toast-Type", type);
     }
-
-   
-   
-
 }

@@ -29,7 +29,6 @@ public static class ServiceCollectionExtensions
 
             if (serviceInterface == null)
             {
-              
                 continue;
             }
 

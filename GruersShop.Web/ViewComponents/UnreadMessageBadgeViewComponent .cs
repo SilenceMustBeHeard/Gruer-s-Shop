@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
-
 namespace GruersShop.Web.ViewComponents;
 
 public class UnreadMessageBadgeViewComponent : ViewComponent
@@ -40,5 +39,4 @@ public class UnreadMessageBadgeViewComponent : ViewComponent
             return View(0);
         }
     }
-
 }

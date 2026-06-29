@@ -1,8 +1,5 @@
 ﻿using GruersShop.Data.Models.Base;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace GruersShop.Data.Models.Catalog;
 
@@ -17,8 +14,6 @@ public class Catalog : BaseDeletableEntity
     public string? Description { get; set; }
 
     public string? ImageUrl { get; set; }
-
-
 
     public int DisplayOrder { get; set; } = 0;
 

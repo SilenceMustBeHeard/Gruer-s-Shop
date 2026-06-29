@@ -118,7 +118,6 @@
     }
 }
 
-
 /*=== NOT ALLOWED ===*/
 
 .security-shield {
@@ -198,7 +197,6 @@
     }
 }
 
-
 /*=== NOT FOUND ==*/
 .lost-items-container {
     position: relative;
@@ -274,7 +272,6 @@
         transform: translateY(-10px);
     }
 }
-
 
 /*== NOT IMPLEMENTED ==*/
 
@@ -371,7 +368,6 @@
         transform: rotate(15deg);
     }
 }
-
 
 /*== SERVER ERROR ==*/
 .broken-oven {

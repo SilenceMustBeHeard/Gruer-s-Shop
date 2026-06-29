@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Mail;
-using System.Text;
+﻿using System.Net.Mail;
 
 namespace GruersShop.Services.Common.Validators;
 
@@ -14,7 +11,6 @@ public class EmailValidator
 
         try
         {
-
             var mailAddress = new MailAddress(email);
             return mailAddress.Address == email.Trim();
         }
@@ -28,7 +24,6 @@ public class EmailValidator
     {
         if (string.IsNullOrWhiteSpace(email))
             return string.Empty;
-
 
         return email.Trim();
     }

@@ -20,13 +20,11 @@ public class EmailService : IEmailService
         _emailValidator = new EmailValidator();
     }
 
-
     // sends an email using SendGrid API
     // It validates the email address, subject, and body before sending
     // It also logs the process and handles any exceptions that may occur during the email sending process.
     public async Task<bool> SendEmailAsync(string to, string subject, string body)
     {
-
         if (!_emailValidator.IsValidEmail(to) ||
             string.IsNullOrWhiteSpace(subject) ||
             string.IsNullOrWhiteSpace(body))
@@ -63,7 +61,6 @@ public class EmailService : IEmailService
 
             var response = await client.SendEmailAsync(msg);
 
-
             if (response.IsSuccessStatusCode)
             {
                 _logger.LogInformation("Email service request completed");
@@ -75,7 +72,6 @@ public class EmailService : IEmailService
         }
         catch (Exception ex)
         {
-
             _logger.LogWarning(ex, "Email service error");
             return false;
         }

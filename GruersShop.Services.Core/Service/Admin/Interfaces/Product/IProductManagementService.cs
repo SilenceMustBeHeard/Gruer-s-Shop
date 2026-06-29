@@ -1,10 +1,6 @@
 ﻿using GruersShop.Services.Core.Service.Interfaces.Bakery;
 using GruersShop.Web.ViewModels.Admin.Products;
 
-using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace GruersShop.Services.Core.Service.Admin.Interfaces.Product;
 
 public interface IProductManagementService : ICatalogClientService

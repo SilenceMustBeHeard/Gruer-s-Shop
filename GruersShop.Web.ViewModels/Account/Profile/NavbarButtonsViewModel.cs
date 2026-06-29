@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace GruersShop.Web.ViewModels.Account.Profile;
+﻿namespace GruersShop.Web.ViewModels.Account.Profile;
 
 public class NavbarButtonsViewModel
 {
@@ -13,9 +9,6 @@ public class NavbarButtonsViewModel
     public int PendingOrdersCount { get; set; }
     public int UnreadMessagesCount { get; set; }
 
-
     //  used to highlight the current area in the navbar
     public string? CurrentArea { get; set; }
-
-
 }

@@ -2,9 +2,6 @@
 using GruersShop.Data.Repositories.Implementations.Base;
 using GruersShop.Data.Repositories.Interfaces.Interactions;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace GruersShop.Data.Repositories.Implementations.Interactions;
 
@@ -23,11 +20,9 @@ public class ReviewRepository :
             .AnyAsync(r => r.UserId == userId && r.ProductId == productId);
     }
 
-
     // Get all reviews for a specific product
     public async Task<IEnumerable<Review>> GetReviewsByProductIdAsync(Guid productId)
     {
-
         return await _dbSet
             .Include(r => r.Product)
             .Where(r => r.ProductId == productId)

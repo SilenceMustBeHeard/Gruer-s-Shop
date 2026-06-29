@@ -5,8 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GruersShop.Web.Controllers.Account;
 
-
- [Authorize(Roles = "Admin")]
+[Authorize(Roles = "Admin")]
 public class UsersController : Controller
 {
     private readonly UserManager<AppUser> _userManager;

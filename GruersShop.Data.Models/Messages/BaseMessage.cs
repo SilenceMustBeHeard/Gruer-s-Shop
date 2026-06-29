@@ -1,16 +1,13 @@
 ﻿using GruersShop.Data.Common.Enums;
 using GruersShop.Data.Models.Base;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace GruersShop.Data.Models.Messages;
 
 public abstract class BaseMessage : BaseDeletableEntity
 {
     [Required]
-    public required string ReceiverId { get; set; }
+    public string ReceiverId { get; set; }
 
     public string? SenderId { get; set; }
 
@@ -22,7 +19,7 @@ public abstract class BaseMessage : BaseDeletableEntity
 
     // Navigation properties - using required keyword (C# 11+)
     [Required]
-    public virtual required AppUser Receiver { get; set; }
+    public virtual AppUser Receiver { get; set; }
 
     public virtual AppUser? Sender { get; set; }
 }

@@ -1,6 +1,5 @@
 ﻿using GruersShop.Services.Core.Service.Interfaces.Interactions;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -26,7 +25,6 @@ public class OrdersControllerApi : ControllerBase
         return Ok(orders);
     }
 
-
     [HttpGet("{id}")]
     public async Task<IActionResult> GetOrderDetails(Guid id)
     {
@@ -51,6 +49,7 @@ public class OrdersControllerApi : ControllerBase
 
         return Ok(order);
     }
+
     [HttpPost("{id}/cancel")]
     public async Task<IActionResult> CancelOrder(Guid id)
     {

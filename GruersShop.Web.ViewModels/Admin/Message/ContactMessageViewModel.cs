@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace GruersShop.Web.ViewModels.Admin.Message;
+﻿namespace GruersShop.Web.ViewModels.Admin.Message;
 
 public class ContactMessageViewModel
 {

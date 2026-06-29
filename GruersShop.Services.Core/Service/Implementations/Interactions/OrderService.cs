@@ -5,9 +5,6 @@ using GruersShop.Data.Repositories.Interfaces.Interactions;
 using GruersShop.Services.Core.Service.Interfaces.Interactions;
 using GruersShop.Web.ViewModels.Cart;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace GruersShop.Services.Core.Service.Implementations.Interactions;
 

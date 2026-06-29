@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GruersShop.Web.Areas.Admin.Controllers.Catalog;
 
-
 [Area("Admin")]
 [Authorize(Roles = "Admin")]
 public class CategoryManagementController : Controller
@@ -16,7 +15,6 @@ public class CategoryManagementController : Controller
     {
         _categoryService = categoryService;
     }
-
 
     // GET: Admin/CategoryManagement/EditList
     [HttpGet]
@@ -37,14 +35,9 @@ public class CategoryManagementController : Controller
         return RedirectToAction(nameof(EditList));
     }
 
-
     // GET: Admin/CategoryManagement/Create
     [HttpGet]
     public IActionResult Create() => View();
-
-
-
-
 
     // POST: Admin/CategoryManagement/Create
 
@@ -70,7 +63,6 @@ public class CategoryManagementController : Controller
 
         return View(model);
     }
-
 
     // POST: Admin/CategoryManagement/Edit
     [HttpPost]

@@ -2,9 +2,6 @@
 using GruersShop.Data.Repositories.Implementations.Base;
 using GruersShop.Data.Repositories.Interfaces.Account;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace GruersShop.Data.Repositories.Implementations.Account;
 
@@ -14,7 +11,6 @@ public class AppUserRepository : RepositoryAsync<AppUser, string>, IAppUserRepos
     {
     }
 
-   
     public async Task<AppUser?> GetByEmailAsync(string email)
     {
         return await _dbSet.FirstOrDefaultAsync(u => u.Email == email);

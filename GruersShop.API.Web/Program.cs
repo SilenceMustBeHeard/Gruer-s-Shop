@@ -1,4 +1,3 @@
-
 using GruersShop.Data;
 using GruersShop.Data.Models.Base;
 using Microsoft.AspNetCore.Identity;
@@ -22,8 +21,6 @@ namespace GruersShop.API.Web
             builder.Services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(connectionString));
 
-
-
             // Identity (Cookie based – same as MVC)
 
             builder.Services
@@ -34,7 +31,6 @@ namespace GruersShop.API.Web
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddSignInManager();
-
 
             // Authentication + Authorization
 
@@ -57,7 +53,6 @@ namespace GruersShop.API.Web
             }
 
             app.UseHttpsRedirection();
-
 
             app.UseAuthentication();
             app.UseAuthorization();

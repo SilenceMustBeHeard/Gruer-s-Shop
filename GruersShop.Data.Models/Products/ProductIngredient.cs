@@ -7,10 +7,12 @@ namespace GruersShop.Data.Models.Products;
 public class ProductIngredient : BaseEntity
 {
     public Guid ProductId { get; set; }
+
     [ForeignKey(nameof(ProductId))]
     public virtual Product Product { get; set; } = null!;
 
     public Guid IngredientId { get; set; }
+
     [ForeignKey(nameof(IngredientId))]
     public virtual Ingredient Ingredient { get; set; } = null!;
 

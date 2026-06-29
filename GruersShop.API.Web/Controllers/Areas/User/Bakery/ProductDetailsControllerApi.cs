@@ -1,6 +1,5 @@
 ﻿using GruersShop.Services.Core.Service.Interfaces.Bakery;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -23,13 +22,10 @@ public class ProductDetailsControllerApi : ControllerBase
     {
         string? userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-       
-
         var model = await _catalogClientService.GetProductDetailsViewModelAsync(id, userId);
 
         if (model == null)
         {
-          
             return NotFound();
         }
 

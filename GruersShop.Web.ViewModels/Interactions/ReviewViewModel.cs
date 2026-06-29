@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace GruersShop.Web.ViewModels.Interactions;
+﻿namespace GruersShop.Web.ViewModels.Interactions;
 
 public class ReviewViewModel
 {
-
     public Guid Id { get; set; }
     public string UserName { get; set; } = "Anonymous";
     public int Rating { get; set; }

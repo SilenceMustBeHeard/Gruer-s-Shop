@@ -1,16 +1,10 @@
-﻿using GruersShop.Data.Models.Base;
-using GruersShop.Data.Models.Catalog;
-using GruersShop.Data.Models.Interactions;
+﻿using GruersShop.Data.Models.Catalog;
 using GruersShop.Data.Models.Products;
 using GruersShop.Data.Repositories.Interfaces.Bakery;
 using GruersShop.Services.Core.Service.Admin.Implementations.Catalog;
 using GruersShop.Web.ViewModels.Admin.Category;
-using MockQueryable.Moq;
 using Moq;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Assert = NUnit.Framework.Assert;
 
 namespace GruersShop.Unit.Tests.Services.Admin.Bakery;
@@ -140,7 +134,7 @@ public class CategoryManagementServiceTests
         Assert.That(breadCategory.ProductCount, Is.EqualTo(2));
     }
 
-    #endregion
+    #endregion GetAllActiveCategoriesAsync Tests
 
     #region GetAllCategoriesForAdminAsync Tests
 
@@ -154,7 +148,7 @@ public class CategoryManagementServiceTests
         Assert.That(resultList.Any(c => c.Name == "Deleted Category"), Is.True);
     }
 
-    #endregion
+    #endregion GetAllCategoriesForAdminAsync Tests
 
     #region GetCategoryByIdAsync Tests
 
@@ -176,7 +170,7 @@ public class CategoryManagementServiceTests
         Assert.That(result, Is.Null);
     }
 
-    #endregion
+    #endregion GetCategoryByIdAsync Tests
 
     #region GetCategoryForEditByIdAsync Tests
 
@@ -209,7 +203,7 @@ public class CategoryManagementServiceTests
         Assert.That(result, Is.Null);
     }
 
-    #endregion
+    #endregion GetCategoryForEditByIdAsync Tests
 
     #region AddCategoryAsync Tests
 
@@ -231,7 +225,7 @@ public class CategoryManagementServiceTests
         _categoryRepoMock.Verify(x => x.SaveChangesAsync(), Times.Once);
     }
 
-    #endregion
+    #endregion AddCategoryAsync Tests
 
     #region EditCategoryAsync Tests
 
@@ -273,7 +267,7 @@ public class CategoryManagementServiceTests
         _categoryRepoMock.Verify(x => x.SaveChangesAsync(), Times.Never);
     }
 
-    #endregion
+    #endregion EditCategoryAsync Tests
 
     #region ToggleCategoryAsync Tests
 
@@ -296,5 +290,5 @@ public class CategoryManagementServiceTests
         _categoryRepoMock.Verify(x => x.SaveChangesAsync(), Times.Never);
     }
 
-    #endregion
+    #endregion ToggleCategoryAsync Tests
 }

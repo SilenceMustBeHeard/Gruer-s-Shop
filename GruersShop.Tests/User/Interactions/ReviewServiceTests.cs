@@ -17,7 +17,6 @@ public class ReviewServiceTests
     private Mock<IProductRepository> _productRepoMock;
     private ReviewService _reviewService;
 
-   
     private string _testUserId;
     private string _otherUserId;
     private Guid _testProductId;
@@ -27,8 +26,6 @@ public class ReviewServiceTests
     private Product _testProduct;
     private List<Review> _testReviews;
     private List<Product> _testProducts;
-
-
 
     [SetUp]
     public void SetUp()
@@ -46,16 +43,15 @@ public class ReviewServiceTests
         _testProductId = Guid.NewGuid();
         _otherProductId = Guid.NewGuid();
 
-
-    _testProduct = new Product
-    {
-        Id = _testProductId,
-        Name = "Test Product",
-        Description = "A product for testing",
-        Price = 9.99m,
-        StockQuantity = 100,
-        IsDeleted = false
-    };
+        _testProduct = new Product
+        {
+            Id = _testProductId,
+            Name = "Test Product",
+            Description = "A product for testing",
+            Price = 9.99m,
+            StockQuantity = 100,
+            IsDeleted = false
+        };
         _existingReview = new Review
         {
             Id = Guid.NewGuid(),
@@ -85,14 +81,10 @@ public class ReviewServiceTests
     #region AddReviewAsync Tests
 
     [Test]
-
     public async Task AddReviewAsync_ShouldAddNewReview_WhenNoExistingReview()
     {
-        
         var newRating = 5;
         var newComment = "Amazing product!";
-
-
 
         _reviewRepoMock.Setup(x => x.HasUserReviewedAsync(_testUserId, _testProductId))
             .ReturnsAsync(false);
@@ -103,7 +95,6 @@ public class ReviewServiceTests
         _reviewRepoMock.Setup(x => x.SaveChangesAsync())
             .Returns(Task.CompletedTask);
 
-        
         await _reviewService.AddReviewAsync(_testUserId, _testProductId, newRating, newComment);
 
         _reviewRepoMock.Verify(r => r.AddAsync(It.Is<Review>(rev =>
@@ -112,18 +103,17 @@ public class ReviewServiceTests
             rev.Rating == newRating &&
             rev.Comment == newComment)), Times.Once);
 
-        _reviewRepoMock.Verify(x=> x.SaveChangesAsync(), Times.Once);
+        _reviewRepoMock.Verify(x => x.SaveChangesAsync(), Times.Once);
     }
 
     [Test]
-
     public async Task AddReviewAsync_ShouldNotAddReview_WhenUserAlreadyReviewed()
     {
         _reviewRepoMock.Setup(x => x.HasUserReviewedAsync(_testUserId, _testProductId))
             .ReturnsAsync(true);
 
         var result = await _reviewService.AddReviewAsync(_testUserId, _testProductId, 5, "Great!");
-     
+
         Assert.IsFalse(result);
         _reviewRepoMock.Verify(r => r.AddAsync(It.IsAny<Review>()), Times.Never);
         _reviewRepoMock.Verify(x => x.SaveChangesAsync(), Times.Never);
@@ -148,8 +138,8 @@ public class ReviewServiceTests
         _reviewRepoMock.Verify(r => r.AddAsync(It.IsAny<Review>()), Times.Once);
         _reviewRepoMock.Verify(x => x.SaveChangesAsync(), Times.Once);
     }
-    #endregion
 
+    #endregion AddReviewAsync Tests
 
     #region CreateReviewAsync Tests
 
@@ -176,8 +166,6 @@ public class ReviewServiceTests
 
         Assert.IsTrue(result.Success);
 
-
-
         _reviewRepoMock.Verify(r => r.AddAsync(It.Is<Review>(rev =>
             rev.UserId == _testUserId &&
             rev.ProductId == _testProductId &&
@@ -186,7 +174,6 @@ public class ReviewServiceTests
 
         _reviewRepoMock.Verify(x => x.SaveChangesAsync(), Times.Once);
     }
-
 
     [Test]
     public async Task CreateReviewAsync_ShouldNotCreateReview_WhenUserAlreadyReviewed()
@@ -211,7 +198,6 @@ public class ReviewServiceTests
         _reviewRepoMock.Verify(x => x.SaveChangesAsync(), Times.Never);
     }
 
-
     [Test]
     public async Task CreateReviewAsync_ShouldReturnSuccess_WhenReviewCreated()
     {
@@ -229,17 +215,13 @@ public class ReviewServiceTests
             .Returns(Task.CompletedTask);
         var result = await _reviewService.CreateReviewAsync(_testUserId, model);
 
-
         Assert.IsTrue(result.Success);
-      
-
-
 
         _reviewRepoMock.Verify(r => r.AddAsync(It.IsAny<Review>()), Times.Once);
         _reviewRepoMock.Verify(x => x.SaveChangesAsync(), Times.Once);
     }
-    #endregion
 
+    #endregion CreateReviewAsync Tests
 
     #region HasUserReviewedAsync Tests
 
@@ -254,7 +236,6 @@ public class ReviewServiceTests
         Assert.IsTrue(result);
     }
 
-
     [Test]
     public async Task HasUserReviewedAsync_ShouldReturnFalse_WhenUserHasNotReviewed()
     {
@@ -264,7 +245,6 @@ public class ReviewServiceTests
         var result = await _reviewService.HasUserReviewedAsync(_testUserId, _testProductId);
 
         Assert.IsFalse(result);
-
     }
 
     [Test]
@@ -278,8 +258,7 @@ public class ReviewServiceTests
         _reviewRepoMock.Verify(x => x.HasUserReviewedAsync(_testUserId, _testProductId), Times.Once);
     }
 
-    #endregion
-
+    #endregion HasUserReviewedAsync Tests
 
     #region GetReviewsByProductIdAsync Tests
 
@@ -302,15 +281,11 @@ public class ReviewServiceTests
 
         var result = await _reviewService.GetReviewsByProductIdAsync(_testProductId);
 
-
         Assert.IsNotNull(result);
         Assert.AreEqual(0, result.Count());
     }
 
-
-
     [Test]
-
     public async Task GetReviewsByProductIdAsync_ShouldCallRepositoryMethod()
     {
         _reviewRepoMock.Setup(x => x.GetReviewsByProductIdAsync(_testProductId))
@@ -321,11 +296,9 @@ public class ReviewServiceTests
         _reviewRepoMock.Verify(x => x.GetReviewsByProductIdAsync(_testProductId), Times.Once);
     }
 
-    #endregion
-
+    #endregion GetReviewsByProductIdAsync Tests
 
     #region GetWriteReviewModelAsync Tests
-
 
     [Test]
     public async Task GetWriteReviewModelAsync_ShouldReturnProductViewModel_WhenUserHasNotReviewed()
@@ -355,8 +328,6 @@ public class ReviewServiceTests
         Assert.IsNull(result);
     }
 
-    
-    
     [Test]
     public async Task GetWriteReviewModelAsync_ShouldReturnNull_WhenProductNotFound()
     {
@@ -386,9 +357,7 @@ public class ReviewServiceTests
         _productRepoMock.Verify(x => x.GetProductWithReviewsAsync(_testProductId), Times.Once);
     }
 
-
-    #endregion
-
+    #endregion GetWriteReviewModelAsync Tests
 
     #region GetUserReviewsAsync Tests
 
@@ -398,14 +367,13 @@ public class ReviewServiceTests
         _reviewRepoMock.Setup(x => x.GetUserReviewsAsync(_testUserId))
             .ReturnsAsync(_testReviews);
 
-        var result = await _reviewService.GetUserReviewsAsync(_testUserId); 
+        var result = await _reviewService.GetUserReviewsAsync(_testUserId);
 
         Assert.IsNotNull(result);
         Assert.AreEqual(2, result.Count());
 
         _reviewRepoMock.Verify(x => x.GetUserReviewsAsync(_testUserId), Times.Once);
     }
-
 
     [Test]
     public async Task GetUserReviewsAsync_ShouldReturnEmpty_WhenNoReviewsExist()
@@ -429,6 +397,5 @@ public class ReviewServiceTests
         _reviewRepoMock.Verify(x => x.GetUserReviewsAsync(_testUserId), Times.Once);
     }
 
-
-    #endregion
+    #endregion GetUserReviewsAsync Tests
 }

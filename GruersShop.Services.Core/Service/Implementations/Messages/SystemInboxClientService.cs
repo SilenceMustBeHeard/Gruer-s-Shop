@@ -1,5 +1,4 @@
-﻿using GruersShop.Data.Models.Messages;
-using GruersShop.Data.Repositories.Interfaces.Messages;
+﻿using GruersShop.Data.Repositories.Interfaces.Messages;
 using GruersShop.Services.Core.Service.Interfaces.Messages;
 using GruersShop.Web.ViewModels.Account.Messages;
 using Microsoft.EntityFrameworkCore;

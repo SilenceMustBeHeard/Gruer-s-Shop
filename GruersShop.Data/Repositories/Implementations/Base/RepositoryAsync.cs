@@ -1,9 +1,6 @@
 ﻿using GruersShop.Data.Repositories.Interfaces.CRUD;
-using System;
-using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
-using System.Text;
 
 namespace GruersShop.Data.Repositories.Implementations.Base;
 
@@ -70,7 +67,6 @@ public class RepositoryAsync<TEntity, TKey> : IFullRepositoryAsync<TEntity, TKey
 
     public Task<bool> ToggleStatusAsync(TEntity entity)
     {
-       
         var property = entity.GetType().GetProperty("IsDeleted");
         if (property != null)
         {
@@ -91,6 +87,4 @@ public class RepositoryAsync<TEntity, TKey> : IFullRepositoryAsync<TEntity, TKey
     // IFindRepository
     public async Task<TEntity?> FindByConditionAsync(Expression<Func<TEntity, bool>> predicate)
         => await _dbSet.FirstOrDefaultAsync(predicate);
-
-
 }

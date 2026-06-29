@@ -1,9 +1,5 @@
 ﻿using GruersShop.Data.Repositories.Implementations.Base;
 using GruersShop.Data.Repositories.Interfaces.CRUD;
-using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
-using System.Text;
 
 namespace GruersShop.Data.Repositories.Implementations.UnitOfWork;
 

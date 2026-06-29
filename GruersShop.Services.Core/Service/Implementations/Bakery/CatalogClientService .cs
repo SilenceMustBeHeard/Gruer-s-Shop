@@ -18,7 +18,6 @@ public class CatalogClientService : ICatalogClientService
         _uow = uow;
     }
 
-
     // Get all active products for catalog page
     // For guests, show top 3 products by rating and recency
     // For logged-in users, show paginated products with favorite status
@@ -33,13 +32,11 @@ public class CatalogClientService : ICatalogClientService
             .Query()
             .Where(p => p.IsAvailable && !p.IsDeleted);
 
-      
         if (categoryId.HasValue)
         {
             query = query.Where(p => p.CategoryId == categoryId.Value);
         }
 
-      
         if (isGuest)
         {
             return await query
@@ -65,7 +62,6 @@ public class CatalogClientService : ICatalogClientService
                 .ToListAsync();
         }
 
-    
         return await query
             .OrderByDescending(p => p.CreatedAt)
             .Skip((page - 1) * pageSize)
@@ -89,8 +85,6 @@ public class CatalogClientService : ICatalogClientService
             })
             .ToListAsync();
     }
-
-
 
     // Get products by category
     public async Task<IEnumerable<ProductViewModel>> GetProductsByCategoryAsync(
@@ -118,6 +112,7 @@ public class CatalogClientService : ICatalogClientService
             })
             .ToListAsync();
     }
+
     public async Task<ProductViewModel?> GetProductDetailsAsync(Guid id, string? userId)
     {
         return await _uow.Repository<Product, Guid>()
@@ -155,6 +150,7 @@ public class CatalogClientService : ICatalogClientService
             })
             .FirstOrDefaultAsync();
     }
+
     // Get total active products count
     public async Task<int> GetTotalActiveProductsAsync(Guid? categoryId)
     {
@@ -169,6 +165,7 @@ public class CatalogClientService : ICatalogClientService
 
         return await query.CountAsync();
     }
+
     // Get all categories for navigation
     public async Task<IEnumerable<CategoryNavViewModel>> GetCategoriesForNavAsync()
     {
@@ -185,6 +182,7 @@ public class CatalogClientService : ICatalogClientService
             })
             .ToListAsync();
     }
+
     // Get product details with related data for the details page
     public async Task<ProductDetailsViewModel?> GetProductDetailsViewModelAsync(Guid id, string? userId)
     {
@@ -274,6 +272,4 @@ public class CatalogClientService : ICatalogClientService
             UserReview = userReview
         };
     }
-
 }
-

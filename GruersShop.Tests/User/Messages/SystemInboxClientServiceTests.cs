@@ -3,7 +3,6 @@ using GruersShop.Data.Models.Base;
 using GruersShop.Data.Models.Messages;
 using GruersShop.Data.Repositories.Interfaces.Messages;
 using GruersShop.Services.Core.Service.Implementations.Messages;
-using GruersShop.Web.ViewModels.Account.Messages;
 using MockQueryable.Moq;
 using Moq;
 using NUnit.Framework;
@@ -145,7 +144,6 @@ public class SystemInboxClientServiceTests
 
         Assert.That(result, Is.Not.Null);
         Assert.That(result.Count, Is.EqualTo(2));
-
     }
 
     [Test]
@@ -305,8 +303,6 @@ public class SystemInboxClientServiceTests
                 Description = "Test message 1",
                 IsRead = true
             },
-
-
 
             new SystemInboxMessage
             {

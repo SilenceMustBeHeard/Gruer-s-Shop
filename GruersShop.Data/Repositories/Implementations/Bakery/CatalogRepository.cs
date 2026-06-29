@@ -59,6 +59,4 @@ public class CatalogRepository : RepositoryAsync<Catalog, Guid>, ICatalogReposit
             .IgnoreQueryFilters()
             .FirstOrDefaultAsync(c => c.Id == id);
     }
-
-
 }

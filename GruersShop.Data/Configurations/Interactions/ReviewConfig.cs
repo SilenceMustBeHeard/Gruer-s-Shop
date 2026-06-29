@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using GruersShop.Data.Models.Interactions;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using GruersShop.Data.Models.Interactions;
 
 namespace GruersShop.Data.Configurations.Interactions;
 

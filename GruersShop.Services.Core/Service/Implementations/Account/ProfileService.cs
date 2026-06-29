@@ -15,14 +15,14 @@ public class ProfileService : IProfileService
 {
     private readonly IAppUserRepository _userRepository;
     private readonly UserManager<AppUser> _userManager;
-    private readonly ISystemInboxClientService _systemInboxClientService; 
+    private readonly ISystemInboxClientService _systemInboxClientService;
     private readonly IContactMessageClientService _contactMessageClientService;
     private readonly IContactMessageService _contactMessageService;
 
     public ProfileService(
         IAppUserRepository userRepository,
         UserManager<AppUser> userManager,
-        ISystemInboxClientService systemInboxClientService, 
+        ISystemInboxClientService systemInboxClientService,
         IContactMessageClientService contactMessageClientService,
         IContactMessageService contactMessageService)
     {

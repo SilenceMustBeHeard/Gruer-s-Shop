@@ -4,7 +4,6 @@ using GruersShop.Data.Models.Messages;
 using GruersShop.Data.Repositories.Interfaces.Messages;
 using GruersShop.Services.Core.Service.Implementations.Messages;
 using GruersShop.Web.ViewModels.Account.Messages;
-using GruersShop.Web.ViewModels.Admin.Message;
 using Microsoft.AspNetCore.Identity;
 using MockQueryable.Moq;
 using Moq;
@@ -303,8 +302,6 @@ public class ContactMessageClientServiceTests
         Assert.That(result, Is.Not.Null);
         Assert.That(result, Is.Empty);
     }
-
-  
 
     #endregion GetUserMessagesAsync Tests
 

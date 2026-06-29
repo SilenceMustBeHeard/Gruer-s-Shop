@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using GruersShop.Data.Common.Enums;
+﻿using GruersShop.Data.Common.Enums;
 
 namespace GruersShop.Web.ViewModels.Orders;
 

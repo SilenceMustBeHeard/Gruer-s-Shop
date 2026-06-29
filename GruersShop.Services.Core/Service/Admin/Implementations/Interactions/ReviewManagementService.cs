@@ -1,19 +1,15 @@
-﻿
-using Microsoft.EntityFrameworkCore;
-using GruersShop.Data.Models.Interactions;
+﻿using GruersShop.Data.Models.Interactions;
 using GruersShop.Data.Repositories.Interfaces.Bakery;
 using GruersShop.Data.Repositories.Interfaces.Interactions;
 using GruersShop.Services.Core.Service.Admin.Interfaces.Interactions;
 using GruersShop.Web.ViewModels.Interactions;
 using GruersShop.Web.ViewModels.Products;
+using Microsoft.EntityFrameworkCore;
 
 namespace GruersShop.Services.Core.Service.Admin.Implementations.Interactions;
 
 public class ReviewManagementService : IReviewManagementService
 {
-
-
-
     private readonly IReviewManagementRepository _reviewRepo;
     private readonly IProductRepository _productRepo;
 
@@ -24,10 +20,6 @@ public class ReviewManagementService : IReviewManagementService
         _reviewRepo = reviewRepo;
         _productRepo = productRepo;
     }
-
-
-
-
 
     public async Task<bool> AddReviewAsync(string userId, Guid productId, int rating, string? comment)
     {
@@ -110,10 +102,8 @@ public class ReviewManagementService : IReviewManagementService
         };
     }
 
-
     public async Task<IEnumerable<ReviewViewModel>> GetUserReviewsAsync(string userId)
     {
-
         var reviews = await _reviewRepo.GetUserReviewsAsync(userId);
 
         return reviews.Select(r => new ReviewViewModel
@@ -126,12 +116,13 @@ public class ReviewManagementService : IReviewManagementService
             ProductName = r.Product?.Name ?? "Unknown Product"
         });
     }
+
     // Gets all active reviews (not deleted)
     public async Task<IEnumerable<ReviewViewModelList>> GetAllActiveAsync()
     {
         var reviews = await _reviewRepo
             .Query()
-            .Where(r => !r.IsDeleted)  
+            .Where(r => !r.IsDeleted)
             .Include(r => r.User)
             .Include(r => r.Product)
             .Select(r => new ReviewViewModelList
@@ -152,6 +143,7 @@ public class ReviewManagementService : IReviewManagementService
 
         return reviews;
     }
+
     // Gets all reviews including deleted ones
     public async Task<IEnumerable<ReviewViewModelList>> GetAllIncludingDeletedAsync()
     {
@@ -281,8 +273,7 @@ public class ReviewManagementService : IReviewManagementService
             .Include(r => r.Product)
             .Select(r => new ReviewViewModelList
             {
-               Id = r.Id,
-
+                Id = r.Id,
             })
             .OrderByDescending(r => r.Rating)
             .ThenByDescending(r => r.CreatedAt)
@@ -302,7 +293,6 @@ public class ReviewManagementService : IReviewManagementService
 
     //    review.Rating = rating;
     //    review.Comment = comment ?? string.Empty;
-
 
     //    _reviewRepo.Update(review);
     //    await _reviewRepo.SaveChangesAsync();
@@ -329,5 +319,4 @@ public class ReviewManagementService : IReviewManagementService
             .Where(r => r.ProductId == productId && !r.IsDeleted)
             .CountAsync();
     }
-
 }

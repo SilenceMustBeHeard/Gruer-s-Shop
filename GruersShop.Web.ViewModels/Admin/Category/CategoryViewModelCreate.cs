@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace GruersShop.Web.ViewModels.Admin.Category;
 
@@ -16,6 +13,4 @@ public class CategoryViewModelCreate
 
     [MaxLength(500)]
     public string? Description { get; set; }
-
-
 }

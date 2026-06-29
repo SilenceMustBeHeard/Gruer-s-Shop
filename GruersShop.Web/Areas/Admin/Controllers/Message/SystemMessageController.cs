@@ -1,13 +1,9 @@
 ﻿using GruersShop.Data.Models.Base;
-using GruersShop.Data.Models.Messages;
-using GruersShop.Data.Repositories.Interfaces.Account;
 using GruersShop.Services.Core.Service.Admin.Interfaces.Message;
 using GruersShop.Web.ViewModels.Admin.Message;
-using GruersShop.Web.ViewModels.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace GruersShop.Web.Areas.Admin.Controllers.Message;
 

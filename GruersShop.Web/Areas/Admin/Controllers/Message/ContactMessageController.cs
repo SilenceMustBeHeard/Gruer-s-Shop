@@ -124,7 +124,6 @@ public class ContactMessageController : Controller
         return RedirectToAction(nameof(Details), new { id = model.Id });
     }
 
-
     [HttpGet]
     public async Task<IActionResult> GetUnreadCount()
     {
@@ -140,6 +139,7 @@ public class ContactMessageController : Controller
         var messages = await _contactMessageService.GetAdminMessagesAsync(adminId);
         return PartialView("_MessagesList", messages);
     }
+
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> MarkAllAsRead()

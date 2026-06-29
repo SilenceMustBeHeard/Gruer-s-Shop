@@ -5,7 +5,6 @@ using GruersShop.Data.Models.Products;
 using GruersShop.Data.Repositories.Interfaces.Bakery;
 using GruersShop.Data.Repositories.Interfaces.Interactions;
 using GruersShop.Services.Core.Service.Implementations.Interactions;
-using GruersShop.Services.Core.Service.Interfaces.Interactions;
 using MockQueryable.Moq;
 using Moq;
 using NUnit.Framework;
@@ -220,8 +219,6 @@ public class OrderServiceTests
 
     #endregion GetUserOrdersAsync Tests
 
-
-
     #region GetOrderWithItemsAsync Tests
 
     [Test]
@@ -335,14 +332,12 @@ public class OrderServiceTests
     [Test]
     public void CancelOrderAsync_ThrowsException_WhenOrderNotFound()
     {
-
         var nonExistentOrderId = Guid.NewGuid();
         var emptyList = new List<Order>();
         var mockDbSet = emptyList.BuildMockDbSet();
 
         _orderRepoMock.Setup(repo => repo.Query())
             .Returns(mockDbSet.Object);
-
 
         var ex = Assert.ThrowsAsync<Exception>(async () =>
             await _orderService.CancelOrderAsync(nonExistentOrderId));
@@ -380,8 +375,6 @@ public class OrderServiceTests
         _orderRepoMock.Verify(repo => repo.UpdateStatusAsync(orderId, OrderStatus.Cancelled), Times.Once);
         _orderRepoMock.Verify(repo => repo.SaveChangesAsync(), Times.Once);
     }
-
-
 
     [Test]
     public void CancelOrderAsync_ThrowsException_WhenOrderIsNotPending()

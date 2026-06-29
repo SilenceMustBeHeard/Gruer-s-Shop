@@ -5,7 +5,6 @@ using GruersShop.Web.ViewModels.Admin;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using SendGrid.Helpers.Errors.Model;
 
 namespace GruersShop.API.Web.Controllers.Areas.Admin.Account;
 

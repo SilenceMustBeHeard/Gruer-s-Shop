@@ -1,8 +1,5 @@
 ﻿using GruersShop.Services.Core.Service.Interfaces.Bakery;
 using GruersShop.Web.ViewModels.Admin.Category;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace GruersShop.Services.Core.Service.Admin.Interfaces.Catalog;
 

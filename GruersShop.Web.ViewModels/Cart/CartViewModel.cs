@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace GruersShop.Web.ViewModels.Cart;
+﻿namespace GruersShop.Web.ViewModels.Cart;
 
 public class CartViewModel
 {

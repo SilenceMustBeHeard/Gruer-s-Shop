@@ -1,4 +1,3 @@
-
 /* Gruer's Shop - Complete Theme (No Imports Needed) */
 :root {
     --wood-light: #d4a574;
@@ -236,8 +235,6 @@ body {
     border-radius: 20px;
 }
 
-
-
 .badge.bg-warm {
     background: var(--wood-medium);
     color: white;
@@ -250,7 +247,6 @@ body {
 [data-bs-theme="dark"] .text-warm {
     color: var(--glow-amber);
 }
-
 
 /*=== LOGO EFFECTS == */
 .brand-baked {
@@ -276,7 +272,6 @@ body {
         filter: drop-shadow(0 6px 10px rgba(255, 140, 0, 0.25));
     }
 
-
     .brand-baked:active {
         transform: scale(0.98) rotate(-0.3deg);
         filter: contrast(1.1);
@@ -296,6 +291,7 @@ body {
         text-shadow: 0 1px 0 rgba(0,0,0,0.15);
     }
 }
+
 .profile-avatar {
     width: 110px;
     height: 110px;
@@ -339,8 +335,6 @@ body {
     pointer-events: none;
     z-index: 9999;
 }
-
-
 
 /*========= ADMIN DASHBOARD ==========*/
 .dashboard-card {
@@ -413,8 +407,7 @@ body {
         transition: transform 0.05s ease;
     }
 
-
-    /*========= ADMIN PROFILE PAGE ==========*/
+/*========= ADMIN PROFILE PAGE ==========*/
 /* Profile Card Animation */
 .profile-card {
     transition: all 0.3s ease;
@@ -446,8 +439,6 @@ body {
 .icon-rotate {
     animation: rotate 4s linear infinite;
 }
-
-
 
 /* Tab Buttons */
 .tab-btn {
@@ -489,7 +480,6 @@ body {
         display: block;
     }
 
-
 /* Message Items */
 .message-item {
     transition: all 0.3s ease;
@@ -505,12 +495,10 @@ body {
     animation: badgePulse 1.5s infinite;
 }
 
-
 /* Empty State */
 .empty-state {
     animation: fadeInUp 0.5s ease;
 }
-
 
 /* Logout Button */
 .logout-btn {
@@ -527,7 +515,6 @@ body {
     animation: glow 2s infinite;
 }
 
-
 /* Hero Banner Animation */
 #heroBanner {
     transition: all 0.3s ease;
@@ -537,10 +524,7 @@ body {
         transform: scale(1.01);
     }
 
-
-
-
-    /*=== ADMIN INBOX ===*/
+/*=== ADMIN INBOX ===*/
 .inbox-card {
     transition: all 0.3s ease;
 }
@@ -562,8 +546,6 @@ body {
     border-radius: 20px;
     animation: bounce 0.5s ease;
 }
-
-
 
 .back-btn {
     transition: all 0.3s ease;
@@ -655,13 +637,9 @@ body {
     animation: fadeInUp 0.5s ease;
 }
 
-
-
 .pulse-badge {
     animation: badgePulse 1.5s infinite;
 }
-
-
 
 /* Scrollbar styling */
 .letters-stack::-webkit-scrollbar {
@@ -682,13 +660,10 @@ body {
         background: var(--glow-amber);
     }
 
-
-    /*=== ADMIN CONTACT MESSAGE DETAILS PAGE ===*/
+/*=== ADMIN CONTACT MESSAGE DETAILS PAGE ===*/
 .details-card {
     animation: fadeInUp 0.4s ease;
 }
-
-
 
 .back-btn {
     transition: all 0.3s ease;
@@ -701,8 +676,6 @@ body {
 .success-alert {
     animation: slideDown 0.4s ease;
 }
-
-
 
 .message-subject {
     position: relative;
@@ -738,8 +711,6 @@ body {
 .animated-hr {
     animation: expandWidth 0.5s ease;
 }
-
-
 
 .sender-card {
     transition: all 0.3s ease;
@@ -843,11 +814,9 @@ body {
     flex: 1;
 }
 
-
 .pulse-badge {
     animation: badgePulse 1.5s infinite;
 }
-
 
 .alert-info {
     background: rgba(232, 145, 46, 0.1);
@@ -857,7 +826,7 @@ body {
 .action-buttons {
     flex-wrap: wrap;
 }
-    
+
 /*==== REVIEWS ===*/
 
 .product-preview {
@@ -954,7 +923,6 @@ body {
     position: relative;
     display: inline-block;
 }
-
 
 /*=== Reviews - Post ===*/
 .success-icon-wrapper {
@@ -1144,7 +1112,7 @@ body {
 .header-icon-wrapper {
     position: relative;
     display: inline-block;
-} 
+}
 
 /*=== Product Review ==*/
 .breadcrumb {
@@ -1301,7 +1269,6 @@ body {
     border: 1px solid #dc354540;
 }
 
-
 /*=== My Cart == */
 .table td {
     vertical-align: middle;
@@ -1357,7 +1324,6 @@ body {
     color: #ffd6b0;
     border-bottom: 1px solid rgba(255, 107, 53, 0.2);
 }
-
 
 /*==== Order toast ===*/
 /* Custom Toast Styling - Warm Bakery Theme */
@@ -1446,7 +1412,6 @@ body {
     }
 }
 
-
 /*=== Home Page ===*/
 .product-card {
     transition: all 0.3s ease;
@@ -1486,8 +1451,7 @@ body {
         transform: translateY(-3px);
     }
 
-
-   /* Catalog Page */
+/* Catalog Page */
 .filter-btn {
     background: var(--stone-light);
     border: 1px solid var(--stone-medium);

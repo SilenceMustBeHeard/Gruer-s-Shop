@@ -1,5 +1,4 @@
 ﻿using GruersShop.Data.Models.Base;
-using GruersShop.Services.Core.Service.Implementations.Account;
 using GruersShop.Services.Core.Service.Interfaces.Account;
 using GruersShop.Web.ViewModels.Account.Profile;
 using Microsoft.AspNetCore.Authorization;
@@ -42,10 +41,8 @@ public class AccountController : Controller
             return View(model);
         }
 
-    
         var user = await _userManager.FindByEmailAsync(model.Email);
 
-      
         var (tokenSuccess, tokenError, token) = await _accountService.GenerateEmailConfirmationAsync(user!);
 
         if (!tokenSuccess)
@@ -83,6 +80,7 @@ public class AccountController : Controller
         TempData["Success"] = "Email confirmed successfully!";
         return RedirectToAction("Index", "Home");
     }
+
     [HttpGet]
     public IActionResult Login() => View();
 
@@ -130,7 +128,6 @@ public class AccountController : Controller
 
         var resetLink = Url.Action("ResetPassword", "Account", null, Request.Scheme);
 
-     
         await _accountService.ForgotPasswordAsync(model.Email, resetLink);
         if (resetLink == null)
         {

@@ -38,6 +38,7 @@ public class FavoriteService : IFavoriteService
 
         return !favorite.IsDeleted; // Returns true if now favorited, false if removed
     }
+
     public async Task<IEnumerable<ProductViewModel>> GetUserFavoritesAsync(string userId)
     {
         var favorites = await _favoriteRepository
@@ -62,6 +63,7 @@ public class FavoriteService : IFavoriteService
             StockQuantity = f.Product.StockQuantity
         });
     }
+
     public async Task<bool> IsFavoriteAsync(string userId, Guid productId)
     {
         return await _favoriteRepository.ExistsAsync(userId, productId);

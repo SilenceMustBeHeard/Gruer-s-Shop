@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace GruersShop.Data.Models.Base;
+﻿namespace GruersShop.Data.Models.Base;
 
 public abstract class BaseDeletableEntity : BaseEntity
 {

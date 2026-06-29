@@ -30,12 +30,12 @@ namespace GruersShop.Data.Repositories.Implementations.Bakery
                 .OrderBy(c => c.DisplayOrder)
                 .ToListAsync();
         }
+
         public async Task<Catalog> GetDefaultCatalogAsync()
         {
             var catalog = await _context.Catalogs.FirstOrDefaultAsync();
             if (catalog == null)
             {
-              
                 catalog = new Catalog
                 {
                     Id = Guid.Parse("11111111-1111-1111-1111-111111111111"),
@@ -61,7 +61,6 @@ namespace GruersShop.Data.Repositories.Implementations.Bakery
 
         public async Task ToggleCategoryStatusAsync(Category category)
         {
-           
             category.IsDeleted = !category.IsDeleted;
             category.UpdatedAt = DateTime.UtcNow;
             _dbSet.Update(category);

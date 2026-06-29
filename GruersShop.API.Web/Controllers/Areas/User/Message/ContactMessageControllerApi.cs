@@ -1,6 +1,5 @@
 ﻿using GruersShop.Services.Core.Service.Interfaces.Messages;
 using GruersShop.Web.ViewModels.Account.Messages;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GruersShop.API.Web.Controllers.Areas.User.Message;
@@ -16,9 +15,6 @@ public class ContactMessageControllerApi : ControllerBase
         _contactMessageService = contactMessageService;
     }
 
-
-
-
     [HttpGet]
     public IActionResult GetForm()
     {
@@ -27,7 +23,7 @@ public class ContactMessageControllerApi : ControllerBase
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult>Send([FromBody] ContactMessageCreateViewModel model)
+    public async Task<IActionResult> Send([FromBody] ContactMessageCreateViewModel model)
     {
         if (!ModelState.IsValid)
         {
@@ -36,6 +32,5 @@ public class ContactMessageControllerApi : ControllerBase
 
         await _contactMessageService.SendContactMessageAsync(model, User);
         return Ok(new { success = "Your message has been sent successfully! We'll get back to you soon." });
-
     }
 }

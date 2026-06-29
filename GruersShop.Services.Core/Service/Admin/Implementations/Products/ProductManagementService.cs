@@ -27,9 +27,6 @@ public class ProductManagementService : IProductManagementService
         _uow = uow;
     }
 
-
-
-
     // adds a new product to the database based on the provided view model,
     // setting all necessary properties and saving changes asynchronously
     public async Task AddProductAsync(ProductViewModelCreate model)
@@ -53,7 +50,6 @@ public class ProductManagementService : IProductManagementService
         await _productRepository.SaveChangesAsync();
     }
 
-
     // updates an existing product in the database based on the provided view model,
     public async Task EditProductAsync(Guid id, ProductViewModelEdit model)
     {
@@ -73,7 +69,6 @@ public class ProductManagementService : IProductManagementService
         await _productRepository.SaveChangesAsync();
     }
 
-
     // retrieves all active products from the database, maps them to a list of view models,
     public async Task<IEnumerable<ProductViewModelList>> GetAllActiveProductsAsync()
     {
@@ -92,7 +87,6 @@ public class ProductManagementService : IProductManagementService
             IsDeleted = p.IsDeleted
         });
     }
-
 
     // retrieves all products (including deleted) from the database, maps them to a list of view models,
     public async Task<IEnumerable<ProductViewModelList>> GetAllProductsForAdminAsync()
@@ -118,6 +112,7 @@ public class ProductManagementService : IProductManagementService
     {
         return await _categoryService.GetAllActiveCategoriesAsync();
     }
+
     // retrieves detailed information about a specific product by its ID,
     // including related reviews and category information,
     public async Task<ProductViewModel?> GetProductDetailsAsync(Guid id, string? userId)
@@ -317,7 +312,6 @@ public class ProductManagementService : IProductManagementService
             })
             .ToListAsync();
     }
-
 
     public async Task<int> GetTotalActiveProductsAsync(Guid? categoryId)
     {

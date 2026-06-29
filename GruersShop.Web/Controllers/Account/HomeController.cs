@@ -1,6 +1,4 @@
-﻿using GruersShop.Data.Models.Interactions;
-using GruersShop.Data.Repositories.Interfaces.Bakery;
-using GruersShop.Data.Repositories.Interfaces.CRUD;
+﻿using GruersShop.Data.Repositories.Interfaces.Bakery;
 using GruersShop.Web.ViewModels.Home;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

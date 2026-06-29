@@ -199,7 +199,7 @@ public class CategoryClientServiceTests
         Assert.That(resultList[0].Id, Is.EqualTo(_otherCategoryId)); Assert.That(resultList[1].Id, Is.EqualTo(_testCategoryId));
     }
 
-    #endregion
+    #endregion GetAllActiveCategoriesAsync Tests
 
     #region GetCategoryByIdAsync Tests
 
@@ -245,7 +245,7 @@ public class CategoryClientServiceTests
         Assert.That(result, Is.Null);
     }
 
-    #endregion
+    #endregion GetCategoryByIdAsync Tests
 
     #region GetCategoriesWithProductCountAsync Tests
 
@@ -278,7 +278,7 @@ public class CategoryClientServiceTests
         Assert.That(breadCategory.ProductCount, Is.EqualTo(2));
     }
 
-    #endregion
+    #endregion GetCategoriesWithProductCountAsync Tests
 
     #region GetCategoryWithProductsAsync Tests
 
@@ -355,5 +355,5 @@ public class CategoryClientServiceTests
         Assert.That(sourdoughProduct.AverageRating, Is.EqualTo(4.5));
     }
 
-    #endregion
+    #endregion GetCategoryWithProductsAsync Tests
 }

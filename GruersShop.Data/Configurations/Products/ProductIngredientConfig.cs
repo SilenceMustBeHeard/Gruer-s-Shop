@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using GruersShop.Data.Models.Products;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using GruersShop.Data.Models.Products;
 
 namespace GruersShop.Data.Configurations;
 

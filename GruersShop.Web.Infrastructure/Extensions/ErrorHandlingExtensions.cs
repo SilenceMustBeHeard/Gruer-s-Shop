@@ -18,8 +18,6 @@ public static class ErrorHandlingExtensions
 
                 var exception = exceptionHandlerPathFeature?.Error;
 
-
-
                 // Redirect to custom error page
                 context.Response.Redirect("/Error/500");
             });

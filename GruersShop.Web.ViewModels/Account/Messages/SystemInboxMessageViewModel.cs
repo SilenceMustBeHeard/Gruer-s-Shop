@@ -1,8 +1,5 @@
 ﻿using GruersShop.Data.Common.Enums;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
 namespace GruersShop.Web.ViewModels.Account.Messages;
 
@@ -15,9 +12,11 @@ public class SystemInboxMessageViewModel
     [Required]
     [StringLength(30, MinimumLength = 5, ErrorMessage = "Title must be between 5 and 30 characters long.")]
     public string Title { get; set; } = null!;
+
     [Required]
     [MinLength(20, ErrorMessage = "Description must be at least 20 characters long.")]
     public string Description { get; set; } = null!;
+
     public bool IsRead { get; set; }
 
     public DateTime CreatedOn { get; set; }

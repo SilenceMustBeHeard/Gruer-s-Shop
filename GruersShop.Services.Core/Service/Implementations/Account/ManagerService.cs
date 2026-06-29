@@ -1,9 +1,6 @@
 ﻿using GruersShop.Data.Models.Base;
 using GruersShop.Services.Core.Service.Interfaces.Account;
 using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace GruersShop.Services.Core.Service.Implementations.Account;
 
@@ -15,7 +12,6 @@ public class ManagerService : IManagerService
     {
         _userManager = userManager;
     }
-
 
     // Checks if the user with the given ID is in the "Manager" role
     public async Task<bool> IsUserManagerAsync(string userId)

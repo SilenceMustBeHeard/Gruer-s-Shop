@@ -2,6 +2,7 @@
 using GruersShop.Data.Models.Messages;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
+
 namespace GruersShop.Data.Models.Base;
 
 public class AppUser : IdentityUser
@@ -14,26 +15,24 @@ public class AppUser : IdentityUser
 
     [EmailAddress(ErrorMessage = "Invalid email address")]
     public string? AlternateEmail { get; set; }
+
     public bool IsActive { get; set; } = true;
 
     // Navigation properties for messages
     public virtual ICollection<SystemInboxMessage> ReceivedSystemMessages { get; set; }
         = new HashSet<SystemInboxMessage>();
 
-    public virtual ICollection<SystemInboxMessage> SentSystemMessages { get; set; } 
+    public virtual ICollection<SystemInboxMessage> SentSystemMessages { get; set; }
         = new HashSet<SystemInboxMessage>();
 
-    public virtual ICollection<ContactMessage> ReceivedContactMessages { get; set; } 
+    public virtual ICollection<ContactMessage> ReceivedContactMessages { get; set; }
         = new HashSet<ContactMessage>();
 
     public virtual ICollection<ContactMessage> SentContactMessages { get; set; }
         = new HashSet<ContactMessage>();
 
-
-
-
     // Navigation properties for catalog
-    public virtual ICollection<Favorite> Favorites { get; set; } 
+    public virtual ICollection<Favorite> Favorites { get; set; }
         = new HashSet<Favorite>();
 
     public virtual ICollection<Review> Reviews { get; set; }
@@ -42,9 +41,3 @@ public class AppUser : IdentityUser
     public virtual ICollection<Order> Orders { get; set; }
         = new HashSet<Order>();
 }
-
-
-
-
-
-

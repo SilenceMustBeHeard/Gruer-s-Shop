@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using GruersShop.Data.Models.Interactions;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using GruersShop.Data.Models.Interactions;
 
 namespace GruersShop.Data.Configurations.Interactions;
 
@@ -8,8 +8,6 @@ public class OrderItemConfig : IEntityTypeConfiguration<OrderItem>
 {
     public void Configure(EntityTypeBuilder<OrderItem> builder)
     {
-    
-
         // Composite index for order-product uniqueness
         builder.HasIndex(oi => new { oi.OrderId, oi.ProductId })
             .IsUnique();

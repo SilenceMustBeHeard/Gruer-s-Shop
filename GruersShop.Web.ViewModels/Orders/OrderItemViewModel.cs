@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace GruersShop.Web.ViewModels.Orders;
-
+﻿namespace GruersShop.Web.ViewModels.Orders;
 
 public class OrderItemViewModel
 {

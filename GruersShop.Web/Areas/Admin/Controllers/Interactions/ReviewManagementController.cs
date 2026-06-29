@@ -1,6 +1,5 @@
 ﻿using GruersShop.Data.Models.Base;
 using GruersShop.Services.Core.Service.Admin.Interfaces.Interactions;
-using GruersShop.Services.Core.Service.Interfaces.Interactions;
 using GruersShop.Web.Areas.Admin.Controllers.Account;
 using GruersShop.Web.ViewModels.Interactions;
 using Microsoft.AspNetCore.Authorization;
@@ -123,10 +122,8 @@ public class ReviewManagementController : BaseAdminController
     {
         try
         {
-           
             await _reviewManagementService.ToggleReviewAsync(id);
 
-          
             var review = await _reviewManagementService.GetByIdAsync(id);
 
             if (review != null)

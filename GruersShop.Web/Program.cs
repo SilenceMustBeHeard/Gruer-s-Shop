@@ -24,10 +24,9 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(connectionString));
-// Add Identity 
+// Add Identity
 builder.Services.AddDefaultIdentity<AppUser>(options =>
 {
-   
     options.SignIn.RequireConfirmedAccount = true;
     options.SignIn.RequireConfirmedEmail = true;
 
@@ -82,7 +81,6 @@ builder.Services.AddSingleton(sp =>
     var apiKey = builder.Configuration["SendGrid:ApiKey"];
     if (string.IsNullOrEmpty(apiKey))
     {
-      
         apiKey = builder.Configuration.GetValue<string>("SendGrid:ApiKey");
     }
 
@@ -93,7 +91,6 @@ builder.Services.AddSingleton(sp =>
 
     return new SendGridClient(apiKey);
 });
-
 
 builder.Services.AddScoped<IEmailService, EmailService>();
 

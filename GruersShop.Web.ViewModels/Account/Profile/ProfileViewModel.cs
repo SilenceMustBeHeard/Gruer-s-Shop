@@ -1,8 +1,5 @@
 ﻿using GruersShop.Web.ViewModels.Account.Messages;
 using GruersShop.Web.ViewModels.Admin.Message;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace GruersShop.Web.ViewModels.Account.Profile;
 
@@ -18,7 +15,6 @@ public class ProfileViewModel
     public string? Address { get; set; }
 
     public string AlternateEmail { get; set; } = null!;
-
 
     public IEnumerable<SystemInboxMessageViewModel> SystemInbox { get; set; }
         = new List<SystemInboxMessageViewModel>();

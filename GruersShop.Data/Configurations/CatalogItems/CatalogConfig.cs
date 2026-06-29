@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using GruersShop.Data.Models.Catalog;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using GruersShop.Data.Models.Catalog;
 
 namespace GruersShop.Data.Configurations.CatalogItems;
 

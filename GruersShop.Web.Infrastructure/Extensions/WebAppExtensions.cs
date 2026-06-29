@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace GruersShop.Web.Infrastructure.Extensions
+﻿namespace GruersShop.Web.Infrastructure.Extensions
 {
     public static class WebAppExtensions
     {

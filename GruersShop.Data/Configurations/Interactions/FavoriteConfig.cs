@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using GruersShop.Data.Models.Interactions;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using GruersShop.Data.Models.Interactions;
 
 namespace GruersShop.Data.Configurations.Interactions;
 
@@ -8,8 +8,6 @@ public class FavoriteConfig : IEntityTypeConfiguration<Favorite>
 {
     public void Configure(EntityTypeBuilder<Favorite> builder)
     {
-
-
         // Composite unique index - one user can favorite a product only once
         builder.HasIndex(f => new { f.UserId, f.ProductId })
             .IsUnique();
@@ -24,7 +22,5 @@ public class FavoriteConfig : IEntityTypeConfiguration<Favorite>
             .WithMany(p => p.FavoritedBy)
             .HasForeignKey(f => f.ProductId)
             .OnDelete(DeleteBehavior.Restrict);
-
-        
     }
 }
