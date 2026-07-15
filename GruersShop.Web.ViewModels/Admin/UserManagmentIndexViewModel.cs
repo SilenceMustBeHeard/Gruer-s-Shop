@@ -1,21 +1,22 @@
-﻿namespace GruersShop.Web.ViewModels.Admin
+﻿namespace GruersShop.Web.ViewModels.Admin;
+
+
+
+public class UserManagmentIndexViewModel
 {
-    public class UserManagmentIndexViewModel
-    {
-        public Guid Id { get; set; }
+    public Guid Id { get; set; }
 
-        // user email
-        public string Email { get; set; } = null!;
+    // user email
+    public string Email { get; set; } = null!;
 
-        // list of roles (e.g., "User", "Admin")
+    // list of roles (e.g., "User", "Admin")
 
-        public IEnumerable<string> Roles { get; set; } = null!;
+    public IEnumerable<string> Roles { get; set; } = null!;
 
-        // lockout (ban) end date
+    // lockout (ban) end date
 
-        public DateTimeOffset? LockoutEnd { get; set; }
+    public DateTimeOffset? LockoutEnd { get; set; }
 
-        // check if the user is banned (soft deleted) by checking if LockoutEnd is in the future
-        public bool IsBanned => LockoutEnd != null && LockoutEnd > DateTimeOffset.UtcNow;
-    }
+    // check if the user is banned (soft deleted) by checking if LockoutEnd is in the future
+    public bool IsBanned => LockoutEnd != null && LockoutEnd > DateTimeOffset.UtcNow;
 }
