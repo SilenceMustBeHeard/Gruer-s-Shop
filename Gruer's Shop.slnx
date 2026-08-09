@@ -12,6 +12,12 @@
     <Project Path="GruersShop.Services.Common/GruersShop.Services.Common.csproj" />
     <Project Path="GruersShop.Services.Core/GruersShop.Services.Core.csproj" />
   </Folder>
+  <Folder Name="/Solution Items/">
+    <File Path=".env" />
+    <File Path=".env.example" />
+    <File Path="docker-compose.yml" />
+    <File Path="Dockerfile" />
+  </Folder>
   <Folder Name="/Tests/">
     <Project Path="GruersShop.Tests.Integration/GruersShop.Tests.Integration.csproj" Id="06fb5d7f-2368-4007-b980-177a663731f1" />
     <Project Path="GruersShop.Tests.Web/GruersShop.Tests.Web.csproj" Id="a7561735-89cb-4a5a-99cf-c77bbd0f4268" />
