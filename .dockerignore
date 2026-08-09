@@ -1,0 +1,13 @@
+**/bin
+**/obj
+.vs
+.git
+.github
+**/*.user
+**/*.suo
+TestResults
+coverage-report
+node_modules
+*.db
+*.log
+appsettings.Development.json
