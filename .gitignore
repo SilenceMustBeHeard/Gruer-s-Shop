@@ -6,16 +6,12 @@
 *.suo
 *.userosscache
 *.sln.docstates
-*.VC.db
-*.VC.opendb
 
 # ==============================
-# Build Folders
+# Build
 # ==============================
 bin/
 obj/
-**/bin/
-**/obj/
 
 # ==============================
 # Test & Coverage
@@ -27,23 +23,16 @@ coverage-report/
 # Rider / JetBrains
 # ==============================
 .idea/
-*.sln.iml
+
+
 
 # ==============================
-# EF Core Migrations Designer files
-# ==============================
-*.Designer.cs
-
-# ==============================
-# Logs & Database
+# Logs
 # ==============================
 *.log
-*.sql
-*.db
-*.db-journal
 
 # ==============================
-# Node / NPM (if used)
+# Node
 # ==============================
 node_modules/
 
@@ -54,35 +43,25 @@ node_modules/
 .history/
 
 # ==============================
-# Publish / Deployment
+# Publish
 # ==============================
 *.publish.xml
 *.zip
 *.tar.gz
 
 # ==============================
-# Misc binaries
-# ==============================
-*.vsix
-*.nupkg
-*.userprefs
-*.dll
-*.exe
-
-# ==============================
-# User Secrets (Sensitive Data)
+# User Secrets
 # ==============================
 secrets.json
 **/secrets.json
-*secrets.json
-**/Properties/serviceConfig.json
-**/Properties/serviceConfig.dev.json
-
 
 # ==============================
-# Environment specific configs
+# Environment configs
 # ==============================
 appsettings.Development.json
 appsettings.Production.json
 *.Development.json
 *.Production.json
+
+# Docker environment secrets
+.env

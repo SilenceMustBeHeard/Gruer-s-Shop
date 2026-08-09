@@ -16,14 +16,21 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 using SendGrid;
+using Npgsql.EntityFrameworkCore.PostgreSQL;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Connection string
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
-    ?? throw new InvalidOperationException("Missing connection string");
+    ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
+// Add DbContext
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(connectionString));
+    options.UseNpgsql(connectionString));
+
+// Add HttpClient factory
+builder.Services.AddHttpClient();
+
 // Add Identity
 builder.Services.AddDefaultIdentity<AppUser>(options =>
 {
@@ -51,12 +58,14 @@ builder.Services.AddDefaultIdentity<AppUser>(options =>
 .AddRoles<IdentityRole>()
 .AddEntityFrameworkStores<AppDbContext>();
 
+// Authorization
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("AdminPolicy", p => p.RequireRole("Admin"));
     options.AddPolicy("ManagerPolicy", p => p.RequireRole("Manager"));
 });
 
+// Session
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
@@ -68,14 +77,16 @@ builder.Services.AddSession(options =>
 
 builder.Services.AddHttpContextAccessor();
 
+// Repositories & Services
 builder.Services.RegisterRepositories(typeof(IAppUserRepository).Assembly);
 builder.Services.RegisterServices(typeof(IAccountService).Assembly);
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<ICategoryClientService, CategoryClientService>();
-
 builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<IOrderService, OrderService>();
+
+// SendGrid
 builder.Services.AddSingleton(sp =>
 {
     var apiKey = builder.Configuration["SendGrid:ApiKey"];
@@ -94,38 +105,64 @@ builder.Services.AddSingleton(sp =>
 
 builder.Services.AddScoped<IEmailService, EmailService>();
 
+// MVC
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
+// Configure error handling
 builder.Services.Configure<ApiBehaviorOptions>(options =>
 {
     options.SuppressModelStateInvalidFilter = true;
 });
 
+// Health Checks
+builder.Services.AddHealthChecks();
+
 var app = builder.Build();
 
+// Seed Roles, Users and Data
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
+    // Apply migrations first
     await context.Database.MigrateAsync();
 
+    // Seed Identity (Roles and Users)
     await IdentitySeeder.SeedRolesAsync(roleManager);
     await IdentitySeeder.SeedAdminAsync(userManager);
     await IdentitySeeder.SeedManagerAsync(userManager);
 
+    // Seed Catalog Data - ONLY if Categories table is empty
     if (!await context.Categories.AnyAsync())
-        await DbSeeder.SeedAllAsync(context);
+    {
+        try
+        {
+            await DbSeeder.SeedAllAsync(context);
+            Console.WriteLine("✅ Database seeding completed successfully!");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"❌ Seeding failed: {ex.Message}");
+            throw;
+        }
+    }
+    else
+    {
+        Console.WriteLine("📦 Categories already exist. Skipping catalog data seeding.");
+    }
 }
 
+// Static files with .glb support
 var provider = new FileExtensionContentTypeProvider();
 provider.Mappings[".glb"] = "model/gltf-binary";
 
+// Configure error handling middleware
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error");
+    app.UseExceptionHandler("/Error/500");
     app.UseHsts();
 }
 else
@@ -134,7 +171,6 @@ else
 }
 
 app.UseStatusCodePagesWithReExecute("/Error/{0}");
-
 app.UseHttpsRedirection();
 
 app.UseStaticFiles(new StaticFileOptions
@@ -145,16 +181,21 @@ app.UseStaticFiles(new StaticFileOptions
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.UseSession();
-//app.MapControllers();
 
-app.MapGet("/", context =>
+// Custom error handling for 404
+app.Use(async (context, next) =>
 {
-    context.Response.Redirect("/Home/Index");
-    return Task.CompletedTask;
+    await next();
+    if (context.Response.StatusCode == 404 && !context.Response.HasStarted)
+    {
+        context.Items["originalPath"] = context.Request.Path;
+        context.Request.Path = "/Error/404";
+        await next();
+    }
 });
 
+// Routing
 app.MapControllerRoute(
     name: "areas",
     pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
@@ -164,5 +205,8 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.MapRazorPages();
+
+// Health Check endpoint
+app.MapHealthChecks("/health");
 
 await app.RunAsync();
