@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace GruersShop.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260810025934_initialPostgre")]
-    partial class initialPostgre
+    [Migration("20260811022203_initialPostgre2")]
+    partial class initialPostgre2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -526,7 +526,7 @@ namespace GruersShop.Data.Migrations
 
                     b.Property<string>("AdditionalNutrientsJson")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("BestSeason")
                         .HasColumnType("text");
