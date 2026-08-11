@@ -3,7 +3,7 @@ using GruersShop.Web.ViewModels.Home;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace GruersShop.Web.Controllers;
+namespace GruersShop.Web.Controllers.Account;
 
 public class HomeController : Controller
 {
