@@ -35,7 +35,15 @@ public static class IdentitySeeder
                 AlternateEmail = adminAlternateEmail,
                 EmailConfirmed = true
             };
-            await userManager.CreateAsync(admin, DefaultPassword);
+
+            var result = await userManager.CreateAsync(admin, DefaultPassword);
+            if (!result.Succeeded)
+            {
+                throw new Exception($"Admin creation failed: {string.Join(", ", result.Errors)}");
+            }
+
+            // Ре-зареждане на потребителя, за да сме сигурни, че Id е генериран
+            admin = await userManager.FindByEmailAsync(adminEmail) ?? throw new Exception("Admin not found after creation");
         }
 
         if (!await userManager.IsInRoleAsync(admin, "Admin"))
@@ -58,7 +66,15 @@ public static class IdentitySeeder
                 AlternateEmail = managerAlternateEmail,
                 EmailConfirmed = true
             };
-            await userManager.CreateAsync(manager, DefaultPassword);
+
+            var result = await userManager.CreateAsync(manager, DefaultPassword);
+            if (!result.Succeeded)
+            {
+                throw new Exception($"Manager creation failed: {string.Join(", ", result.Errors)}");
+            }
+
+            // re-load the user to ensure the Id is generated
+            manager = await userManager.FindByEmailAsync(managerEmail) ?? throw new Exception("Manager not found after creation");
         }
 
         if (!await userManager.IsInRoleAsync(manager, "Manager"))
