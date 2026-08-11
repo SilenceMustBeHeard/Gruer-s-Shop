@@ -523,7 +523,7 @@ namespace GruersShop.Data.Migrations
 
                     b.Property<string>("AdditionalNutrientsJson")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("BestSeason")
                         .HasColumnType("text");

@@ -58,7 +58,7 @@ public class Ingredient
     public bool ContainsSesame { get; set; }
 
     // Store additional vitamins/minerals as JSON (flexible)
-    [Column(TypeName = "nvarchar(max)")]
+   
     public string AdditionalNutrientsJson { get; set; } = "{}";
 
     [NotMapped]

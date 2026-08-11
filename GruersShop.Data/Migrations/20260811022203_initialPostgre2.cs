@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace GruersShop.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class initialPostgre : Migration
+    public partial class initialPostgre2 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -101,7 +101,7 @@ namespace GruersShop.Data.Migrations
                     ContainsNuts = table.Column<bool>(type: "boolean", nullable: false),
                     ContainsSoy = table.Column<bool>(type: "boolean", nullable: false),
                     ContainsSesame = table.Column<bool>(type: "boolean", nullable: false),
-                    AdditionalNutrientsJson = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    AdditionalNutrientsJson = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
