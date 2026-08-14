@@ -24,8 +24,6 @@ coverage-report/
 # ==============================
 .idea/
 
-
-
 # ==============================
 # Logs
 # ==============================
@@ -63,5 +61,13 @@ appsettings.Production.json
 *.Development.json
 *.Production.json
 
+# ==============================
 # Docker environment secrets
+# ==============================
 .env
+.env.dev
+docker-compose.dev.yml
+Dockerfile.dev
+.env.local
+*.env.dev
+*.env.local
