@@ -42,7 +42,7 @@ public class CatalogClientService : ICatalogClientService
             return await query
                 .OrderByDescending(p => p.AverageRating)
                 .ThenByDescending(p => p.CreatedAt)
-                .Take(3)
+               
                 .Select(p => new ProductViewModel
                 {
                     Id = p.Id,
