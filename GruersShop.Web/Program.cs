@@ -119,21 +119,20 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 builder.Services.AddHealthChecks();
 
 var app = builder.Build();
-
 // Seed Roles, Users and Data
 using (var scope = app.Services.CreateScope())
 {
-    var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
-    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<AppDbContext>();
+    var userManager = services.GetRequiredService<UserManager<AppUser>>();
+    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+    var configuration = services.GetRequiredService<IConfiguration>(); 
 
-    // Apply migrations first
     await context.Database.MigrateAsync();
 
-    // Seed Identity (Roles and Users)
     await IdentitySeeder.SeedRolesAsync(roleManager);
-    await IdentitySeeder.SeedAdminAsync(userManager);
-    await IdentitySeeder.SeedManagerAsync(userManager);
+    await IdentitySeeder.SeedAdminAsync(userManager, configuration);
+    await IdentitySeeder.SeedManagerAsync(userManager, configuration); 
 
     // Seed Catalog Data - ONLY if Categories table is empty
     if (!await context.Categories.AnyAsync())
@@ -154,7 +153,6 @@ using (var scope = app.Services.CreateScope())
         Console.WriteLine("📦 Categories already exist. Skipping catalog data seeding.");
     }
 }
-
 // Static files with .glb support
 var provider = new FileExtensionContentTypeProvider();
 provider.Mappings[".glb"] = "model/gltf-binary";
